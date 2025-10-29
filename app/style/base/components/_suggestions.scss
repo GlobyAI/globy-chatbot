@@ -1,0 +1,73 @@
+@use "../../abstracts" as *;
+
+.suggestions {
+  max-width: 78.4rem;
+  &__label {
+    @include text($gray-100, 400, $text-sm);
+  }
+  &__container {
+    overflow: visible;
+    &-slider {
+      width: 100%;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .suggestions-items {
+        max-width: 50rem;
+        background-color: $gray-850;
+        width: max-content;
+        min-height: 4.4rem;
+        border-radius: 1.2rem;
+        padding: 1.2rem;
+        @include text($gray-100, 400, $text-sm);
+      }
+    }
+  }
+
+  &__label {
+    order: 2;
+    height: auto;
+    cursor: pointer;
+    margin-bottom: 4px;
+    opacity: 0.8;
+    @include text($white, 400, 12px, 20px);
+    @include flex(left, center, row, 4px);
+    > svg {
+      margin-top: 2px;
+    }
+    @include breakpoint(sm) {
+      width: fit-content;
+    }
+  }
+  & .slide-arrows {
+    button {
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      svg {
+        font-size: 16px;
+      }
+      &:disabled {
+        cursor: auto;
+        svg {
+          color: rgba($dark-purple, 0.5);
+        }
+      }
+    }
+    width: 100%;
+    display: none;
+    justify-content: right;
+    align-items: center;
+    gap: 30px;
+    @include breakpoint(sm) {
+      display: flex;
+    }
+  }
+}

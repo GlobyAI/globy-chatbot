@@ -19,6 +19,7 @@
         display: none;
       }
       .suggestions-items {
+        cursor: pointer;
         max-width: 50rem;
         background-color: $gray-850;
         width: max-content;

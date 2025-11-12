@@ -1,7 +1,7 @@
 import { useHorizontalScroll } from "~/hooks/useHorizontalScroll";
 import type { Route } from "../../+types/root";
 import Suggestions from "./components/suggestions";
-import Form from "./components/form";
+import Textfield from "./components/textfield";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -28,8 +28,9 @@ export default function Chat() {
       </div>
     </div>
     <div className="chat-window">
-      <div className="continue">
-        <p>Continue  </p>
+      <div className="heading">
+        <strong>Globy.ai </strong>
+        <small>Onboarding</small>
       </div>
       <div className="chat">
         <ul className="chat__history">
@@ -108,8 +109,8 @@ export default function Chat() {
         </ul>
       </div>
       <div className="prompt-box">
-        <Suggestions/>
-        <Form/>
+        <Suggestions />
+        <Textfield />
       </div>
     </div>
   </main>;

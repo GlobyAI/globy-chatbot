@@ -1,1 +1,93 @@
 @use "../../abstracts" as *;
+
+.textfield {
+  max-width: 78.4rem;
+  margin: 0 auto;
+  width: 100%;
+  border-radius: 999rem;
+  background-color: $dark-gray;
+  box-shadow: 0px 6px 20px 0px rgba($color: $black, $alpha: 0.4);
+  overflow: hidden;
+  height: auto;
+  padding: 0;
+  height: auto;
+  max-width: 78.4rem;
+  max-height: 28.2rem;
+
+  @include flex(space-between, center, row, 1.2rem);
+  &.changed {
+    border-radius: 2rem;
+    flex-wrap: wrap;
+    padding:1.2rem;
+    .textfield__textarea {
+      order: 1;
+      width: 100%;
+      flex: unset;
+    }
+    .icons {
+      &--plus {
+        background-color: $gray-900;
+        order: 2;
+      }
+      &--send {
+        background-color: $purple;
+        order: 3;
+        cursor: pointer;
+      }
+    }
+  }
+  &__textarea {
+    order: 2;
+    flex: 1;
+    width: unset;
+    min-height: 0;
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    textarea {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      height: 2.4rem;
+      min-height: 2.4rem !important;
+      background-color: inherit;
+      overflow-y: auto;
+      max-height: 19.8rem;
+      box-sizing: border-box; /* include padding/border in height */
+      white-space: pre-wrap; /* match real wrapping; don't toggle */
+      resize: none;
+      @include text($white-2, 400, $text-md);
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      &::placeholder {
+        @include text($gray-300, 400, $text-md);
+      }
+    }
+    &__mirror {
+      visibility: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px solid transparent;
+      @include text($white-2, 400, $text-md);
+    }
+  }
+  .icons {
+    border-radius: 50%;
+    padding: 1.2rem;
+    @include box(4.8rem, 4.8rem);
+    &--plus {
+      order: 1;
+      cursor: pointer;
+    }
+    &--send {
+      order: 3;
+      cursor: not-allowed;
+    }
+  }
+}

@@ -46,18 +46,19 @@
   .chat-window {
     margin-left: 34.5rem;
     height: 100%;
-    .continue {
-      padding: 2.4rem 1.6rem 0;
+    .heading {
       width: 100%;
-      height: 6rem;
+      height: 9.6rem;
       background-color: $black-1;
       z-index: 1;
       @include position(sticky, 0, null, null, null);
-      @include flex(right, flex-end);
+      @include flex(center, center, column);
 
-      > p {
-        cursor: pointer;
-        @include text($white-2, 500);
+      > strong {
+        @include text($white-2, 500, $text-lg);
+      }
+      > small {
+        @include text($gray-300, 400, $text-sm);
       }
     }
     .chat {
@@ -109,13 +110,13 @@
       position: sticky;
       bottom: 0;
       width: 100%;
-      padding-bottom: 10rem;
+      z-index: 1000;
+      padding-bottom: 4rem;
       min-height: 0;
       height: fit-content;
       background-color: $black-1;
       width: 100%;
-      @include flex(flex-start, center, column, 2.4rem);
-     
+      @include flex(flex-start, center, column, 11.2rem);
     }
   }
 }

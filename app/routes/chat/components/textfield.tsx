@@ -1,16 +1,18 @@
-import React, { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import PlusIcon from '/icons/plus.svg'
+import TrashIcon from '/icons/trash-red.svg'
 import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 type Props = {}
 
 export default function Textfield({ }: Props) {
-    const mirrorRef = useRef<HTMLParagraphElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [value, setValue] = useState('')
     const containerRef = useRef<HTMLDivElement | null>(null)
-    useResizeTextarea({ value, textareaRef, mirrorRef, containerRef })
+    const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
+    const [images, setImages] = useState<any[]>([])
+    useResizeTextarea({ value, textareaRef, containerRef, hasImage: images.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(e.target.value)
     }
@@ -24,14 +26,29 @@ export default function Textfield({ }: Props) {
     const atBottom = (el: HTMLElement) =>
         el.scrollTop + el.clientHeight >= el.scrollHeight - 1; // -1 for float rounding
 
+    function handleSelectImage(e: ChangeEvent<HTMLInputElement>) {
+        if (!e.target.files) return
+        const file = e.target.files[0]
+        const objectUrl = URL.createObjectURL(file)
+        const img = new window.Image();
+        img.src = objectUrl;
+        img.onload = () => {
+            const newImg = {
+                url: objectUrl,
+                file_name: file.name,
+                type: file.type,
+                height: 138
+            }
+            setImages(prev => [...prev, newImg])
+        };
+    }
     useEffect(() => {
-        const ta = textareaRef.current;
+        const ta = textfieldContainerRef.current;
         if (!ta) return;
 
         const onWheel = (e: WheelEvent) => {
             // Only handle vertical scroll intents
-            if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-
+            // if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
             // If textarea can scroll, let it scroll until it hits an edge
             if (canScroll(ta)) {
                 const goingDown = e.deltaY > 0;
@@ -51,26 +68,48 @@ export default function Textfield({ }: Props) {
         ta.addEventListener("wheel", onWheel, { passive: false });
         return () => ta.removeEventListener("wheel", onWheel);
     }, []);
+    const handleRemoveImage = (idx: number) => {
+        setImages(prev => prev.filter((_, index) => index !== idx))
+    }
+
+    const hasValue = useMemo(() => images.length > 0 || value !== '', [value, images])
     return (
-        <div className="textfield" ref={containerRef}>
-            <span className="icons icons--plus">
-                <img src={PlusIcon} alt="PlusIcon" />
-            </span>
-            <div className="textfield__textarea" >
+        <div className={`chat-box ${!value && images.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
+            <div className="textfield" ref={textfieldContainerRef} style={{
+                marginTop: hasValue ? "12px" : '0',
+            }}>
+                {
+                    images.length > 0 &&
+                    <div className="images-container">
+                        {
+                            images.map((img, idx) => (
+                                <figure className='selected-img'>
+                                    <img title='Remove image' src={TrashIcon} alt="Delete" className='delete-img' onClick={() => handleRemoveImage(idx)} />
+                                    <img src={img.url} key={idx} className='image' />
+                                </figure>
+                            ))
+                        }
+                    </div>
+                }
                 <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={value} style={{
                     height: value ? "auto" : "24px",
                 }} />
-                <p className="textfield__textarea__mirror" ref={mirrorRef}></p>
             </div>
-            <span className="icons icons--send">
-                {
-                    value ?
-                        <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" />
-                        :
-                        <img src={ArrowUpIcon} alt="ArrowUpIcon" />
-                }
-            </span>
+            <div className="chat-box__actions">
+                <label className="icons icons--plus" htmlFor='image'>
+                    <img src={PlusIcon} alt="PlusIcon" />
+                    <input type="file" name="" id="image" hidden onChange={handleSelectImage} />
+                </label>
+                <span className="icons icons--send">
+                    {
+                        hasValue ?
+                            <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" />
+                            :
+                            <img src={ArrowUpIcon} alt="ArrowUpIcon" />
+                    }
+                </span>
 
+            </div>
         </div>
     )
 }

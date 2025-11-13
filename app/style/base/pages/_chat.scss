@@ -116,7 +116,9 @@
       height: fit-content;
       background-color: $black-1;
       width: 100%;
-      @include flex(flex-start, center, column, 11.2rem);
+      @include flex(flex-end, center, column, 1.2rem);
+
+     
     }
   }
 }

@@ -89,11 +89,16 @@
       width: 100%;
 
       .selected-img {
-        width: 13rem;
-        height: 13rem;
-        border-radius: 2rem;
+        width: 5.8rem;
+        height: 5.8rem;
+        border-radius: 0.8rem;
         border: 1px solid $gray-500;
         position: relative;
+        @include breakpoint(lg) {
+          border-radius: 1.2rem;
+          width: 13rem;
+          height: 13rem;
+        }
         &:hover {
           .delete-img {
             opacity: 1;
@@ -114,9 +119,8 @@
           top: 0.6rem;
           right: 0.6rem;
           @include flex(center, center);
-          &:hover{
+          &:hover {
             background-color: $gray-800;
-
           }
         }
         > .image {
@@ -166,6 +170,7 @@
       border-radius: 50%;
       padding: 1.2rem;
       z-index: 100;
+      position: relative;
       @include box(4.8rem, 4.8rem);
       &--plus {
         order: 2;
@@ -174,6 +179,14 @@
       &--send {
         order: 4;
         cursor: not-allowed;
+      }
+      .options-popup {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        z-index: 100;
+        background-color: $dark-gray;
+        
       }
     }
   }

@@ -18,5 +18,6 @@ export default function Suggestions() {
                 </div>
             </div>
         </div>
+
     )
 }

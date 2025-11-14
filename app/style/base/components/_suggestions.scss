@@ -1,6 +1,7 @@
 @use "../../abstracts" as *;
 
 .suggestions {
+  width: 100%;
   max-width: 78.4rem;
   &__label {
     @include text($gray-100, 400, $text-sm);

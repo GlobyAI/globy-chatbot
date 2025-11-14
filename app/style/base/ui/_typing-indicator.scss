@@ -1,0 +1,40 @@
+@use "../../abstracts" as *;
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  margin-bottom: 15px;
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: $purple;
+    border-radius: 50%;
+    margin: 0 4px;
+    animation: typing-indicator 1.2s infinite ease-in-out;
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes typing-indicator {
+  0%,
+  60%,
+  100% {
+    transform: initial;
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 0.5;
+  }
+}

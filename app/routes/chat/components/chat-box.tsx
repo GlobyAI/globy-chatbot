@@ -4,17 +4,20 @@ import TrashIcon from '/icons/trash-red.svg'
 import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
 import useResizeTextarea from '~/hooks/useResizeTextarea'
+import { useWebSocket } from '~/providers/WSProdivder'
+import type { MessageData } from '~/types/models'
 type Props = {}
 
-export default function Textfield({ }: Props) {
+export default function ChatBox({ }: Props) {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const [value, setValue] = useState('')
+    const [content, setContent] = useState('')
     const containerRef = useRef<HTMLDivElement | null>(null)
     const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
     const [images, setImages] = useState<any[]>([])
-    useResizeTextarea({ value, textareaRef, containerRef, hasImage: images.length > 0 })
+    const { sendMessage } = useWebSocket()
+    useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: images.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.target.value)
+        setContent(e.target.value)
     }
     // helpers
     const canScroll = (el: HTMLElement) =>
@@ -72,9 +75,20 @@ export default function Textfield({ }: Props) {
         setImages(prev => prev.filter((_, index) => index !== idx))
     }
 
-    const hasValue = useMemo(() => images.length > 0 || value !== '', [value, images])
+    const handleSubmit = () => {
+        if (!images && !content) return
+        const msg = {
+            research: false,
+            text: content,
+            ...(images && { image_urls: images })
+        }
+        sendMessage(msg)
+        setContent('')
+        setImages([])
+    }
+    const hasValue = useMemo(() => images.length > 0 || content !== '', [content, images])
     return (
-        <div className={`chat-box ${!value && images.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
+        <div className={`chat-box ${!content && images.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
             <div className="textfield" ref={textfieldContainerRef} style={{
                 marginTop: hasValue ? "12px" : '0',
             }}>
@@ -91,19 +105,28 @@ export default function Textfield({ }: Props) {
                         }
                     </div>
                 }
-                <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={value} style={{
-                    height: value ? "auto" : "24px",
+                <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} style={{
+                    height: content ? "auto" : "24px",
                 }} />
             </div>
             <div className="chat-box__actions">
-                <label className="icons icons--plus" htmlFor='image'>
-                    <img src={PlusIcon} alt="PlusIcon" />
-                    <input type="file" name="" id="image" hidden onChange={handleSelectImage} />
-                </label>
+                <span className="icons icons--plus">
+                    <label className="" htmlFor='image'>
+                        <img src={PlusIcon} alt="PlusIcon" />
+                        <input type="file" name="" id="image" hidden onChange={handleSelectImage} />
+                    </label>
+                    {/* <div className="options-popup">
+                        <ul>
+                            <li>
+                            </li>
+
+                        </ul>
+                    </div> */}
+                </span>
                 <span className="icons icons--send">
                     {
                         hasValue ?
-                            <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" />
+                            <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
                             :
                             <img src={ArrowUpIcon} alt="ArrowUpIcon" />
                     }

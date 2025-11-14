@@ -1,0 +1,28 @@
+@use "../../abstracts" as *;
+
+.globy-toast {
+  width: 100%;
+  max-width: 3.6rem;
+  border: 1px solid $purple;
+  background: rgba(252, 244, 255, 1) !important;
+  margin-bottom: 1.2rem;
+  padding: 0.8rem 1.2rem !important;
+  gap: 0.8rem;
+  align-items: flex-start !important;
+  @include breakpoint(lg) {
+    margin-bottom: 2rem;
+    padding: 1.2rem 2.4rem !important;
+  }
+  > div {
+    &:nth-child(1) {
+      margin-top: 0.4rem;
+    }
+    margin: 0;
+    text-align: center;
+    color: $purple;
+    font-size: 1.2rem;
+    @include breakpoint(lg) {
+      font-size: 1.6rem;
+    }
+  }
+}

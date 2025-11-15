@@ -1,22 +1,16 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
+# ─── DEV / RUN‐LOCAL DOCKERFILE ──────────────────────────────────────────────
+FROM node:22-alpine
 WORKDIR /app
-RUN npm ci
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
-WORKDIR /app
-RUN npm ci --omit=dev
+# 1) Copy only package files and install dependencies
+COPY package*.json ./
+RUN npm install
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+# 2) Copy the rest of your source code
+COPY . .
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
-WORKDIR /app
-CMD ["npm", "run", "start"]
+# 3) Expose the port that "npm start" will listen on
+EXPOSE 5173
+
+# 4) Launch the dev server
+CMD ["npm", "run","dev"]

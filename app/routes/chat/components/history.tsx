@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import TypingIndicator from '~/components/ui/TypingIndicator/TypingIndicator'
 import { useWebSocket } from '~/providers/WSProdivder'
 import { SENDER } from '~/types/enums'
-
+import ReactMarkdown from "react-markdown";
 
 export default function History() {
     const { messages, isPending } = useWebSocket()
@@ -26,7 +26,7 @@ export default function History() {
                     messages.length > 0 && messages.map(msg => {
                         const isUser = msg.sender === SENDER.USER
                         return (
-                            <li key={msg.message_id} className={`message ${isUser ? "message--user" : ''}`}>
+                            <li key={msg.message_id+msg.sender} className={`message  markdown-body ${isUser ? "message--user" : ''}`}>
                                 {
                                     !isUser &&
                                     <div className="message__logo">
@@ -34,8 +34,8 @@ export default function History() {
                                         Globy.ai
                                     </div>
                                 }
-                                <p className="message__content ">
-                                    {msg.content}
+                                <p className="message__content " >
+                                    <ReactMarkdown>{msg.content}</ReactMarkdown>
                                 </p>
                             </li>
                         )

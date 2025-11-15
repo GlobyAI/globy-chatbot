@@ -24,7 +24,7 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { socket, connect, isConnected, send } = useWebSocketStore();
+    const { socket, connect, isConnected, send, lastMessage } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
@@ -39,54 +39,40 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     // Attach message handler whenever socket changes
     useEffect(() => {
-        if (!socket) return;
+        if (!lastMessage) return;
+        console.log(lastMessage)
+        if (lastMessage.type === MessageType.ASSISTANT_DONE) {
+            setIsPending(false)
+        }
+        if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
+            const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.sender === SENDER.GLOBY)
+            if (!lastMsg) {
+                setMessages((prev) => {
+                    const newMessage: ChatMessage = {
+                        message_id: lastMessage.message_id,
+                        content: lastMessage.delta,
+                        sender: SENDER.GLOBY
 
-        const handleMessage = (event: MessageEvent) => {
-            let data: MessageResponse = event.data;
-            try {
-                data = JSON.parse(event.data);
-                if (data.type === MessageType.ASSISTANT_DONE) {
-                    setIsPending(false)
-                }
-                if (data.type === MessageType.ASSISTANT_DElTA) {
+                    };
+                    return [...prev, newMessage]
 
-                    const lastMsg = messages.find(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY)
-                    if (!lastMsg) {
-                        setMessages((prev) => {
-                            const newMessage: ChatMessage = {
-                                message_id: data.message_id,
-                                content: data.delta,
-                                sender: SENDER.GLOBY
-
-                            };
-                            return [...prev, newMessage]
-
-                        });
-                    } else {
-                        setMessages(prev => {
-                            return prev.map(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY ? {
-                                ...msg,
-                                content: msg.content.concat(data.delta)
-                            } : msg)
-                        })
-                    }
-
-
-                }
-
-            } catch (e) {
-                toast.error(e as string)
+                });
+            } else {
+                setMessages(prev => {
+                    return prev.map(msg => msg.message_id === lastMessage.message_id && msg.sender === SENDER.GLOBY ? {
+                        ...msg,
+                        content: msg.content.concat(lastMessage.delta)
+                    } : msg)
+                })
             }
 
 
-        };
+        }
 
-        socket.addEventListener('message', handleMessage);
 
-        return () => {
-            socket.removeEventListener('message', handleMessage);
-        };
-    }, [socket, messages]);
+
+
+    }, [lastMessage]);
 
     const clearMessages = () => setMessages([]);
 

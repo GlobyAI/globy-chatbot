@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
-import TrashIcon from '/icons/trash-red.svg'
-import FileIcon from '/icons/file.svg'
+
 import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 import { useWebSocket } from '~/providers/WSProdivder'
 import UploadFile from './upload-file'
 import type { IUploadFile } from '~/types/models'
+import FilePreviews from './file-previews'
 type Props = {}
 
 export default function ChatBox({ }: Props) {
@@ -42,30 +42,23 @@ export default function ChatBox({ }: Props) {
         if (!ta) return;
 
         const onWheel = (e: WheelEvent) => {
-            // Only handle vertical scroll intents
-            // if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-            // If textarea can scroll, let it scroll until it hits an edge
             if (canScroll(ta)) {
                 const goingDown = e.deltaY > 0;
                 const hitTop = atTop(ta) && !goingDown;
                 const hitBottom = atBottom(ta) && goingDown;
 
                 if (!(hitTop || hitBottom)) {
-                    // still has room -> let textarea consume the wheel
                     return;
                 }
             }
 
-            // We’re at an edge (or textarea can't scroll): hijack and forward to container
-            e.preventDefault(); // requires { passive:false } on addEventListener
+            e.preventDefault();
         };
 
         ta.addEventListener("wheel", onWheel, { passive: false });
         return () => ta.removeEventListener("wheel", onWheel);
     }, []);
-    const handleRemoveImage = (idx: number) => {
-        setImages(prev => prev.filter((_, index) => index !== idx))
-    }
+
 
     const handleSubmit = () => {
         if (!images && !content) return
@@ -73,7 +66,8 @@ export default function ChatBox({ }: Props) {
         const msg = {
             research: false,
             text: content,
-            ...(image_urls && { image_urls: image_urls })
+            ...(image_urls && { image_urls: image_urls }),
+            ...(images.length > 0 && { research: true })
         }
         sendMessage(msg)
         setContent('')
@@ -85,39 +79,13 @@ export default function ChatBox({ }: Props) {
             <div className="textfield" ref={textfieldContainerRef} style={{
                 marginTop: hasValue ? "12px" : '0',
             }}>
-                {
-                    images.length > 0 &&
-                    <div className="images-container">
-                        {
-                            images.map((img, idx) => {
-                                const isImage = img.file.type?.startsWith('image')
-                                return (
-                                    <figure key={idx} className={`selected-img ${isImage ? '' : 'is-file'}`}>
-                                        <img title='Remove image' src={TrashIcon} alt="Delete" className='delete-img' onClick={() => handleRemoveImage(idx)} />
-                                        {
-                                            isImage ?
-                                                <img src={img.url} key={idx} className='image' />
-                                                :
-                                                <>
-                                                    <img src={FileIcon} key={idx} className='file' />
-                                                    <figcaption>
-                                                        <p>{img.file.name}</p>
-                                                        <p>{img.file.type.split("/")[1]?.toUpperCase()}</p>
-                                                    </figcaption>
-                                                </>
-                                        }
-                                    </figure>
-                                )
-                            })
-                        }
-                    </div>
-                }
+                <FilePreviews images={images} setImages={setImages} />
                 <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} style={{
                     height: content ? "auto" : "24px",
                 }} />
             </div>
             <div className="chat-box__actions">
-                <UploadFile setImages={setImages} />
+                <UploadFile setImages={setImages} images={images} />
                 <span className="icons icons--send">
                     {
                         hasValue ?

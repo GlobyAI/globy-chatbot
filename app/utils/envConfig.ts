@@ -8,5 +8,7 @@ export const envConfig = {
     LANDING_PAGE:import.meta.env.VITE_LANDING_PAGE,
     AUTH0_MTM_CLIENT_SECRET:import.meta.env.VITE_AUTH0_MTM_CLIENT_SECRET,
     AUTH0_MTM_CLIENT_ID:import.meta.env.VITE_AUTH0_MTM_CLIENT_ID,
+    IMAGE_LIBRARY_API:import.meta.env.VITE_IMAGE_LIBRARY_API,
+    
 
 }

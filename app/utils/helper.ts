@@ -8,5 +8,6 @@ export function formatName(user: User | undefined) {
 }
 
 export function generateMessageId() {
-  return "gid-" + new Date().getTime()
+  return "gid-" + new Date().getTime();
 }
+

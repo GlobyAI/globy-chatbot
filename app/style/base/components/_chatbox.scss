@@ -94,9 +94,11 @@
         position: relative;
         width: fit-content;
         height: 5.8rem;
+        min-width: 5.8rem;
         @include breakpoint(lg) {
           border-radius: 1.2rem;
           height: 13rem;
+          min-width: 13rem;
         }
         &.is-file {
           max-height: 5.6rem;
@@ -225,5 +227,39 @@
         }
       }
     }
+  }
+}
+
+.circular-progress {
+  --percent: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  border-radius: 50%;
+  position: relative;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      $white calc(var(--percent) * 3.6deg),
+      $gray-500 0deg
+    );
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 0.4rem),
+      $black calc(100% - 0.4rem + 1px)
+    );
+    mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 0.4rem),
+      $black calc(100% - 0.4rem + 1px)
+    );
   }
 }

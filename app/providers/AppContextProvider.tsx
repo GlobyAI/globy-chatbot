@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 import axios from "axios";
 import { createSale, getSales } from "~/services/saleApi";
-import { verifyUser } from "~/services/authApi";
+import { verifyUser } from "~/services/authApis";
 import { updateAuth0AppMetadata } from "~/services/auth0Apis";
 import { envConfig } from "~/utils/envConfig";
 

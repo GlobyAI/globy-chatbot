@@ -21,5 +21,9 @@ export interface MessageData {
   expect_json?: boolean;
 }
 
-export interface MessageRequest extends MessageBase {
+export interface MessageRequest extends MessageBase {}
+
+export interface IUploadFile {
+  url: string;
+  file: File
 }

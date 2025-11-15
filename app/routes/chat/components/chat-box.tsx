@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
-import PlusIcon from '/icons/plus.svg'
 import TrashIcon from '/icons/trash-red.svg'
-import ArrowUpIcon from '/icons/arrow-up.svg'
 import FileIcon from '/icons/file.svg'
+import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 import { useWebSocket } from '~/providers/WSProdivder'
-import { useClickOutside } from '~/hooks/useClickOutsite'
+import UploadFile from './upload-file'
+import type { IUploadFile } from '~/types/models'
 type Props = {}
 
 export default function ChatBox({ }: Props) {
@@ -14,23 +14,17 @@ export default function ChatBox({ }: Props) {
     const [content, setContent] = useState('')
     const containerRef = useRef<HTMLDivElement | null>(null)
     const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
-    const [showDropdown, setShowDropDown] = useState(false)
-    const [images, setImages] = useState<any[]>([])
-    const optionPopUpRef = useRef<HTMLDivElement>(null)
-    useClickOutside(optionPopUpRef, handleClosePopup)
+    const [images, setImages] = useState<IUploadFile[]>([])
+    const { isPending } = useWebSocket()
     const { sendMessage } = useWebSocket()
 
-    function handleOpenPopUp() {
-        setShowDropDown(true)
-    }
-    function handleClosePopup() {
-        setShowDropDown(false)
-    }
 
 
     useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: images.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setContent(e.target.value)
+        if (!isPending) {
+            setContent(e.target.value)
+        }
     }
     // helpers
     const canScroll = (el: HTMLElement) =>
@@ -42,23 +36,7 @@ export default function ChatBox({ }: Props) {
     const atBottom = (el: HTMLElement) =>
         el.scrollTop + el.clientHeight >= el.scrollHeight - 1; // -1 for float rounding
 
-    function handleSelectImage(e: ChangeEvent<HTMLInputElement>) {
-        if (!e.target.files) return
-        const file = e.target.files[0]
-        const objectUrl = URL.createObjectURL(file)
-        const img = new window.Image();
-        img.src = objectUrl;
-        img.onload = () => {
-            const newImg = {
-                url: objectUrl,
-                file_name: file.name,
-                type: file.type,
-                height: 138
-            }
-            setImages(prev => [...prev, newImg])
-            handleClosePopup()
-        };
-    }
+
     useEffect(() => {
         const ta = textfieldContainerRef.current;
         if (!ta) return;
@@ -91,10 +69,11 @@ export default function ChatBox({ }: Props) {
 
     const handleSubmit = () => {
         if (!images && !content) return
+        const image_urls = images.filter(i => i.file.type.includes("image")).map(i => i.url)
         const msg = {
             research: false,
             text: content,
-            ...(images && { image_urls: images })
+            ...(image_urls && { image_urls: image_urls })
         }
         sendMessage(msg)
         setContent('')
@@ -110,12 +89,26 @@ export default function ChatBox({ }: Props) {
                     images.length > 0 &&
                     <div className="images-container">
                         {
-                            images.map((img, idx) => (
-                                <figure className='selected-img'>
-                                    <img title='Remove image' src={TrashIcon} alt="Delete" className='delete-img' onClick={() => handleRemoveImage(idx)} />
-                                    <img src={img.url} key={idx} className='image' />
-                                </figure>
-                            ))
+                            images.map((img, idx) => {
+                                const isImage = img.file.type?.startsWith('image')
+                                return (
+                                    <figure key={idx} className={`selected-img ${isImage ? '' : 'is-file'}`}>
+                                        <img title='Remove image' src={TrashIcon} alt="Delete" className='delete-img' onClick={() => handleRemoveImage(idx)} />
+                                        {
+                                            isImage ?
+                                                <img src={img.url} key={idx} className='image' />
+                                                :
+                                                <>
+                                                    <img src={FileIcon} key={idx} className='file' />
+                                                    <figcaption>
+                                                        <p>{img.file.name}</p>
+                                                        <p>{img.file.type.split("/")[1]?.toUpperCase()}</p>
+                                                    </figcaption>
+                                                </>
+                                        }
+                                    </figure>
+                                )
+                            })
                         }
                     </div>
                 }
@@ -124,31 +117,17 @@ export default function ChatBox({ }: Props) {
                 }} />
             </div>
             <div className="chat-box__actions">
-                <div ref={optionPopUpRef} className={`icons icons--plus  ${showDropdown ? "open" : ""}`} onClick={handleOpenPopUp}>
-                    <img src={PlusIcon} alt="PlusIcon" />
-                <div className="options-popup" >
-                    <ul>
-                        <li>
-                            <label className="" htmlFor='file-image'>
-                                <img src={FileIcon} alt="FileIcon" />
-                                Attach images and files
-                                <input type="file" name="" id="file-image" hidden onChange={handleSelectImage} />
-                            </label>
-                        </li>
+                <UploadFile setImages={setImages} />
+                <span className="icons icons--send">
+                    {
+                        hasValue ?
+                            <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
+                            :
+                            <img src={ArrowUpIcon} alt="ArrowUpIcon" />
+                    }
+                </span>
 
-                    </ul>
-                </div>
             </div>
-            <span className="icons icons--send">
-                {
-                    hasValue ?
-                        <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
-                        :
-                        <img src={ArrowUpIcon} alt="ArrowUpIcon" />
-                }
-            </span>
-
-        </div>
         </div >
     )
 }

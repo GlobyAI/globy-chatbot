@@ -86,17 +86,22 @@
     .images-container {
       margin-bottom: 1.2rem;
       width: 100%;
-
+      flex-wrap: wrap;
+      @include flex(left, flex-start, row, 1.2rem);
       .selected-img {
-        width: 5.8rem;
-        height: 5.8rem;
         border-radius: 0.8rem;
         border: 1px solid $gray-500;
         position: relative;
+        width: fit-content;
+        height: 5.8rem;
         @include breakpoint(lg) {
           border-radius: 1.2rem;
-          width: 13rem;
           height: 13rem;
+        }
+        &.is-file {
+          max-height: 5.6rem;
+          padding: 0.6rem 1.2rem;
+          @include flex(left, flex-start, row, 0.8rem);
         }
         &:hover {
           .delete-img {
@@ -123,9 +128,20 @@
           }
         }
         > .image {
-          width: 100%;
+          aspect-ratio: 1/1;
           height: 100%;
           object-fit: cover;
+        }
+        > .file {
+          margin: auto 0;
+          width: 2.4rem;
+          height: 2.4rem;
+          object-fit: cover;
+        }
+        figcaption {
+          height: 100%;
+          @include flex(space-around, flex-start, column);
+          @include text($white-2, 400, 1.6rem);
         }
       }
     }

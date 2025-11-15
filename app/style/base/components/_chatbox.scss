@@ -10,12 +10,11 @@
   max-height: 28.2rem;
   height: auto;
   min-height: 0;
-  padding: 0 1.2rem;
   position: relative;
   @include flex(space-between, center, column);
 
   &.has-image {
-    padding-bottom: 1.2rem;
+    padding: 0 1.2rem 1.2rem;
     .textfield {
       textarea {
         bottom: 2.4rem;
@@ -40,7 +39,7 @@
   &.has-value {
     gap: 1.2rem;
     border-radius: 2rem;
-    padding-bottom: 1.2rem;
+    padding: 0 1.2rem 1.2rem;
     .textfield {
       textarea {
         position: relative;
@@ -180,13 +179,34 @@
         order: 4;
         cursor: not-allowed;
       }
+      &.open {
+        .options-popup {
+          visibility: visible;
+          opacity: 1;
+          display: block;
+        }
+      }
       .options-popup {
+        visibility: hidden;
+        opacity: 0;
+        display: none;
         position: absolute;
         left: 0;
         bottom: 100%;
         z-index: 100;
-        background-color: $dark-gray;
-        
+        border-radius: 1.2rem;
+        min-width: max-content;
+        box-shadow: 0px 3px 10px 1px rgba($color: $black, $alpha: 0.4);
+        background-color: $gray-950;
+        > ul {
+          > li {
+            padding: 1.2rem;
+            @include text($white-2, 400, 1.6rem);
+            > labeL {
+              @include flex(left, center, row, 0.4rem);
+            }
+          }
+        }
       }
     }
   }

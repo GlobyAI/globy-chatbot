@@ -45,10 +45,14 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
             let data: MessageResponse = event.data;
             try {
                 data = JSON.parse(event.data);
+                if (data.type === MessageType.ASSISTANT_DONE) {
+                    setIsPending(false)
+                }
                 if (data.type === MessageType.ASSISTANT_DElTA) {
-                    setMessages((prev) => {
-                        const lastMsg = prev.find(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY)
-                        if (!lastMsg) {
+
+                    const lastMsg = messages.find(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY)
+                    if (!lastMsg) {
+                        setMessages((prev) => {
                             const newMessage: ChatMessage = {
                                 message_id: data.message_id,
                                 content: data.delta,
@@ -56,16 +60,20 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
                             };
                             return [...prev, newMessage]
-                        }
-                        return prev.map(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY ? {
-                            ...msg,
-                            content: msg.content.concat(data.delta)
-                        } : msg)
-                    });
-                } else {
-                    setIsPending(false)
+
+                        });
+                    } else {
+                        setMessages(prev => {
+                            return prev.map(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY ? {
+                                ...msg,
+                                content: msg.content.concat(data.delta)
+                            } : msg)
+                        })
+                    }
+
 
                 }
+
             } catch (e) {
                 toast.error(e as string)
             }

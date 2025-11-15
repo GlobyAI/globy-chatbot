@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'r
 import PlusIcon from '/icons/plus.svg'
 import TrashIcon from '/icons/trash-red.svg'
 import ArrowUpIcon from '/icons/arrow-up.svg'
+import FileIcon from '/icons/file.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 import { useWebSocket } from '~/providers/WSProdivder'
-import type { MessageData } from '~/types/models'
+import { useClickOutside } from '~/hooks/useClickOutsite'
 type Props = {}
 
 export default function ChatBox({ }: Props) {
@@ -13,8 +14,20 @@ export default function ChatBox({ }: Props) {
     const [content, setContent] = useState('')
     const containerRef = useRef<HTMLDivElement | null>(null)
     const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
+    const [showDropdown, setShowDropDown] = useState(false)
     const [images, setImages] = useState<any[]>([])
+    const optionPopUpRef = useRef<HTMLDivElement>(null)
+    useClickOutside(optionPopUpRef, handleClosePopup)
     const { sendMessage } = useWebSocket()
+
+    function handleOpenPopUp() {
+        setShowDropDown(true)
+    }
+    function handleClosePopup() {
+        setShowDropDown(false)
+    }
+
+
     useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: images.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value)
@@ -43,6 +56,7 @@ export default function ChatBox({ }: Props) {
                 height: 138
             }
             setImages(prev => [...prev, newImg])
+            handleClosePopup()
         };
     }
     useEffect(() => {
@@ -110,29 +124,31 @@ export default function ChatBox({ }: Props) {
                 }} />
             </div>
             <div className="chat-box__actions">
-                <span className="icons icons--plus">
-                    <label className="" htmlFor='image'>
-                        <img src={PlusIcon} alt="PlusIcon" />
-                        <input type="file" name="" id="image" hidden onChange={handleSelectImage} />
-                    </label>
-                    {/* <div className="options-popup">
-                        <ul>
-                            <li>
-                            </li>
+                <div ref={optionPopUpRef} className={`icons icons--plus  ${showDropdown ? "open" : ""}`} onClick={handleOpenPopUp}>
+                    <img src={PlusIcon} alt="PlusIcon" />
+                <div className="options-popup" >
+                    <ul>
+                        <li>
+                            <label className="" htmlFor='file-image'>
+                                <img src={FileIcon} alt="FileIcon" />
+                                Attach images and files
+                                <input type="file" name="" id="file-image" hidden onChange={handleSelectImage} />
+                            </label>
+                        </li>
 
-                        </ul>
-                    </div> */}
-                </span>
-                <span className="icons icons--send">
-                    {
-                        hasValue ?
-                            <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
-                            :
-                            <img src={ArrowUpIcon} alt="ArrowUpIcon" />
-                    }
-                </span>
-
+                    </ul>
+                </div>
             </div>
+            <span className="icons icons--send">
+                {
+                    hasValue ?
+                        <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
+                        :
+                        <img src={ArrowUpIcon} alt="ArrowUpIcon" />
+                }
+            </span>
+
         </div>
+        </div >
     )
 }

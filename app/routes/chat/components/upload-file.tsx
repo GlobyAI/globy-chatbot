@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import React, {  useRef, useState, type ChangeEvent } from 'react'
 import { useClickOutside } from '~/hooks/useClickOutsite'
 import FileUploadIcon from '/icons/file-upload.svg'
 import PlusIcon from '/icons/plus.svg'

@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { MessageType } from "~/types/enums";
 import type {
-  MessageData,
   MessageRequest,
   MessageResponse,
 } from "~/types/models";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import  { useEffect, useRef } from 'react'
 import TypingIndicator from '~/components/ui/TypingIndicator/TypingIndicator'
 import { useWebSocket } from '~/providers/WSProdivder'
 import { SENDER } from '~/types/enums'

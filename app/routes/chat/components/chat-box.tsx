@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 
 import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'

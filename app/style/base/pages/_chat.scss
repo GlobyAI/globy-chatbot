@@ -49,11 +49,16 @@
   }
 
   .chat-window {
+    max-width: 100%;
     padding: 0 1.6rem;
     height: 100%;
     @include flex(flex-start, flex-start, column, 1.2rem);
     @include breakpoint(lg) {
       margin-left: 34.5rem;
+    }
+    @include breakpoint(xs) {
+      width: 100vw;
+      gap: 0.625rem;
     }
     .heading {
       width: 100%;

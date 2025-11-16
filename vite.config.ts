@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [ reactRouter(), tsconfigPaths()],
   build:{
     cssMinify:true
+  },
+  server: {
+    port: 5173,        
+    host: '0.0.0.0',   
+    allowedHosts: ['globydev.project-mayhem.se']
   }
 
 });

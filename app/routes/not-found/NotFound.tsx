@@ -1,9 +1,7 @@
+import { Navigate } from "react-router"
 
 type Props = {}
 
 export default function NotFound({}: Props) {
-  return (
-    <h1>Notfound</h1>
-
-  )
+  return <Navigate to={''} replace />
 }

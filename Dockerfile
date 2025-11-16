@@ -5,7 +5,7 @@ WORKDIR /app
 
 # 1. Copy package files và cài deps
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install
 
 # 2. Copy source code
 COPY . .

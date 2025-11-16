@@ -1,0 +1,83 @@
+@use "../../abstracts/" as *;
+
+.markdown-body {
+  color: $white-2;
+  font-size: $text-md;
+  line-height: 1.6;
+
+  // Paragraph
+  p {
+    margin: 0 0 0.75rem;
+  }
+
+  // Headings
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    margin: 1.2rem 0 0.6rem;
+  }
+
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.8rem; }
+
+  // Lists
+  ul, ol, li {
+    margin: 0.5rem 0 1rem 1.6rem;
+    padding-left: 1.2rem;
+    list-style: circle;
+  }
+
+  li {
+    margin-bottom: 0.3rem;
+  }
+
+  // Code inline
+  code {
+    font-family: $font-family;
+    font-size: 1rem;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    background: rgba(255,255,255,0.4);
+  }
+
+  // Code block
+  pre {
+    margin: 1rem 0;
+    padding: 1rem 1.2rem;
+    border-radius: 0.6rem;
+    background: #111218;
+    overflow-x: auto;
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
+  }
+
+  // Table
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95em;
+  }
+
+  th, td {
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.4rem 0.6rem;
+  }
+
+  th {
+    background: rgba(255,255,255,0.04);
+    font-weight: 500;
+  }
+
+  // Blockquote
+  blockquote {
+    margin: 1rem 0;
+    padding: 0.6rem 1rem;
+    border-left: 3px solid #cccccc;
+    background: rgba(255,255,255,0.03);
+    color: $white-2;
+  }
+}

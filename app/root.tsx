@@ -29,6 +29,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <AppContextProvider>
             <WebSocketProvider>
               {children}
+              <div id="modal-root" />
             </WebSocketProvider>
           </AppContextProvider>
         </AuthProvider>

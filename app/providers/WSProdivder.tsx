@@ -8,8 +8,8 @@ import { useWebSocketStore } from '~/stores/websocketStore';
 import { useAppContext } from './AppContextProvider';
 import { MessageType, SENDER } from '~/types/enums';
 import type { ChatMessage, MessageData, MessageResponse } from '~/types/models';
-import toast from 'react-hot-toast';
 import { generateMessageId } from '~/utils/helper';
+import IdentityType from '~/components/IdentityType/IdentityType';
 
 
 
@@ -24,19 +24,24 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { socket, connect, isConnected, send, lastMessage } = useWebSocketStore();
+    const { connect, isConnected, send, lastMessage } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
+    const [hasIdentity, setHasIdentity] = useState(false)
     // Connect once when the provider mounts
     useEffect(() => {
-        if (userId) {
+        if (userId && hasIdentity) {
             setIsPending(true)
             connect(userId);
 
         }
-    }, [connect, userId]);
+    }, [connect, userId,hasIdentity]);
 
+
+    const handleContinue =()=>{
+        setHasIdentity(true)
+    }
     // Attach message handler whenever socket changes
     useEffect(() => {
         if (!lastMessage) return;
@@ -100,6 +105,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     return (
         <WebSocketContext.Provider value={value}>
+            <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue}/>
             {children}
         </WebSocketContext.Provider>
     );

@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
     plugins: [reactRouter(), tsconfigPaths()],
     base: env.VITE_BASE_PATH || '/',
     build: {
+      ssr:false,
       cssMinify: true,
     },
     server: {

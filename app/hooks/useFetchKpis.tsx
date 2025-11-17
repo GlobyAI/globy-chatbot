@@ -19,12 +19,6 @@ export function useFetchKpis() {
       return;
     }
 
-    const lastMessage = messages[messages.length - 1];
-    
-    if (lastMessage.role !== SENDER.ASSISTANT) {
-      return;
-    }
-
     const loadKpis = async () => {
       if (!userId) {
         return;
@@ -32,7 +26,6 @@ export function useFetchKpis() {
 
       try {
         const kpis = await fetchKpis(userId);
-        // Adjust based on your actual API response structure
         setConfidence(kpis.data.kpis.confidence || 0);
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);

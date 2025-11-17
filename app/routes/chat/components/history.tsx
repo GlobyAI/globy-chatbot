@@ -8,22 +8,27 @@ export default function History() {
     const { messages, isPending } = useWebSocket()
 
     const targetRef = useRef<HTMLLIElement | null>(null); // Reference for auto-scroll
+    const chatRef = useRef<HTMLUListElement | null>(null); // Reference for auto-scroll
     const scrollToBottom = () => {
         if (targetRef.current) {
             targetRef.current?.scrollIntoView({ behavior: "smooth" });
         }
     }
 
+    useEffect(()=>{
+        console.log(chatRef.current?.offsetHeight)
+        chatRef.current?.addEventListener('scroll',()=>chatRef.current?.offsetHeight)
+    },[])
     useEffect(() => {
         scrollToBottom();
 
     }, [messages])
     return (
         <div className="chat" >
-            <ul className="chat__history" >
+            <ul className="chat__history" ref={chatRef}>
                 {
                     messages.length > 0 && messages.map(msg => {
-                        const isUser = msg.role === SENDER.USER
+                        const isUser = msg.role as SENDER === SENDER.USER
                         return (
                             <li key={msg.message_id + msg.role} className={`message ${isUser ? "message--user" : 'markdown-body'}`}>
                                 {
@@ -38,6 +43,7 @@ export default function History() {
                                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                                     }
                                 </div>
+                                <p>{msg.created_at.toString()}</p>
                             </li>
                         )
                     })

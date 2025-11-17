@@ -1,0 +1,102 @@
+@use "../../abstracts" as *;
+
+.quality-score {
+  width: 30rem;
+  padding: 2rem;
+  border-radius: 1.8rem;
+  background: linear-gradient(135deg, rgba(107, 34, 139, 1), $black-900);
+  color: $white;
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
+
+  @include breakpoint(xs) {
+    width: 100%;
+    max-width: 28rem;
+    padding: 1.4rem;
+    border-radius: 1.4rem;
+  }
+
+  &__top {
+    margin-bottom: 2.5rem;
+    @include flex(space-between, center, row);
+
+    @include breakpoint(sm) {
+      margin-bottom: 2rem;
+    }
+
+    @include breakpoint(xs) {
+      margin-bottom: 1.8rem;
+    }
+  }
+
+  &__title {
+    opacity: 0.8;
+    @include text($white, 400, $text-sm);
+
+    @include breakpoint(xs) {
+      font-size: 1.3rem;
+    }
+  }
+
+  &__icon {
+    background: none;
+    border: none;
+    color: $white;
+    opacity: 0.5;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    padding: 0;
+
+    @include breakpoint(xs) {
+      font-size: 1.6rem;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+
+  &__percentage {
+    margin-bottom: 2rem;
+    @include text($white, 600, 5.8rem);
+
+    @include breakpoint(md) {
+      font-size: 5.4rem;
+      margin-bottom: 1.8rem;
+    }
+
+    @include breakpoint(sm) {
+      font-size: 5rem;
+      margin-bottom: 1.6rem;
+    }
+
+    @include breakpoint(xs) {
+      font-size: 4.6rem;
+      margin-bottom: 1.4rem;
+    }
+  }
+
+  &__footer {
+    &-title {
+      margin-bottom: 0.2rem;
+      @include text($white, 500, $text-md);
+
+      @include breakpoint(xs) {
+        font-size: 1.4rem;
+      }
+    }
+
+    &-text {
+      opacity: 0.7;
+      @include text($white, 400, $text-sm);
+
+      @include breakpoint(xs) {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

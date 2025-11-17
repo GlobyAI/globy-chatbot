@@ -28,7 +28,10 @@
     }
     &__process {
       flex: 1;
-      background-color: red;
+    }
+
+    &__quality-score {
+      margin-top: 2rem;
     }
 
     &__settings {

@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import Modal from '~/components/ui/Modal/Modal'
 import { envConfig } from '~/utils/envConfig'
 import type { AxiosError } from 'axios'
+import { useAuth0 } from '@auth0/auth0-react'
 
 
 export default function Complete() {
@@ -32,9 +33,16 @@ export default function Complete() {
 
 function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleConfirm: () => void, willComplete: boolean }) {
     const { userId } = useAppContext()
+    const { loginWithRedirect } = useAuth0()
     const [isRedirecting, setIsRedirecting] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     async function handComplete() {
+        loginWithRedirect({
+            authorizationParams: {
+                prompt: 'none',
+                redirect_uri: envConfig.LANDING_PAGE + '/auth'
+            }
+        })
         if (userId) {
             setIsLoading(true)
             try {
@@ -43,7 +51,12 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
                 if (res.data.status.includes('completed')) {
                     setIsRedirecting(true)
                     setTimeout(() => {
-                        window.location.href = envConfig.LANDING_PAGE + '/account'
+                        loginWithRedirect({
+                            authorizationParams: {
+                                prompt: 'none',
+                                redirect_uri: envConfig.LANDING_PAGE + '/auth'
+                            }
+                        })
                     }, 2000)
                 } else {
                     toast.success("Status: ", res.data.status)

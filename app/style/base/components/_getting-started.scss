@@ -3,7 +3,7 @@
 .getting-started {
   height: 100%;
   width: 100%;
-  background-color: $black-1;
+  background-color: $black-500;
   @include flex($justify-content: center, $align-items: center);
   &__container {
     width: 100%;

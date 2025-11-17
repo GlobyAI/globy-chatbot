@@ -34,9 +34,9 @@ export default function History() {
                                         Globy.ai
                                     </div>
                                 }
-                                <p className="message__content " >
+                                <div className="message__content " >
                                     <ReactMarkdown>{msg.content}</ReactMarkdown>
-                                </p>
+                                </div>
                             </li>
                         )
                     })

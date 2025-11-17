@@ -6,7 +6,7 @@ export function getTokenFromSession() {
 
 const axiosInstance = axios.create({
   baseURL: envConfig.API_URL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },

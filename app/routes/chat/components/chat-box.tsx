@@ -7,6 +7,7 @@ import { useWebSocket } from '~/providers/WSProdivder'
 import UploadFile from './upload-file'
 import type { IUploadFile } from '~/types/models'
 import FilePreviews from './file-previews'
+
 type Props = {}
 
 export default function ChatBox({ }: Props) {

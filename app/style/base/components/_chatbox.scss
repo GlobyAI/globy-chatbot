@@ -6,7 +6,7 @@
   width: 100%;
   border-radius: 2rem;
   background-color: $dark-gray;
-  box-shadow: 0px 6px 20px 0px rgba($color: $black, $alpha: 0.4);
+  box-shadow: 0px 6px 20px 0px rgba($color: $black-700, $alpha: 0.4);
   max-height: 28.2rem;
   height: auto;
   min-height: 0;
@@ -95,6 +95,7 @@
         width: fit-content;
         height: 5.8rem;
         min-width: 5.8rem;
+        
         @include breakpoint(lg) {
           border-radius: 1.2rem;
           height: 13rem;
@@ -214,7 +215,7 @@
         z-index: 100;
         border-radius: 1.2rem;
         min-width: max-content;
-        box-shadow: 0px 3px 10px 1px rgba($color: $black, $alpha: 0.4);
+        box-shadow: 0px 3px 10px 1px rgba($color: $black-700, $alpha: 0.4);
         background-color: $gray-950;
         > ul {
           > li {
@@ -254,12 +255,12 @@
     -webkit-mask: radial-gradient(
       farthest-side,
       transparent calc(100% - 0.4rem),
-      $black calc(100% - 0.4rem + 1px)
+      $black-700 calc(100% - 0.4rem + 1px)
     );
     mask: radial-gradient(
       farthest-side,
       transparent calc(100% - 0.4rem),
-      $black calc(100% - 0.4rem + 1px)
+      $black-700 calc(100% - 0.4rem + 1px)
     );
   }
 }

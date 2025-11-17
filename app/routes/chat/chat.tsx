@@ -1,10 +1,16 @@
 import type { Route } from "../../+types/root";
-import Suggestions from "./components/suggestions";
+// import Suggestions from "./components/suggestions";
 import ChatBox from "./components/chat-box";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar";
+// import Continue from "./components/Continue";
+import { useWebSocket } from "~/providers/WSProdivder";
+import { SENDER } from "~/types/enums";
+import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import Complete from "./components/complete";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -14,9 +20,15 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 function Chat() {
+  const { messages } = useWebSocket()
+
+
+  const canContinue = useMemo(() => {
+    return messages.some(m => m.sender === SENDER.USER) && messages[messages.length - 1].sender === SENDER.GLOBY
+  }, [messages])
 
   return <main className="chat-bot">
-    <Sidebar />
+    <Sidebar /> 
     <div className="chat-window">
       <div className="heading">
         <strong>Globy.ai </strong>
@@ -24,9 +36,15 @@ function Chat() {
       </div>
       <History />
       <div className="prompt-box">
-        <Suggestions />
+        {/* <Suggestions /> */}
+        {/* <Continue/> */}
         <ChatBox />
+        {
+          canContinue &&
+          <Complete />
+        }
       </div>
+      <p></p>
     </div>
   </main>;
 }

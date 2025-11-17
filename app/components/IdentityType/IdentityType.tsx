@@ -41,7 +41,6 @@ export default function IdentityType({
       if (!userId) return
       try {
         const res = await getIdentity(userId)
-        console.log(res)
         if (res.status === 200) {
           setIsLoading(false)
           onContinue()

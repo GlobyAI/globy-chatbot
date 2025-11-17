@@ -39,19 +39,20 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     async function getConversation() {
         if (!userId) return
         try {
-            const res = await fetchHistory(userId, offset)
             setFetchedHistory(true)
+            const res = await fetchHistory(userId, offset)
             const pagination = res.data.pagination
             const totalCount = pagination.total_count;
             const oldMessages: ChatMessage[] = res.data.messages
+            console.log(oldMessages.reverse())
             if (oldMessages) {
-                setMessages(prev => [...oldMessages.map(m => ({ ...m, role: m.role as SENDER })), ...prev])
+                setMessages(prev => [...oldMessages.reverse(), ...prev])
             }
             const newOffset = Math.max(0, totalCount - MESSAGE_LIMIT);
             setOffset(newOffset)
 
         } catch (error) {
-            if (error instanceof AxiosError) {
+            if (error instanceof AxiosError && error.response?.status !== 404) {
                 toast.error(error.message)
             }
         }

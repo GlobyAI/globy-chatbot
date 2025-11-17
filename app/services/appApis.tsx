@@ -30,10 +30,12 @@ export function fetchHistory(userId: string, offset: number = 0) {
 }
 
 export interface KpisResponse {
-    user_id: string;
-    kpis: {
-        confidence: number;
-    };
+    data: {
+        user_id: string;
+        kpis: {
+            confidence: number;
+        };
+    }
 }
 
 export function fetchKpis(userId: string): Promise<KpisResponse> {

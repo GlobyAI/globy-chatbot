@@ -1,12 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { formatName } from '~/utils/helper'
 import { QualityScore } from './quality-score'
-import { useKpis } from '~/hooks/useFetchKpis';
+import { useFetchKpis } from '~/hooks/useFetchKpis';
 
 type Props = {}
 
 export default function Sidebar({ }: Props) {
-    const { confidence, loading, error } = useKpis();
+    const { confidence } = useFetchKpis();
     const percentage = Math.round(confidence * 100);
 
     const { user } = useAuth0()

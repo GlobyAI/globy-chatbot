@@ -1,39 +1,49 @@
 import { useState, useEffect } from 'react'
 import { fetchKpis } from '~/services/appApis'
-import { useAppContext } from '~/providers/AppContextProvider';
+import { useAppContext } from '~/providers/AppContextProvider'
+import { useWebSocket } from '~/providers/WSProdivder'
+import { SENDER } from '~/types/enums'
 
 
 
-export function useKpis() {
+
+export function useFetchKpis() {
   const { userId } = useAppContext()
-  const [confidence, setConfidence] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [confidence, setConfidence] = useState(0)
+  const { messages } = useWebSocket()
+  const { assistantResponseCount } = useWebSocket()
+
 
   useEffect(() => {
+    if (!userId || messages.length === 0) {
+      return;
+    }
+
+    const lastMessage = messages[messages.length - 1];
+    
+    if (lastMessage.role !== SENDER.ASSISTANT) {
+      return;
+    }
+
     const loadKpis = async () => {
       if (!userId) {
-        setLoading(false);
         return;
       }
 
       try {
-        setLoading(true);
-        setError(null);
         const kpis = await fetchKpis(userId);
         // Adjust based on your actual API response structure
-        setConfidence(kpis.kpis.confidence || 0);
+        setConfidence(kpis.data.kpis.confidence || 0);
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);
-        setError(err instanceof Error ? err : new Error('Failed to fetch KPIs'));
         setConfidence(0);
       } finally {
-        setLoading(false);
+        console.error('Failed to fetch KPIs:');
       }
     };
 
     loadKpis();
-  }, [ userId ]);
+  }, [ userId, assistantResponseCount ]);
 
-  return { confidence, loading, error };
+  return { confidence };
 }

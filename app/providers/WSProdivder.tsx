@@ -23,7 +23,9 @@ interface WebSocketContextValue {
     sendMessage: (data: MessageData) => void;
     clearMessages: () => void;
     getConversation: () => void;
-    isPending: boolean
+    isPending: boolean;
+    assistantResponseCount: number
+
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
@@ -35,6 +37,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
     const [hasIdentity, setHasIdentity] = useState(false)
+    const [assistantResponseCount, setAssistantResponseCount] = useState(0);
+    
     const [offset, setOffset] = useState(0)
     async function getConversation() {
         if (!userId) return
@@ -80,6 +84,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         if (!lastMessage) return;
         if (lastMessage.type === MessageType.ASSISTANT_DONE) {
             setIsPending(false)
+            setAssistantResponseCount(prev => prev + 1); // ✅ Generic trigger
+
         }
         if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
             const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT)
@@ -135,6 +141,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         sendMessage,
         clearMessages, isPending,
         getConversation,
+        assistantResponseCount
     };
 
     return (

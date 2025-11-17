@@ -13,7 +13,6 @@ import IdentityType from '~/components/IdentityType/IdentityType';
 import { fetchHistory } from '~/services/appApis';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { MESSAGE_LIMIT } from '~/utils/vars';
 
 
 
@@ -35,21 +34,25 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
     const [hasIdentity, setHasIdentity] = useState(false)
-    const [offset, setOffset] = useState(0)
+    const [nextOffset, setNextOffset] = useState<number>(0)
+    const [currentOffset, setCurrentOffset] = useState(-1)
     async function getConversation() {
         if (!userId) return
         try {
             setFetchedHistory(true)
-            const res = await fetchHistory(userId, offset)
+            if (nextOffset <= currentOffset) return
+            const res = await fetchHistory(userId, nextOffset)
             const pagination = res.data.pagination
-            const totalCount = pagination.total_count;
             const oldMessages: ChatMessage[] = res.data.messages
-            console.log(oldMessages.reverse())
             if (oldMessages) {
-                setMessages(prev => [...oldMessages.reverse(), ...prev])
+                const reversedMessages= oldMessages.reverse()
+                setMessages(prev => [...reversedMessages, ...prev])
             }
-            const newOffset = Math.max(0, totalCount - MESSAGE_LIMIT);
-            setOffset(newOffset)
+            setCurrentOffset(nextOffset)
+            const next = pagination.next_offset
+            if (next) {
+                setNextOffset(pagination.next_offset)
+            }
 
         } catch (error) {
             if (error instanceof AxiosError && error.response?.status !== 404) {

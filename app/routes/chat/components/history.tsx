@@ -43,7 +43,6 @@ export default function History() {
                                         <ReactMarkdown>{msg.content}</ReactMarkdown>
                                     }
                                 </div>
-                                <p>{msg.created_at.toString()}</p>
                             </li>
                         )
                     })

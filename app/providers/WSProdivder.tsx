@@ -39,13 +39,12 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     async function getConversation() {
         if (!userId) return
         try {
-            setFetchedHistory(true)
             if (nextOffset <= currentOffset) return
             const res = await fetchHistory(userId, nextOffset)
             const pagination = res.data.pagination
             const oldMessages: ChatMessage[] = res.data.messages
             if (oldMessages) {
-                const reversedMessages= oldMessages.reverse()
+                const reversedMessages = oldMessages.reverse()
                 setMessages(prev => [...reversedMessages, ...prev])
             }
             setCurrentOffset(nextOffset)
@@ -58,18 +57,21 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
             if (error instanceof AxiosError && error.response?.status !== 404) {
                 toast.error(error.message)
             }
+        } finally {
+            setFetchedHistory(true)
+
         }
 
     }
     useEffect(() => {
 
         if (userId) {
-            setIsPending(true)
             getConversation()
         }
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
+            setIsPending(true)
             connect(userId);
 
         }

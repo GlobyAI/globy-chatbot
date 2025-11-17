@@ -40,7 +40,6 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
             setIsLoading(true)
             try {
                 const res = await completeWorkFlow(userId)
-                setIsLoading(false)
                 if (res.data.status.includes('completed')) {
                     setIsRedirecting(true)
                     setTimeout(() => {
@@ -50,10 +49,11 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
                     toast.success("Status: ", res.data.status)
                 }
             } catch (error) {
-                setIsLoading(false)
                 const axiosError = error as AxiosError<{ detail: string }>
                 toast.error(axiosError.response?.data?.detail || 'An error occurred')
 
+            } finally {
+                setIsLoading(false)
             }
 
         }

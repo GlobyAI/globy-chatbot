@@ -45,7 +45,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     // Attach message handler whenever socket changes
     useEffect(() => {
         if (!lastMessage) return;
-        console.log(lastMessage)
         if (lastMessage.type === MessageType.ASSISTANT_DONE) {
             setIsPending(false)
         }

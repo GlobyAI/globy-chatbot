@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-import axios from "axios";
-import { createSale, getSales } from "~/services/saleApi";
+// import axios from "axios";
+// import { createSale, getSales } from "~/services/saleApi";
 import { verifyUser } from "~/services/authApis";
 import { updateAuth0AppMetadata } from "~/services/auth0Apis";
 import { envConfig } from "~/utils/envConfig";
@@ -89,49 +89,49 @@ export default function AppContextProvider({
             const verifyUserRes = await verifyUser(token, payload || {});
             const globyUserId = verifyUserRes?.data.user_id;
             const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
-            const ref_id = user["https://globy.ai/ref_id"] || "";
+            // const ref_id = user["https://globy.ai/ref_id"] || "";
 
-            if (ref_id) {
-              try {
-                const saleRes = await getSales(token, ref_id, globyUserId);
-                if (saleRes.data.message === "NO_SALES_FOR_USER") {
-                  await createSale(token, {
-                    user_id: globyUserId,
-                    ref_id,
-                  });
-                }
-              } catch (err) {
-                if (axios.isAxiosError(err)) {
-                  const message = err.response?.data.error
-                  switch (message) {
-                    case 'Message.BAD_REQUEST_UNKNOWN_REF':
-                    case 'Message.SALE_ALREADY_EXISTS':
-                      toast.error("Invalid Reference ID. Contact Globy support");
-                      await updateAuth0AppMetadata(user.sub || "", {
-                        app_metadata: {
-                          ref_id: "",
-                        },
-                      });
-                      setTimeout(() => {
-                        sessionStorage.removeItem("appSession");
-                        logout({
-                          logoutParams: {
-                            returnTo:
-                              envConfig.LANDING_PAGE + "/auth/logout",
-                          },
-                        });
-                      }, 2000);
-                      break;
-                    default:
-                      toast.error(err.response?.data.message || 'Something wrong. Contact Globy support"');
-                      break;
-                  }
-                }else{
-                  console.log('Sale error:',err)
-                }
-                return;
-              }
-            }
+            // if (ref_id) {
+            //   try {
+            //     const saleRes = await getSales(token, ref_id, globyUserId);
+            //     if (saleRes.data.message === "NO_SALES_FOR_USER") {
+            //       await createSale(token, {
+            //         user_id: globyUserId,
+            //         ref_id,
+            //       });
+            //     }
+            //   } catch (err) {
+            //     if (axios.isAxiosError(err)) {
+            //       const message = err.response?.data.error
+            //       switch (message) {
+            //         case 'Message.BAD_REQUEST_UNKNOWN_REF':
+            //         case 'Message.SALE_ALREADY_EXISTS':
+            //           toast.error("Invalid Reference ID. Contact Globy support");
+            //           await updateAuth0AppMetadata(user.sub || "", {
+            //             app_metadata: {
+            //               ref_id: "",
+            //             },
+            //           });
+            //           setTimeout(() => {
+            //             sessionStorage.removeItem("appSession");
+            //             logout({
+            //               logoutParams: {
+            //                 returnTo:
+            //                   envConfig.LANDING_PAGE + "/auth/logout",
+            //               },
+            //             });
+            //           }, 2000);
+            //           break;
+            //         default:
+            //           toast.error(err.response?.data.message || 'Something wrong. Contact Globy support"');
+            //           break;
+            //       }
+            //     }else{
+            //       console.log('Sale error:',err)
+            //     }
+            //     return;
+            //   }
+            // }
             // add globy id i auth0 metadata
             if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
               try {

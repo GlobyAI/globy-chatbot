@@ -20,7 +20,6 @@ export default function ChatBox({ }: Props) {
     const { sendMessage } = useWebSocket()
 
 
-
     useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: images.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         if (!isPending) {

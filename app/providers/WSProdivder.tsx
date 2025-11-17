@@ -22,7 +22,7 @@ interface WebSocketContextValue {
     sendMessage: (data: MessageData) => void;
     clearMessages: () => void;
     getConversation: () => void;
-    isPending: boolean
+    isPending: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
@@ -84,6 +84,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         if (!lastMessage) return;
         if (lastMessage.type === MessageType.ASSISTANT_DONE) {
             setIsPending(false)
+
         }
         if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
             const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT)

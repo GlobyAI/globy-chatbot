@@ -1,15 +1,12 @@
 import type { Route } from "../../+types/root";
-// import Suggestions from "./components/suggestions";
 import ChatBox from "./components/chat-box";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar";
-// import Continue from "./components/Continue";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useMemo, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { useMemo } from "react";
 import Complete from "./components/complete";
 
 export function meta({ }: Route.MetaArgs) {

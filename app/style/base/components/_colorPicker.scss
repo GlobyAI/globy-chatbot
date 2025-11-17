@@ -1,0 +1,51 @@
+@use "../../abstracts" as *;
+
+.globy-color-picker {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+.color-picker-wrapper {
+  position: absolute;
+  right: 50%;
+  top:0;
+  transform: translateX(50%);
+  z-index: 9999;
+  background-color: $black-900;
+  padding: 10px;
+  width: 200px;
+  box-shadow: 0px 4px 10px 0px #00000040;
+  border: 1px solid rgba($color: $white, $alpha: 0.1);
+  border-radius: 15px;
+  @include flex(flex-start, normal, column, 10px);
+  > .w-color-interactive {
+    width: 100% !important;
+    height: 150px !important;
+    border-radius: 10px !important;
+  }
+  .slides {
+    width: 100%;
+    padding: 0 10px;
+    @include flex(flex-start, normal, column, 8px);
+    .w-color-alpha {
+      border-radius: 20px;
+    }
+  }
+
+  .color-input {
+    width: 100%;
+    margin-top: 15px;
+    @include flex(flex-start, center, row, 4px);
+    > span {
+      margin-right: 4px;
+      @include text($white-2, 400, 12px);
+    }
+    input {
+      border: none;
+      outline: none;
+      box-shadow: none !important;
+      color: $white-2 !important;
+      opacity: 0.9;
+      font-size: 12px !important;
+    }
+  }
+}

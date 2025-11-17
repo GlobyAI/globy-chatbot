@@ -37,12 +37,7 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
     const [isRedirecting, setIsRedirecting] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     async function handComplete() {
-        loginWithRedirect({
-            authorizationParams: {
-                prompt: 'none',
-                redirect_uri: envConfig.LANDING_PAGE + '/auth'
-            }
-        })
+
         if (userId) {
             setIsLoading(true)
             try {
@@ -51,12 +46,7 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
                 if (res.data.status.includes('completed')) {
                     setIsRedirecting(true)
                     setTimeout(() => {
-                        loginWithRedirect({
-                            authorizationParams: {
-                                prompt: 'none',
-                                redirect_uri: envConfig.LANDING_PAGE + '/auth'
-                            }
-                        })
+                        window.location.href = `${envConfig.LANDING_PAGE}/auth/login?prompt=none&returnTo=${envConfig.LANDING_PAGE}/account`
                     }, 2000)
                 } else {
                     toast.success("Status: ", res.data.status)

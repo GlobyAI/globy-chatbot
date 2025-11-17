@@ -8,7 +8,7 @@ import Sidebar from "./components/sidebar";
 // import Continue from "./components/Continue";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Complete from "./components/complete";
 
@@ -22,14 +22,13 @@ export function meta({ }: Route.MetaArgs) {
 function Chat() {
   const { messages } = useWebSocket()
 
-
   const canContinue = useMemo(() => {
     return messages.some(m => m.sender === SENDER.USER) && messages[messages.length - 1].sender === SENDER.GLOBY
   }, [messages])
 
   return <main className="chat-bot">
-    <Sidebar /> 
-    <div className="chat-window">
+    <Sidebar />
+    <div className="chat-window" >
       <div className="heading">
         <strong>Globy.ai </strong>
         <small>Onboarding</small>

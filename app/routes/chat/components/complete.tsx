@@ -8,19 +8,28 @@ import Modal from '~/components/ui/Modal/Modal'
 import { envConfig } from '~/utils/envConfig'
 import type { AxiosError } from 'axios'
 
-type Props = {}
+type Props = {
+    isMobile?: boolean
+}
 
-export default function Complete({ }: Props) {
+export default function Complete({ isMobile = false }: Props) {
     const [willComplete, setWillComplete] = useState(false)
 
     function handleToggleConfirm() {
         setWillComplete(prev => !prev)
     }
     return (
-        <div className="move-on">
-            <button onClick={handleToggleConfirm} >Move on for now
-                <img src={ArrowRightIcon} alt="Arrow right" />
-            </button>
+        <div className={`move-on ${isMobile ? "mobile" : ''}`}>
+            {
+                !isMobile ?
+                    <button onClick={handleToggleConfirm} >Move on for now
+                        <img src={ArrowRightIcon} alt="Arrow right" />
+                    </button>
+                    :
+                    <figure>
+                        <img src={ArrowRightIcon} alt="Arrow right" />
+                    </figure>
+            }
             <ContinueConfirm handleToggleConfirm={handleToggleConfirm} willComplete={willComplete} />
         </div>
     )
@@ -37,11 +46,13 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
             try {
                 const res = await completeWorkFlow(userId)
                 setIsLoading(false)
-                if (res.status === 200) {
+                if (res.data.status.includes('completed')) {
                     setIsRedirecting(true)
                     setTimeout(() => {
                         window.location.href = envConfig.LANDING_PAGE + '/account'
                     }, 2000)
+                } else {
+                    toast.success("Status: ", res.data.status)
                 }
             } catch (error) {
                 setIsLoading(false)

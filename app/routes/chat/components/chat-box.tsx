@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react'
 
 import ArrowUpIcon from '/icons/arrow-up.svg'
 import ArrowUpWhiteIcon from '/icons/arrow-up-white.svg'
@@ -74,6 +74,20 @@ export default function ChatBox({ }: Props) {
         setContent('')
         setImages([])
     }
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && e.shiftKey) {
+            // Allow newline
+            return;
+        }
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevent newline
+            // Trigger submit logic here
+            handleSubmit()
+        }
+
+
+    }
     const hasValue = useMemo(() => images.length > 0 || content !== '', [content, images])
     return (
         <div className={`chat-box ${!content && images.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
@@ -83,7 +97,7 @@ export default function ChatBox({ }: Props) {
                 <FilePreviews images={images} setImages={setImages} />
                 <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} style={{
                     height: content ? "auto" : "24px",
-                }} />
+                }} onKeyDown={handleKeyDown} />
             </div>
             <div className="chat-box__actions">
                 <UploadFile setImages={setImages} images={images} />

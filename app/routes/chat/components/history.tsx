@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from 'react'
+import { useEffect, useRef, } from 'react'
 import TypingIndicator from '~/components/ui/TypingIndicator/TypingIndicator'
 import { useWebSocket } from '~/providers/WSProdivder'
 import { SENDER } from '~/types/enums'
@@ -15,18 +15,17 @@ export default function History() {
     }
 
     useEffect(() => {
-        if (messages.length > 0 && !isPending) {
-            scrollToBottom()
-        }
+        scrollToBottom();
+
     }, [messages])
     return (
-        <div className="chat">
-            <ul className="chat__history">
+        <div className="chat" >
+            <ul className="chat__history" >
                 {
                     messages.length > 0 && messages.map(msg => {
                         const isUser = msg.sender === SENDER.USER
                         return (
-                            <li key={msg.message_id+msg.sender} className={`message  markdown-body ${isUser ? "message--user" : ''}`}>
+                            <li key={msg.message_id + msg.sender} className={`message ${isUser ? "message--user" : 'markdown-body'}`}>
                                 {
                                     !isUser &&
                                     <div className="message__logo">
@@ -35,7 +34,9 @@ export default function History() {
                                     </div>
                                 }
                                 <div className="message__content " >
-                                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                    {
+                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                    }
                                 </div>
                             </li>
                         )

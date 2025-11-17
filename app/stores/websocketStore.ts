@@ -33,7 +33,7 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
       const initMsg = {
         type: MessageType.USER_MESSAGE,
         message_id: generateMessageId(),
-        text: "Hello",
+        text:"___ HELLO ___",
         research: true,
       };
       socket.send(JSON.stringify(initMsg));

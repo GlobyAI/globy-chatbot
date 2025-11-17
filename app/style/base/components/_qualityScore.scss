@@ -1,7 +1,8 @@
 @use "../../abstracts" as *;
 
 .quality-score {
-  width: 30rem;
+  width: 100%;
+  max-width: 32rem;
   padding: 2rem;
   border-radius: 1.8rem;
   background: linear-gradient(135deg, rgba(107, 34, 139, 1), $black-900);
@@ -9,8 +10,6 @@
   box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
 
   @include breakpoint(xs) {
-    width: 100%;
-    max-width: 28rem;
     padding: 1.4rem;
     border-radius: 1.4rem;
   }

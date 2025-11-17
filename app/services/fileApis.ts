@@ -4,17 +4,6 @@ import toast from "react-hot-toast";
 import { envConfig } from "~/utils/envConfig";
 import { changeFileExtension } from "~/utils/file";
 
-export function uploadFiles(formData: FormData) {
-  const token = getTokenFromSession();
-  return axiosInstance({
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-Type": "multipart/form-data",
-    },
-    data: formData,
-  });
-}
 
 export const createSignedUrl = async (
   userId: string,

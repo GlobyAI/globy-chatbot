@@ -7,6 +7,7 @@ import { useWebSocket } from '~/providers/WSProdivder'
 import UploadFile from './upload-file'
 import type { IUploadFile } from '~/types/models'
 import FilePreviews from './file-previews'
+import useScrollChatBox from '~/hooks/useScrollChatBox'
 
 type Props = {}
 
@@ -15,64 +16,31 @@ export default function ChatBox({ }: Props) {
     const [content, setContent] = useState('')
     const containerRef = useRef<HTMLDivElement | null>(null)
     const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
-    const [images, setImages] = useState<IUploadFile[]>([])
+    const [uploadedFiles, setUploadedFiles] = useState<IUploadFile[]>([])
+    const [pct, setPct] = useState(0)
     const { isPending } = useWebSocket()
     const { sendMessage } = useWebSocket()
-
-
-
-    useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: images.length > 0 })
+    useScrollChatBox({ textfieldContainerRef })
+    useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: uploadedFiles.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         if (!isPending) {
             setContent(e.target.value)
         }
     }
-    // helpers
-    const canScroll = (el: HTMLElement) =>
-        el.scrollHeight > el.clientHeight;
-
-    const atTop = (el: HTMLElement) =>
-        el.scrollTop <= 0;
-
-    const atBottom = (el: HTMLElement) =>
-        el.scrollTop + el.clientHeight >= el.scrollHeight - 1; // -1 for float rounding
-
-
-    useEffect(() => {
-        const ta = textfieldContainerRef.current;
-        if (!ta) return;
-
-        const onWheel = (e: WheelEvent) => {
-            if (canScroll(ta)) {
-                const goingDown = e.deltaY > 0;
-                const hitTop = atTop(ta) && !goingDown;
-                const hitBottom = atBottom(ta) && goingDown;
-
-                if (!(hitTop || hitBottom)) {
-                    return;
-                }
-            }
-
-            e.preventDefault();
-        };
-
-        ta.addEventListener("wheel", onWheel, { passive: false });
-        return () => ta.removeEventListener("wheel", onWheel);
-    }, []);
 
 
     const handleSubmit = () => {
-        if (!images && !content) return
-        const image_urls = images.filter(i => i.file.type.includes("image")).map(i => i.url)
+        if (!uploadedFiles && !content) return
+        const image_urls = uploadedFiles.filter(i => i.file.type.includes("image")).map(i => i.url)
         const msg = {
             research: false,
             text: content,
             ...(image_urls && { image_urls: image_urls }),
-            ...(images.length > 0 && { research: true })
+            ...(uploadedFiles.length > 0 && { research: true })
         }
         sendMessage(msg)
         setContent('')
-        setImages([])
+        setUploadedFiles([])
     }
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -81,26 +49,25 @@ export default function ChatBox({ }: Props) {
             return;
         }
         if (e.key === "Enter") {
-            e.preventDefault(); // Prevent newline
-            // Trigger submit logic here
+            e.preventDefault();
             handleSubmit()
         }
 
 
     }
-    const hasValue = useMemo(() => images.length > 0 || content !== '', [content, images])
+    const hasValue = useMemo(() => uploadedFiles.length > 0 || content !== '', [content, uploadedFiles])
     return (
-        <div className={`chat-box ${!content && images.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
+        <div className={`chat-box ${!content && uploadedFiles.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
             <div className="textfield" ref={textfieldContainerRef} style={{
                 marginTop: hasValue ? "12px" : '0',
             }}>
-                <FilePreviews images={images} setImages={setImages} />
+                <FilePreviews uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} pct={pct} />
                 <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} style={{
                     height: content ? "auto" : "24px",
                 }} onKeyDown={handleKeyDown} />
             </div>
             <div className="chat-box__actions">
-                <UploadFile setImages={setImages} images={images} />
+                <UploadFile setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} setPct={setPct} />
                 <span className="icons icons--send">
                     {
                         hasValue ?

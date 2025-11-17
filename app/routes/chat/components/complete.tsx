@@ -6,7 +6,7 @@ import { completeWorkFlow } from '~/services/appApis'
 import toast from 'react-hot-toast'
 import Modal from '~/components/ui/Modal/Modal'
 import { envConfig } from '~/utils/envConfig'
-import type { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 
 export default function Complete() {
@@ -49,8 +49,13 @@ function ContinueConfirm({ handleToggleConfirm, willComplete }: { handleToggleCo
                     toast.success("Status: ", res.data.status)
                 }
             } catch (error) {
-                const axiosError = error as AxiosError<{ detail: string }>
-                toast.error(axiosError.response?.data?.detail || 'An error occurred')
+                console.log('completeWorkFlow error: ', error)
+                if (error instanceof AxiosError) {
+                    toast.error(error.response?.data?.detail || 'An error occurred')
+                } else {
+
+                    toast.error('An error occurred. Try again later')
+                }
 
             } finally {
                 setIsLoading(false)

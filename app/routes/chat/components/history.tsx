@@ -35,7 +35,7 @@ export default function History() {
                                     !isUser &&
                                     <div className="message__logo">
                                         <img src="/images/globy_symbol.png" alt="Globy avatar" />
-                                        Globy.ai
+                                        Globy
                                     </div>
                                 }
                                 <div className="message__content " >

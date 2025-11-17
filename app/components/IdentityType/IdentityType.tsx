@@ -5,7 +5,7 @@ import Modal from '../ui/Modal/Modal';
 import { getIdentity, setIdentity } from '~/services/identityApis';
 import { IdentityTypeEnum } from '~/types/enums';
 import SpinnerLoading from '../ui/SpinnerLoading/SpinnerLoading';
-import type { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 
 export default function IdentityType({
@@ -29,8 +29,13 @@ export default function IdentityType({
         onContinue()
       }
     } catch (error) {
-      toast.error((error as AxiosError).message|| "Unable to set identity type");
-      console.log('error')
+      console.log('setIdentityType', error)
+      if (error instanceof AxiosError) {
+
+        toast.error(error.message);
+      } else {
+        toast.error("Unable to set identity. Try again later");
+      }
     }
   }
 

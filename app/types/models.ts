@@ -28,7 +28,5 @@ export interface IUploadFile {
   id:string
   url: string;
   file: File
-  pct:number;
-  bucket:string,
-  key:string
 }
+

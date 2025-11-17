@@ -1,23 +1,22 @@
-import React, {  useRef, useState, type ChangeEvent } from 'react'
+import React, { useRef, useState, type ChangeEvent, type Dispatch, type SetStateAction } from 'react'
 import { useClickOutside } from '~/hooks/useClickOutsite'
 import FileUploadIcon from '/icons/file-upload.svg'
 import PlusIcon from '/icons/plus.svg'
 import { useWebSocket } from '~/providers/WSProdivder'
 import type { IUploadFile } from '~/types/models'
-import { createSignedUrl } from '~/services/fileApis'
 import { useAppContext } from '~/providers/AppContextProvider'
 import toast from 'react-hot-toast'
-import type { AxiosResponse } from 'axios'
-import axios from 'axios'
+import { AxiosError } from 'axios'
+import axiosInstance from '~/services/axiosInstance'
 
 type Props = {
-    setImages: React.Dispatch<React.SetStateAction<IUploadFile[]>>
-    images: IUploadFile[]
+    setUploadedFiles: React.Dispatch<React.SetStateAction<IUploadFile[]>>
+    uploadedFiles: IUploadFile[],
+    setPct: Dispatch<SetStateAction<number>>
 }
 
-export default function UploadFile({ setImages, images }: Props) {
+export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: Props) {
     const optionPopUpRef = useRef<HTMLDivElement>(null)
-    const { isPending } = useWebSocket()
     const { userId } = useAppContext()
 
     const [showDropdown, setShowDropDown] = useState(false)
@@ -36,60 +35,73 @@ export default function UploadFile({ setImages, images }: Props) {
         const fileList = e.target.files
         if (fileList) {
             const files = Array.from(fileList)
-            const previewFiles = files.map((f) => ({
-                id: crypto.randomUUID(),
-                url: "",
-                pct: 0,
-                file: f,
-                bucket: 'globylibrary-' + userId,
-                key: ""
-            }))
-            setImages(prev => [...prev, ...previewFiles])
-            setTimeout(async () => {
-                await Promise.all(previewFiles.map((item) => uploadFIles(item.file, item.id)))
-
-            }, 50)
+            const filesToUpload = files.map((f) => {
+                const previewUrl = URL.createObjectURL(f)
+                return ({
+                    id: crypto.randomUUID(),
+                    url: previewUrl,
+                    file: f,
+                })
+            })
+            setPct(0)
+            setUploadedFiles(filesToUpload)
+            uploadFIles(filesToUpload)
             handleClosePopup()
-
         }
 
     }
-    const putToS3WithProcess = async (
-        url: string,
-        file: File,
-        fileId: string
-    ): Promise<AxiosResponse> => {
-        return await axios({
-            url,
-            method: "PUT",
-            headers: {
-                "Content-Type": file.type,
-            },
-            data: file,
-            onUploadProgress: (event) => {
-                if (event.total) {
-                    const pct = Math.round((event.loaded * 100) / event.total);
-                    setImages(prev => prev.map(((f) => f.id === fileId ? { ...f, pct: pct } : f)))
+    // const putToS3WithProcess = async (
+    //     url: string,
+    //     file: File,
+    //     fileId: string
+    // ): Promise<AxiosResponse> => {
+    //     return await axios({
+    //         url,
+    //         method: "PUT",
+    //         headers: {
+    //             "Content-Type": file.type,
+    //         },
+    //         data: file,
+    //         onUploadProgress: (event) => {
+    //             if (event.total) {
+    //                 const pct = Math.round((event.loaded * 100) / event.total);
+    //                 setUploadedFiles(prev => prev.map(((f) => f.id === fileId ? { ...f, pct: pct } : f)))
 
-                }
-            },
-        });
-    };
-    async function uploadFIles(file: File, fileId: string) {
+    //             }
+    //         },
+    //     });
+    // };
+
+    async function uploadFIles(filesToUpload: IUploadFile[]) {
         if (!userId) return
-        const res: {
-            url: string,
-            key: string
-        } = await createSignedUrl(userId, file)
-        const signedUrl = res.url
-        if (res.url) {
-            const putFileRes = await putToS3WithProcess(signedUrl, file, fileId)
-            if (putFileRes.status !== 200) {
-                toast.error(`Failed to upload the image ${file.name}. Please try again`)
-                setImages(prev => prev.filter(((f) => f.id !== fileId)))
+        try {
+            const formData = new FormData()
+            formData.append('user_id', userId)
+            filesToUpload.forEach(f => {
+                formData.append('files', f.file)
+            })
+            await axiosInstance({
+                timeout: undefined,
+                url: '/chatbot/v1/upload',
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                data: formData,
+                onUploadProgress: (event) => {
+                    if (event.total) {
+                        const pct = Math.round((event.loaded * 100) / event.total);
+                        setPct(pct)
+                    }
+                },
+            });
+
+        } catch (error) {
+            console.log(error)
+            if (error instanceof AxiosError) {
+                toast.error(error.message)
             } else {
-                const previewUrl = URL.createObjectURL(file)
-                setImages(prev => prev.map(((f) => f.id === fileId ? { ...f, key: res.key, url: previewUrl } : f)))
+                toast.error("Unable to upload file. Try again later")
             }
         }
 

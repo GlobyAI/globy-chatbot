@@ -69,15 +69,57 @@
       background-color: $black-500;
       z-index: 1;
       @include position(sticky, 0, null, null, null);
-      @include flex(center, center, column);
+      @include flex(space-between, center);
       @include breakpoint(lg) {
         height: 9.6rem;
       }
-      > strong {
-        @include text($white-2, 500, $text-lg);
+      &__brand {
+        flex: 1;
+        height: 100%;
+        @include flex(center, center, column);
+        > strong {
+          @include text($white-2, 500, $text-lg);
+        }
+        > small {
+          @include text($gray-300, 400, $text-sm);
+        }
       }
-      > small {
-        @include text($gray-300, 400, $text-sm);
+      .move-on {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        button {
+          margin: auto;
+          background-color: transparent;
+          height: 4rem;
+          width: 4rem;
+          border-radius: 50%;
+          background-color: $black-700;
+          border:1px solid $purple;
+          &:hover {
+            background-color: $purple;
+          }
+          @include breakpoint(lg){
+            border-radius: 2rem;
+            width: auto;
+            padding: 1.2rem 1.6rem;
+          }
+          @include text($white, 400, $text-md);
+          @include flex(center, center, row, 0.4rem);
+          p {
+            display: none;
+            @include breakpoint(lg) {
+              display: block;
+            }
+          }
+          img {
+            @include box(2.4rem, 2.4rem);
+            @include breakpoint(lg) {
+              @include box(1.6rem, 1.6rem);
+            }
+          }
+        }
       }
     }
     .chat {
@@ -138,29 +180,13 @@
       background-color: $black-500;
       @include flex(flex-end, center, column, 1.2rem);
 
-      .move-on {
-        width: 100%;
-        display: none;
-        @include breakpoint(lg) {
-          display: block;
-        }
-        button {
-          margin: auto;
-          background-color: transparent;
-          &:hover {
-            color: $white-2;
-          }
-          @include text($gray-300, 400, $text-md);
-          @include flex(center, center, row, 0.4rem);
-        }
-      }
-      .continue {
-        width: 100%;
-        display: none;
-        @include breakpoint(lg) {
-          @include flex(center, center, row, 2.4rem);
-        }
-      }
+      // .continue {
+      //   width: 100%;
+      //   display: none;
+      //   @include breakpoint(lg) {
+      //     @include flex(center, center, row, 2.4rem);
+      //   }
+      // }
     }
   }
 }

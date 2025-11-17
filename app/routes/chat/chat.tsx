@@ -20,25 +20,29 @@ function Chat() {
   const { messages } = useWebSocket()
 
   const canContinue = useMemo(() => {
-    return messages.some(m => m.sender === SENDER.USER) && messages[messages.length - 1].sender === SENDER.GLOBY
+    return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
 
   return <main className="chat-bot">
     <Sidebar />
     <div className="chat-window" >
       <div className="heading">
-        <strong>Globy.ai </strong>
-        <small>Onboarding</small>
+        <div className="heading__brand">
+          <strong>Globy.ai </strong>
+          <small>Onboarding</small>
+
+        </div>
+        {
+          canContinue &&
+          <Complete />
+        }
       </div>
       <History />
       <div className="prompt-box">
         {/* <Suggestions /> */}
         {/* <Continue/> */}
         <ChatBox />
-        {
-          canContinue &&
-          <Complete />
-        }
+
       </div>
       <p></p>
     </div>

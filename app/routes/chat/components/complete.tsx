@@ -8,27 +8,21 @@ import Modal from '~/components/ui/Modal/Modal'
 import { envConfig } from '~/utils/envConfig'
 import type { AxiosError } from 'axios'
 
-type Props = {
-    isMobile?: boolean
-}
 
-export default function Complete({ isMobile = false }: Props) {
+export default function Complete() {
     const [willComplete, setWillComplete] = useState(false)
 
     function handleToggleConfirm() {
         setWillComplete(prev => !prev)
     }
     return (
-        <div className={`move-on ${isMobile ? "mobile" : ''}`}>
+        <div className={`move-on `}>
             {
-                !isMobile ?
-                    <button onClick={handleToggleConfirm} >Move on for now
-                        <img src={ArrowRightIcon} alt="Arrow right" />
-                    </button>
-                    :
-                    <figure>
-                        <img src={ArrowRightIcon} alt="Arrow right" />
-                    </figure>
+                <button onClick={handleToggleConfirm} >
+                    <p>Continue</p>
+                    <img src={ArrowRightIcon} alt="Arrow right" />
+                </button>
+
             }
             <ContinueConfirm handleToggleConfirm={handleToggleConfirm} willComplete={willComplete} />
         </div>

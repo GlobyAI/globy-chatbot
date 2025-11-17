@@ -1,6 +1,6 @@
 export enum SENDER {
-  GLOBY = "GLOBY",
-  USER = "USER",
+  ASSISTANT = "assistant",
+  USER = "user",
 }
 
 export enum MessageType {

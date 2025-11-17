@@ -10,8 +10,9 @@ export interface MessageResponse extends MessageBase {
 
 export interface ChatMessage {
   message_id: string;
-  sender: SENDER;
+  role: SENDER;
   content: string;
+  created_at:Date
 }
 
 export interface MessageData {

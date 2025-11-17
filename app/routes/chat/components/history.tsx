@@ -23,9 +23,9 @@ export default function History() {
             <ul className="chat__history" >
                 {
                     messages.length > 0 && messages.map(msg => {
-                        const isUser = msg.sender === SENDER.USER
+                        const isUser = msg.role === SENDER.USER
                         return (
-                            <li key={msg.message_id + msg.sender} className={`message ${isUser ? "message--user" : 'markdown-body'}`}>
+                            <li key={msg.message_id + msg.role} className={`message ${isUser ? "message--user" : 'markdown-body'}`}>
                                 {
                                     !isUser &&
                                     <div className="message__logo">

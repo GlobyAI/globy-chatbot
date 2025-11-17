@@ -6,8 +6,9 @@ import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Complete from "./components/complete";
+import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -18,12 +19,13 @@ export function meta({ }: Route.MetaArgs) {
 
 function Chat() {
   const { messages } = useWebSocket()
-
+  const { containerRef } = useLoadMoreHistory()
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
 
-  return <main className="chat-bot">
+
+  return <main className="chat-bot" ref={containerRef}>
     <Sidebar />
     <div className="chat-window" >
       <div className="heading">

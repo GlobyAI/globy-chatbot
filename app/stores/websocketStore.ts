@@ -34,7 +34,7 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
         type: MessageType.USER_MESSAGE,
         message_id: generateMessageId(),
         text:"___ HELLO ___",
-        research: true,
+        research: false,
       };
       socket.send(JSON.stringify(initMsg));
       console.log("[WS] connected");

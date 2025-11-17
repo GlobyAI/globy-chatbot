@@ -13,6 +13,7 @@ import IdentityType from '~/components/IdentityType/IdentityType';
 import { fetchHistory } from '~/services/appApis';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
+import useAppStore from '~/stores/appStore';
 
 
 
@@ -22,7 +23,7 @@ interface WebSocketContextValue {
     sendMessage: (data: MessageData) => void;
     clearMessages: () => void;
     getConversation: () => void;
-    isPending: boolean
+    isPending: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
@@ -34,24 +35,21 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
     const [hasIdentity, setHasIdentity] = useState(false)
-    const [nextOffset, setNextOffset] = useState<number>(0)
-    const [currentOffset, setCurrentOffset] = useState(-1)
+    const setOffset = useAppStore(s => s.setOffset)
     async function getConversation() {
         if (!userId) return
+        const offset = useAppStore.getState().offset
+        if (offset < 0) return
         try {
-            if (nextOffset <= currentOffset) return
-            const res = await fetchHistory(userId, nextOffset)
+            const res = await fetchHistory(userId, offset)
             const pagination = res.data.pagination
             const oldMessages: ChatMessage[] = res.data.messages
             if (oldMessages) {
                 const reversedMessages = oldMessages.reverse()
                 setMessages(prev => [...reversedMessages, ...prev])
             }
-            setCurrentOffset(nextOffset)
             const next = pagination.next_offset
-            if (next) {
-                setNextOffset(pagination.next_offset)
-            }
+            setOffset(next ?? -1)
 
         } catch (error) {
             if (error instanceof AxiosError && error.response?.status !== 404) {
@@ -86,6 +84,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         if (!lastMessage) return;
         if (lastMessage.type === MessageType.ASSISTANT_DONE) {
             setIsPending(false)
+
         }
         if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
             const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT)

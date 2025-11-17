@@ -80,8 +80,8 @@ export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: 
             filesToUpload.forEach(f => {
                 formData.append('files', f.file)
             })
-            await axiosInstance({
-                timeout: undefined,
+            const res = await axiosInstance({
+                timeout: 5 * 60 * 1000,// 5 minutes,
                 url: '/chatbot/v1/upload',
                 method: "POST",
                 headers: {
@@ -89,12 +89,16 @@ export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: 
                 },
                 data: formData,
                 onUploadProgress: (event) => {
+                    console.log(event)
                     if (event.total) {
-                        const pct = Math.round((event.loaded * 100) / event.total);
+                        const pct = Math.min(99, Math.round((event.loaded * 100) / event.total));
                         setPct(pct)
                     }
                 },
             });
+            if (res.status === 200) {
+                setPct(100)
+            }
 
         } catch (error) {
             console.log(error)

@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react'
 import { fetchKpis } from '~/services/appApis'
 import { useAppContext } from '~/providers/AppContextProvider'
-import { useWebSocket } from '~/providers/WSProdivder'
-import { SENDER } from '~/types/enums'
-
-
+import { useWebSocketStore } from '~/stores/websocketStore'
+import { MessageType } from '~/types/enums'
 
 
 export function useFetchKpis() {
   const { userId } = useAppContext()
   const [confidence, setConfidence] = useState(0)
-  const { messages } = useWebSocket()
-  const { assistantResponseCount } = useWebSocket()
+  const lastMessage = useWebSocketStore(state => state.lastMessage);
+
 
 
   useEffect(() => {
-    if (!userId || messages.length === 0) {
+    if (!userId) {
       return;
     }
+
+    if (lastMessage?.type !== MessageType.ASSISTANT_DONE) return;
+
 
     const loadKpis = async () => {
       if (!userId) {
@@ -36,7 +37,7 @@ export function useFetchKpis() {
     };
 
     loadKpis();
-  }, [ userId, assistantResponseCount ]);
+  }, [ userId, lastMessage ]);
 
   return { confidence };
 }

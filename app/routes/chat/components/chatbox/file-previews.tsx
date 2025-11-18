@@ -3,16 +3,12 @@ import type { IUploadFile } from '~/types/models'
 import TrashIcon from '/icons/trash-red.svg'
 import FileIcon from '/icons/file-upload.svg'
 type Props = {
-    setUploadedFiles: React.Dispatch<React.SetStateAction<IUploadFile[]>>
+    handleDeleteUploadedImage: (file: IUploadFile) => void
     uploadedFiles: IUploadFile[],
     pct: number
 }
 
-export default function FilePreviews({ uploadedFiles, setUploadedFiles, pct }: Props) {
-
-    const handleDeleteUploadedImage = async (f: IUploadFile) => {
-        setUploadedFiles(prev => prev.filter(i => i.id !== f.id))
-    }
+export default function FilePreviews({ uploadedFiles, handleDeleteUploadedImage, pct }: Props) {
     return (
         <>
             {

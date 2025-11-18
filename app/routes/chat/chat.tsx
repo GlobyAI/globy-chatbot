@@ -1,9 +1,9 @@
 import type { Route } from "../../+types/root";
-import ChatBox from "./components/chat-box";
+import ChatBox from "./components/chatbox/chat-box";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/sidebar/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
 import { useEffect, useMemo, useRef, useState } from "react";

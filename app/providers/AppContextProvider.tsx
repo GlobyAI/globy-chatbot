@@ -7,25 +7,14 @@ import toast from "react-hot-toast";
 import { verifyUser } from "~/services/authApis";
 import { updateAuth0AppMetadata } from "~/services/auth0Apis";
 import { envConfig } from "~/utils/envConfig";
+import useAppStore from "~/stores/appStore";
 
 interface AppContextType {
   userId: string | null;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  showVerifyEmailReminder: {
-    status: boolean;
-    authId: string;
-  };
 }
 
 export const AppContext = createContext<AppContextType>({
   userId: null,
-  isLoading: false,
-  setIsLoading: () => { },
-  showVerifyEmailReminder: {
-    status: false,
-    authId: "",
-  },
 });
 
 export default function AppContextProvider({
@@ -34,11 +23,7 @@ export default function AppContextProvider({
   children: React.ReactNode;
 }) {
   const [userId, setUserId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showVerifyEmailReminder, setShowVerifyEmailReminder] = useState({
-    status: false,
-    authId: "",
-  });
+  const setIsLoading = useAppStore(s => s.setLoading)
   const {
     user,
     isAuthenticated,
@@ -139,7 +124,7 @@ export default function AppContextProvider({
                   app_metadata: { globy_id: globyUserId },
                 });
               } catch (error) {
-                console.log("Update Auth0 app metadata error:" , error);
+                console.log("Update Auth0 app metadata error:", error);
               }
             }
 
@@ -179,10 +164,7 @@ export default function AppContextProvider({
   return (
     <AppContext.Provider
       value={{
-        showVerifyEmailReminder,
         userId,
-        isLoading,
-        setIsLoading,
       }}
     >
       {children}

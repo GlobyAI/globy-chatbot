@@ -12,21 +12,27 @@ export interface ChatMessage {
   message_id: string;
   role: SENDER;
   content: string;
-  created_at:Date
+  created_at: Date;
 }
 
 export interface MessageData {
   text: string;
   image_urls?: string[];
-  research: boolean;
+  research?: boolean;
   expect_json?: boolean;
 }
 
 export interface MessageRequest extends MessageBase {}
 
 export interface IUploadFile {
-  id:string
+  id: string;
   url: string;
-  file: File
+  file: File;
 }
 
+export interface CreateSignedUrlPayload {
+  bucket: string;
+  key: string;
+  content_type: string;
+  expires: number;
+}

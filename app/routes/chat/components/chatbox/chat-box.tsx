@@ -23,7 +23,7 @@ export default function ChatBox({ }: Props) {
     useScrollChatBox({ textfieldContainerRef })
     useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: uploadedFiles.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        if (!isPending) {
+        if (isPending) {
             setContent(e.target.value)
         }
     }
@@ -33,7 +33,6 @@ export default function ChatBox({ }: Props) {
         if (!uploadedFiles && !content) return
         const image_urls = uploadedFiles.filter(i => i.file.type.includes("image")).map(i => i.url)
         const msg = {
-            research: false,
             text: content,
             ...(image_urls && { image_urls: image_urls }),
             ...(uploadedFiles.length > 0 && { research: true })
@@ -55,13 +54,16 @@ export default function ChatBox({ }: Props) {
 
 
     }
+    const handleDeleteUploadedImage = async (f: IUploadFile) => {
+        setUploadedFiles(prev => prev.filter(i => i.id !== f.id))
+    }
     const hasValue = useMemo(() => uploadedFiles.length > 0 || content !== '', [content, uploadedFiles])
     return (
         <div className={`chat-box ${!content && uploadedFiles.length > 0 ? 'has-image' : ''}`} ref={containerRef}  >
             <div className="textfield" ref={textfieldContainerRef} style={{
                 marginTop: hasValue ? "12px" : '0',
             }}>
-                <FilePreviews uploadedFiles={uploadedFiles} setUploadedFiles={setUploadedFiles} pct={pct} />
+                <FilePreviews uploadedFiles={uploadedFiles} handleDeleteUploadedImage={handleDeleteUploadedImage} pct={pct} />
                 <textarea placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} style={{
                     height: content ? "auto" : "24px",
                 }} onKeyDown={handleKeyDown} />

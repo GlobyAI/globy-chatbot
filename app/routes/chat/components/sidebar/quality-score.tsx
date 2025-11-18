@@ -1,11 +1,11 @@
- interface QualityScoreProps {
-    title: string;
-    percentage: number;
-    brandStartingPoint: string;
-    brandDetails: string
- }
- 
- export const QualityScore = ({ title, percentage, brandStartingPoint, brandDetails }: QualityScoreProps ) => {
+interface QualityScoreProps {
+  title: string;
+  percentage: number;
+  brandStartingPoint: string;
+  brandDetails: string
+}
+
+export const QualityScore = ({ title, percentage, brandStartingPoint, brandDetails }: QualityScoreProps) => {
   return (
     <div className="quality-score">
       <div className="quality-score__top">
@@ -14,7 +14,10 @@
       </div>
 
       <div className="quality-score__percentage">
-        {percentage}%
+        {
+          percentage >= 0 &&
+          `${percentage}%`
+        }
       </div>
 
       <div className="quality-score__footer">

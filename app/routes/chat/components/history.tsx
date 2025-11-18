@@ -10,17 +10,12 @@ export default function History() {
     const targetRef = useRef<HTMLLIElement | null>(null); // Reference for auto-scroll
     const chatRef = useRef<HTMLUListElement | null>(null); // Reference for auto-scroll
     const scrollToBottom = () => {
-        if (isPending) return
-
         if (targetRef.current) {
             targetRef.current?.scrollIntoView({ behavior: "smooth" });
         }
     }
-
-
     useEffect(() => {
         scrollToBottom();
-
     }, [messages])
     return (
         <div className="chat" >

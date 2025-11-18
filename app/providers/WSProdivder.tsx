@@ -19,7 +19,6 @@ import useAppStore from '~/stores/appStore';
 
 interface WebSocketContextValue {
     messages: ChatMessage[];
-    isConnected: boolean;
     sendMessage: (data: MessageData) => void;
     clearMessages: () => void;
     getConversation: () => void;
@@ -29,7 +28,7 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { connect, isConnected, send, lastMessage } = useWebSocketStore();
+    const { connect, send, lastMessage } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [fetchedHistory, setFetchedHistory] = useState(false)
     const { userId } = useAppContext()
@@ -69,11 +68,21 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
-            setIsPending(true)
-            connect(userId);
+            if (!messages.length) {
+                const initMsg = {
+                    type: MessageType.USER_MESSAGE,
+                    message_id: generateMessageId(),
+                    text: "___ HELLO ___",
+                    research: false,
+                };
+                connect(userId, initMsg);
+            } else {
+                setIsPending(true)
+                connect(userId);
+            }
 
         }
-    }, [connect, userId, fetchedHistory, hasIdentity]);
+    }, [connect, userId, messages, fetchedHistory, hasIdentity]);
 
 
     const handleContinue = () => {
@@ -136,7 +145,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }
     const value: WebSocketContextValue = {
         messages,
-        isConnected,
         sendMessage,
         clearMessages, isPending,
         getConversation,

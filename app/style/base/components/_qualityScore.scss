@@ -3,32 +3,26 @@
 .quality-score {
   width: 100%;
   max-width: 32rem;
-  padding: 2rem;
-  border-radius: 1.8rem;
-  background: linear-gradient(135deg, rgba(107, 34, 139, 1), $black-900);
+  padding: 1.6rem 1.2rem;
+  border-radius: 1.4rem;
+  background: linear-gradient(135deg, $dark-purple, $black-900);
   color: $white;
   box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
-
-  @include breakpoint(xs) {
-    padding: 1.4rem;
-    border-radius: 1.4rem;
+  height: 20.6rem;
+  @include flex(space-between, flex-start, column);
+  @include breakpoint(lg) {
+    border-radius: 2rem;
   }
 
   &__top {
-    margin-bottom: 2.5rem;
+    width: 100%;
     @include flex(space-between, center, row);
-
-    @include breakpoint(sm) {
-      margin-bottom: 2rem;
-    }
-
-    @include breakpoint(xs) {
-      margin-bottom: 1.8rem;
-    }
   }
 
   &__title {
     opacity: 0.8;
+    width: 100%;
+    @include flex(left, center, row, 0.6rem);
     @include text($white, 400, $text-sm);
 
     @include breakpoint(xs) {
@@ -60,22 +54,14 @@
   }
 
   &__percentage {
-    margin-bottom: 2rem;
-    @include text($white, 600, 5.8rem);
+    
+    flex: 1;
+    display: flex;
+    align-items: center;
+    @include text($white, 400, 5.8rem);
 
     @include breakpoint(md) {
-      font-size: 5.4rem;
-      margin-bottom: 1.8rem;
-    }
-
-    @include breakpoint(sm) {
-      font-size: 5rem;
-      margin-bottom: 1.6rem;
-    }
-
-    @include breakpoint(xs) {
-      font-size: 4.6rem;
-      margin-bottom: 1.4rem;
+      font-size: 6.4rem;
     }
   }
 

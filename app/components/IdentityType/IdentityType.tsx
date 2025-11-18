@@ -6,6 +6,7 @@ import { getIdentity, setIdentity } from '~/services/identityApis';
 import { IdentityTypeEnum } from '~/types/enums';
 import SpinnerLoading from '../ui/SpinnerLoading/SpinnerLoading';
 import { AxiosError } from 'axios';
+import useAppStore from '~/stores/appStore';
 
 
 export default function IdentityType({
@@ -18,7 +19,7 @@ export default function IdentityType({
   const {
     userId,
   } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
+  const setIsLoading = useAppStore(s=>s.setLoading)
 
   const [type, setType] = useState<IdentityTypeEnum | null>(null)
   const setIdentityType = async () => {
@@ -75,9 +76,6 @@ export default function IdentityType({
 
   return (
     <Modal open={!hasIdentity && userId !== null}>
-      {
-        isLoading && <SpinnerLoading />
-      }
       <div className="getting-started">
         <div className="getting-started__container">
           <div className='identity-type'>

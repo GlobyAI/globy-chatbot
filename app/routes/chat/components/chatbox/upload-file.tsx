@@ -2,7 +2,6 @@ import React, { useRef, useState, type ChangeEvent, type Dispatch, type SetState
 import { useClickOutside } from '~/hooks/useClickOutsite'
 import FileUploadIcon from '/icons/file-upload.svg'
 import PlusIcon from '/icons/plus.svg'
-import { useWebSocket } from '~/providers/WSProdivder'
 import type { IUploadFile } from '~/types/models'
 import { useAppContext } from '~/providers/AppContextProvider'
 import toast from 'react-hot-toast'
@@ -45,34 +44,32 @@ export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: 
             })
             setPct(0)
             setUploadedFiles(filesToUpload)
-            uploadFIles(filesToUpload)
+            onUpload(filesToUpload)
             handleClosePopup()
         }
 
     }
-    // const putToS3WithProcess = async (
-    //     url: string,
-    //     file: File,
-    //     fileId: string
-    // ): Promise<AxiosResponse> => {
-    //     return await axios({
-    //         url,
-    //         method: "PUT",
-    //         headers: {
-    //             "Content-Type": file.type,
-    //         },
-    //         data: file,
-    //         onUploadProgress: (event) => {
-    //             if (event.total) {
-    //                 const pct = Math.round((event.loaded * 100) / event.total);
-    //                 setUploadedFiles(prev => prev.map(((f) => f.id === fileId ? { ...f, pct: pct } : f)))
 
-    //             }
-    //         },
-    //     });
-    // };
+    function uploadFiles(formData: FormData) {
+        return axiosInstance({
+            timeout: 5 * 60 * 1000,// 5 minutes,
+            url: '/chatbot/v1/upload',
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            data: formData,
+            onUploadProgress: (event) => {
+                console.log(event)
+                if (event.total) {
+                    const pct = Math.min(75, Math.round((event.loaded * 100) / event.total));
+                    setPct(pct)
+                }
+            },
+        });
+    }
 
-    async function uploadFIles(filesToUpload: IUploadFile[]) {
+    async function onUpload(filesToUpload: IUploadFile[]) {
         if (!userId) return
         try {
             const formData = new FormData()
@@ -80,22 +77,7 @@ export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: 
             filesToUpload.forEach(f => {
                 formData.append('files', f.file)
             })
-            const res = await axiosInstance({
-                timeout: 5 * 60 * 1000,// 5 minutes,
-                url: '/chatbot/v1/upload',
-                method: "POST",
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                data: formData,
-                onUploadProgress: (event) => {
-                    console.log(event)
-                    if (event.total) {
-                        const pct = Math.min(99, Math.round((event.loaded * 100) / event.total));
-                        setPct(pct)
-                    }
-                },
-            });
+            const res = await uploadFiles(formData)
             if (res.status === 200) {
                 setPct(100)
             }

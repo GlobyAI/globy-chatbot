@@ -1,17 +1,14 @@
 // webSocketStore.ts
 import { create } from "zustand";
 import { MessageType } from "~/types/enums";
-import type {
-  MessageRequest,
-  MessageResponse,
-} from "~/types/models";
+import type { MessageRequest, MessageResponse } from "~/types/models";
 import { envConfig } from "~/utils/envConfig";
 import { generateMessageId } from "~/utils/helper";
 
 interface WebSocketState {
   socket: WebSocket | null;
   isConnected: boolean;
-  connect: (userId: string) => void;
+  connect: (userId: string, initMsg?: MessageRequest) => void;
   disconnect: () => void;
   lastMessage: MessageResponse | null;
   send: (data: MessageRequest) => void;
@@ -21,7 +18,7 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   socket: null,
   isConnected: false,
   lastMessage: null,
-  connect: (userId: string) => {
+  connect: (userId: string, initMsg?: MessageRequest) => {
     if (!userId) return;
     const existing = get().socket;
     if (existing && existing.readyState === WebSocket.OPEN) return;
@@ -30,13 +27,10 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
 
     socket.onopen = () => {
       set({ isConnected: true });
-      const initMsg = {
-        type: MessageType.USER_MESSAGE,
-        message_id: generateMessageId(),
-        text:"___ HELLO ___",
-        research: false,
-      };
-      socket.send(JSON.stringify(initMsg));
+
+      if (initMsg) {
+        socket.send(JSON.stringify(initMsg));
+      }
       console.log("[WS] connected");
     };
 

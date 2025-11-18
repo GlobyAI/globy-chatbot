@@ -6,7 +6,7 @@
   width: 100%;
   border-radius: 2rem;
   background-color: $dark-gray;
-  box-shadow: 0px 6px 20px 0px rgba($color: $black-700, $alpha: 0.4);
+  box-shadow: 0px 6px 20px 0px rgba($color: $black-950, $alpha: 0.4);
   max-height: 28.2rem;
   height: auto;
   min-height: 0;
@@ -26,7 +26,7 @@
       // background-color: $dark-gray;
       .icons {
         &--plus {
-          background-color: $gray-500;
+          background-color: $gray-900;
           cursor: pointer;
         }
         &--send {
@@ -53,7 +53,7 @@
       background-color: $dark-gray;
       .icons {
         &--plus {
-          background-color: $gray-500;
+          background-color: $gray-900;
           cursor: pointer;
         }
         &--send {
@@ -65,10 +65,11 @@
   }
   .textfield {
     order: 1;
-    flex: 1;
+    flex: 1;  
     overflow: scroll;
     width: 100%;
     height: auto;
+    display: block;
     overflow-x: hidden;
     &::-webkit-scrollbar {
       width: 3px;
@@ -95,7 +96,7 @@
         width: fit-content;
         height: 5.8rem;
         min-width: 5.8rem;
-        
+
         @include breakpoint(lg) {
           border-radius: 1.2rem;
           height: 13rem;
@@ -216,12 +217,13 @@
         border-radius: 1.2rem;
         min-width: max-content;
         box-shadow: 0px 3px 10px 1px rgba($color: $black-700, $alpha: 0.4);
-        background-color: $gray-950;
+        background-color: $gray-900;
         > ul {
           > li {
             padding: 1.2rem;
             @include text($white-2, 400, 1.6rem);
             > labeL {
+              cursor: pointer;
               @include flex(left, center, row, 0.4rem);
             }
           }
@@ -242,7 +244,7 @@
   border-radius: 50%;
   border-radius: 50%;
   position: relative;
-  
+
   &::before {
     content: "";
     position: absolute;

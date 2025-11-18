@@ -12,6 +12,7 @@ import { WebSocketProvider } from "./providers/WSProdivder";
 import AuthProvider from "./providers/AuthProvider";
 import AppContextProvider from "./providers/AppContextProvider";
 import GlobyToast from "./providers/GlobyToast";
+import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 
 
 
@@ -29,6 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <AppContextProvider>
             <WebSocketProvider>
               {children}
+              <LoadingOverlay/>
               <div id="modal-root" />
             </WebSocketProvider>
           </AppContextProvider>

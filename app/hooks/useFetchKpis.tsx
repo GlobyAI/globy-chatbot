@@ -1,31 +1,34 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetchKpis } from '~/services/appApis'
 import { useAppContext } from '~/providers/AppContextProvider'
 import { useWebSocketStore } from '~/stores/websocketStore'
 import { MessageType } from '~/types/enums'
-import { useWebSocket } from '~/providers/WSProdivder'
 
 
 export function useFetchKpis() {
   const { userId } = useAppContext()
   const [confidence, setConfidence] = useState(-1)
+  const prevConfidence = useRef<number>(-1)
   const isConnected = useWebSocketStore.getState().isConnected
   const lastMessage = useWebSocketStore.getState().lastMessage
   useEffect(() => {
-    if (!userId) {
+    
+    if (!userId || (lastMessage && lastMessage.type !== MessageType.ASSISTANT_DONE)) {
       return;
     }
-
-    if (lastMessage && lastMessage?.type !== MessageType.ASSISTANT_DONE) return;
-
     const loadKpis = async () => {
-      if (!userId) {
+      if (!userId || (lastMessage && lastMessage.type !== MessageType.ASSISTANT_DONE)) {
         return;
       }
-
       try {
         const kpis = await fetchKpis(userId);
-        setConfidence(kpis.data.kpis.confidence || 0);
+        const newConfidence = kpis.data.kpis.confidence
+        if(newConfidence !== prevConfidence.current){
+          prevConfidence.current= newConfidence
+          setConfidence(kpis.data.kpis.confidence);
+        }else{
+          setTimeout(loadKpis,3000)
+        }
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);
         setConfidence(0);

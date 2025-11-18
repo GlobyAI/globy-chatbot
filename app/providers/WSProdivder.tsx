@@ -77,7 +77,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
                 };
                 connect(userId, initMsg);
             } else {
-                setIsPending(true)
                 connect(userId);
             }
 
@@ -93,7 +92,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         if (!lastMessage) return;
         if (lastMessage.type === MessageType.ASSISTANT_DONE) {
             setIsPending(false)
-
         }
         if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
             const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT)

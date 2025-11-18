@@ -23,7 +23,7 @@ export default function ChatBox({ }: Props) {
     useScrollChatBox({ textfieldContainerRef })
     useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: uploadedFiles.length > 0 })
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        if (isPending) {
+        if (!isPending) {
             setContent(e.target.value)
         }
     }

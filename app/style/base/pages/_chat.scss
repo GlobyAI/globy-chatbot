@@ -8,6 +8,35 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  &.hide {
+    @include breakpoint(lg) {
+      .sidebar {
+        width: 8rem;
+        &__logo {
+          align-self: center;
+        }
+        &__toggle-icon {
+          > img {
+            transform: rotate(0);
+          }
+        }
+        &__quality-score {
+          visibility: hidden;
+          opacity: 0;
+        }
+        &__settings {
+          overflow-x: hidden;
+          .user-info {
+            visibility: hidden;
+            opacity: 0;
+          }
+        }
+      }
+      .chat-window {
+        margin-left: 8rem;
+      }
+    }
+  }
   @include position(fixed, 0, 0, 0, 0);
   .sidebar {
     position: fixed;
@@ -22,7 +51,24 @@
     @include breakpoint(lg) {
       @include flex(flex-start, flex-start, column);
     }
-    .logo {
+
+    &__toggle-icon {
+      z-index: 100;
+      cursor: pointer;
+      background-color: $black-700;
+      position: absolute;
+      top: 3rem;
+      right: -1.2rem;
+      border-radius: 50%;
+      border: 1px solid $gray-800;
+      @include box(2.8rem, 2.8rem);
+      @include flex(center, center);
+      > img {
+        transform: rotate(180deg);
+        @include box(1.6rem, 1.6rem);
+      }
+    }
+    &__logo {
       width: 3.5rem;
       height: 4rem;
     }
@@ -63,9 +109,6 @@
     @include breakpoint(lg) {
       margin-left: 34.5rem;
     }
-    @include breakpoint(xs) {
-      width: 100vw;
-    }
     .heading {
       width: 100%;
 
@@ -100,11 +143,11 @@
           width: 4rem;
           border-radius: 50%;
           background-color: $black-700;
-          border:1px solid $purple;
+          border: 1px solid $purple;
           &:hover {
             background-color: $purple;
           }
-          @include breakpoint(lg){
+          @include breakpoint(lg) {
             border-radius: 2rem;
             width: auto;
             padding: 1.2rem 1.6rem;

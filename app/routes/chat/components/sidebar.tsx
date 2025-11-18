@@ -2,22 +2,28 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { formatName } from '~/utils/helper'
 import { QualityScore } from './quality-score'
 import { useFetchKpis } from '~/hooks/useFetchKpis';
+import ArrowRightIcon from '/icons/arrow-right.svg'
+import { useState } from 'react';
 
-type Props = {}
+type Props = { toggleSidebar: () => void }
 
-export default function Sidebar({ }: Props) {
+export default function Sidebar({ toggleSidebar }: Props) {
     const { confidence } = useFetchKpis();
     const percentage = Math.round(confidence * 100);
 
+
     const { user } = useAuth0()
-    if(!user) return null
+    if (!user) return null
     return (
-        <div className="sidebar">
+        <div className={`sidebar `} >
+            <span className="sidebar__toggle-icon" onClick={toggleSidebar}>
+                <img src={ArrowRightIcon} alt=" Toggle icon" />
+            </span>
             <div className="sidebar__logo">
                 <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
             </div>
             <div className='sidebar__quality-score'>
-                <QualityScore 
+                <QualityScore
                     percentage={percentage}
                     title='Brand Insights'
                     brandStartingPoint='Starting point'

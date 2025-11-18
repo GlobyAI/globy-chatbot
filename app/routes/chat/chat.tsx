@@ -6,7 +6,7 @@ import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 
@@ -23,10 +23,13 @@ function Chat() {
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
+  const [show, setShow] = useState(true)
+  const toggleSidebar = () => {
+    setShow(prev => !prev)
+  }
 
-
-  return <main className="chat-bot" ref={containerRef}>
-    <Sidebar />
+  return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
+    <Sidebar toggleSidebar={toggleSidebar} />
     <div className="chat-window" >
       <div className="heading">
         <div className="heading__brand">

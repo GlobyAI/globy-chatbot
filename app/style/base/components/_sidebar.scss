@@ -1,4 +1,5 @@
 @use "../../abstracts" as *;
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -29,30 +30,33 @@
       @include box(1.6rem, 1.6rem);
     }
   }
+
   &__logo {
     text-align: left;
     width: 100%;
-    img{
+    img {
       object-fit: cover;
       @include box(2.8rem, 3.2rem);
     }
   }
+
   &__styles {
     margin: 4.4rem 0;
     flex: 1;
     width: 100%;
     @include flex(flex-start, flex-start, column, 2.4rem);
-    .upload-logo{
+
+    .upload-logo {
       width: 100%;
       @include flex(flex-start, flex-start, column, 0.8rem);
-      > b{
-        @include text($gray-100, 400,$text-sm);
+      > b {
+        @include text($gray-100, 400, $text-sm);
       }
-      > p{
-        @include text($gray-300, 400,$text-sm);
+      > p {
+        @include text($gray-300, 400, $text-sm);
       }
 
-      > label{
+      > label {
         cursor: pointer;
         border-radius: 0.8rem;
         background-color: $dark-gray;
@@ -60,16 +64,162 @@
         @include flex(center, center);
       }
     }
-  }
+    .color-picker-section {
+      width: 100%;
+      @include flex(flex-start, flex-start, column, 0.8rem);
 
-  &__color-picker {
-    @include flex(flex-start, flex-start, column, 0.8rem);
-    > b{
-        @include text($gray-100, 400,$text-sm);
+      > b {
+        @include text($gray-100, 400, $text-sm);
       }
-      > p{
-        @include text($gray-300, 400,$text-sm);
+      > p {
+        @include text($gray-300, 400, $text-sm);
       }
+    }
+    .color-picker-selector-area {
+      display: flex;
+      border-radius: 0.4rem;
+      padding: 0.6rem;
+      background: #212325;
+      box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+      align-items: center;
+      gap: 0.6rem;
+      align-self: stretch;
+      @include text($gray-100, 400, $text-sm);
+    }
+
+    .globy-color-picker {
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 0.8rem;
+      border: 0.1rem solid rgba($white, 0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: transparent;
+
+      &:hover {
+        border-color: rgba($white, 0.4);
+        transform: scale(1.05);
+      }
+
+      &:focus {
+        outline: 0.2rem solid $dark-purple;
+        outline-offset: 0.2rem;
+      }
+    }
+
+    .color-picker-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9998;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+
+    .color-picker-wrapper {
+      z-index: 9999;
+      background-color: $black-900;
+      padding: 1rem;
+      width: 20rem;
+      box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.6);
+      border: 0.1rem solid rgba($white, 0.1);
+      border-radius: 1.5rem;
+      @include flex(flex-start, normal, column, 1rem);
+
+      @include breakpoint(xs) {
+        width: 18rem;
+      }
+
+      > .w-color-interactive {
+        width: 100% !important;
+        height: 15rem !important;
+        border-radius: 1rem !important;
+      }
+
+      .slides {
+        width: 100%;
+        @include flex(flex-start, normal, column, 0.8rem);
+
+        .w-color-hue,
+        .w-color-alpha {
+          border-radius: 2rem !important;
+          height: 1.2rem !important;
+        }
+      }
+
+      .color-input {
+        width: 100%;
+        margin-top: 0.5rem;
+        @include flex(space-between, stretch, row, 0.8rem);
+
+        @include breakpoint(xs) {
+          @include flex(flex-start, stretch, column, 0.8rem);
+        }
+
+        &__field {
+          flex: 1;
+          @include flex(flex-start, flex-start, column, 0.4rem);
+
+          label {
+            @include text(rgba($white-2, 0.7), 400, 1rem);
+
+            @include breakpoint(xs) {
+              font-size: 0.9rem;
+            }
+          }
+
+          input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 0.1rem solid rgba($white, 0.1);
+            border-radius: 0.6rem;
+            background-color: rgba($white, 0.05);
+            outline: none;
+            box-shadow: none !important;
+            @include text($white-2, 400, 1.2rem);
+            transition: all 0.2s ease;
+
+            &:focus {
+              border-color: $dark-purple;
+              background-color: rgba($white, 0.08);
+            }
+
+            &::placeholder {
+              color: rgba($white-2, 0.4);
+            }
+
+            @include breakpoint(xs) {
+              font-size: 1.1rem;
+              padding: 0.5rem 0.7rem;
+            }
+          }
+        }
+
+        .input-with-suffix {
+          position: relative;
+          width: 100%;
+
+          input {
+            padding-right: 2.5rem;
+          }
+
+          .input-field__icon {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            @include text(rgba($white-2, 0.6), 500, 1.2rem);
+            pointer-events: none;
+
+            @include breakpoint(xs) {
+              font-size: 1.1rem;
+            }
+          }
+        }
+      }
+    }
   }
 
   &__quality-score {

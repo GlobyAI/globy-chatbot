@@ -27,7 +27,7 @@
       rgba(2, 8, 15, 0) 127.09%
     );
     height: 100%;
-    z-index: 10;
+    z-index: 100;
     width: 3rem;
     @include flex(center, center);
     > .pagination-icon {

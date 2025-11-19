@@ -61,7 +61,7 @@
         height: 100%;
         @include flex(center, center, column);
         > strong {
-          @include text($white, 500, $text-lg);
+          @include text($white-2, 500, $text-lg);
         }
         > small {
           @include text($gray-300, 400, $text-sm);
@@ -88,7 +88,7 @@
             width: auto;
             padding: 0.8rem 1.2rem;
           }
-          @include text($white, 400, $text-md);
+          @include text($white-2, 400, $text-md);
           @include flex(center, center, row, 0.4rem);
           p {
             display: none;
@@ -138,7 +138,11 @@
             }
           }
           &--user {
+            max-width: 80%;
             margin-left: auto;
+            @include breakpoint(lg){
+              max-width: 70%;
+            }
             .message__logo {
               visibility: hidden;
             }
@@ -146,7 +150,7 @@
               border-radius: 1.2rem;
               padding: 1.2rem;
               font-size: $text-lg;
-              color: $white;
+              color: $white-2;
               background-color: $dark-purple;
             }
           }

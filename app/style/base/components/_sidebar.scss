@@ -78,10 +78,10 @@
     }
     .user-info {
       > strong {
-        @include text($white, 400, $text-md);
+        @include text($white-2, 400, $text-md);
       }
       > p {
-        @include text($white, 400, $text-sm);
+        @include text($gray-100, 400, $text-sm);
       }
     }
   }

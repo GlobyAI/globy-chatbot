@@ -1,0 +1,17 @@
+@use "../../abstracts" as *;
+
+.image-uploader {
+  position: relative;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  background-color: $dark-gray;
+  @include box(4.8rem, 4.8rem);
+  @include flex(center, center);
+
+  .circular-progress {
+    position: relative;
+    transform: unset;
+    top: unset;
+    left:unset
+  }
+}

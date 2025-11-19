@@ -21,8 +21,7 @@
           }
         }
         &__quality-score {
-          visibility: hidden;
-          opacity: 0;
+          display: none;
         }
         &__settings {
           overflow-x: hidden;
@@ -30,6 +29,9 @@
             visibility: hidden;
             opacity: 0;
           }
+        }
+        &__styles {
+          display: none;
         }
       }
       .chat-window {
@@ -140,7 +142,7 @@
           &--user {
             max-width: 80%;
             margin-left: auto;
-            @include breakpoint(lg){
+            @include breakpoint(lg) {
               max-width: 70%;
             }
             .message__logo {

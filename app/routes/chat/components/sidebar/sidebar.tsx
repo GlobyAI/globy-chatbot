@@ -3,12 +3,15 @@ import { formatName } from '~/utils/helper'
 import ArrowRightIcon from '/icons/arrow-right.svg'
 import QualityScoreCard from './quality-score-card'
 import UploadLogo from './upload-logo'
-
+import ImageLibrary from './image-library'
+import useUploadLogo from '~/hooks/useUploadLogo'
 type Props = { toggleSidebar: () => void }
 
 export default function Sidebar({ toggleSidebar }: Props) {
+    const { onUploadFile,pct, uploadedImages,onDeleteImage } = useUploadLogo()
     const { user } = useAuth0()
     if (!user) return null
+
     return (
         <div className={`sidebar `} >
             <span className="sidebar__toggle-icon" onClick={toggleSidebar}>
@@ -19,7 +22,8 @@ export default function Sidebar({ toggleSidebar }: Props) {
             </div>
             <QualityScoreCard />
             <div className="sidebar__styles">
-                <UploadLogo />
+                <UploadLogo pct={pct} onUploadFile={onUploadFile} />
+                <ImageLibrary pct={pct} uploadedImages={uploadedImages} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage}/>
             </div>
             <div className="sidebar__settings">
                 <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />

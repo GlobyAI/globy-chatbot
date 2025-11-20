@@ -19,8 +19,10 @@ export default function Sidebar({ toggleSidebar }: Props) {
                 <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
             </div>
             <QualityScoreCard />
-            <div className="sidebar__styles">
+            <div className='sidebar__color-picker'>
                 <ColorPicker />
+            </div>
+            <div className="sidebar__styles">
                 <UploadLogo />
             </div>
             <div className="sidebar__settings">

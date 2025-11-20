@@ -187,20 +187,20 @@ export default function ColorPicker({ value, onChange, onBlur }: Props) {
     const displayColor = value ? rgbaToHex(value) : hsvaToHex(hsva)
 
     return (
-        <div className="color-picker-section">
-                <b>Colors</b>
-                <p>Choose your brand colors.</p>
-                <div className="color-picker-selector-area">
-                    <button
-                        ref={buttonRef}
-                        type="button"
-                        className='globy-color-picker'
-                        onClick={open}
-                        style={{ background: displayColor }}
-                        aria-label="Open color picker"
-                    />
-                    {text}
-                </div>
+        <Fragment>
+            <b>Colors</b>
+            <p>Choose your brand colors.</p>
+            <div className="color-picker-selector-area">
+                <button
+                    ref={buttonRef}
+                    type="button"
+                    className='globy-color-picker'
+                    onClick={open}
+                    style={{ background: displayColor }}
+                    aria-label="Open color picker"
+                />
+                {text}
+            </div>
             
             {show && (
                 <>
@@ -265,6 +265,6 @@ export default function ColorPicker({ value, onChange, onBlur }: Props) {
                     </div>
                 </>
             )}
-        </div>
+        </Fragment>
     )
 }

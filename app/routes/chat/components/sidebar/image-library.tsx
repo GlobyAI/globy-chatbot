@@ -4,13 +4,15 @@ import type { UploadedImage } from '~/types/models'
 
 type Props = {
     uploadedImages: UploadedImage[]
-    onUploadFile: (file: File) => void
+    onUploadFile: (file: File, id: string) => void
     onDeleteImage: (img: UploadedImage) => void,
-    pct: number
+    pct: number,
+    isUploading: string
+
 
 }
 
-export default function ImageLibrary({ uploadedImages, pct, onUploadFile, onDeleteImage }: Props) {
+export default function ImageLibrary({ uploadedImages, pct, isUploading, onUploadFile, onDeleteImage }: Props) {
     return (
         <div className='image-library'>
             <b>
@@ -27,7 +29,7 @@ export default function ImageLibrary({ uploadedImages, pct, onUploadFile, onDele
                             </figure>
                         ))
                     }
-                    <ImageUploader pct={pct} onUploadFile={onUploadFile} id="add-more-image" />
+                    <ImageUploader pct={pct} isUploading={isUploading} onUploadFile={onUploadFile} id="add-more-image" />
                 </Slider>
             </div>
         </div>

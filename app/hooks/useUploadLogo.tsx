@@ -12,7 +12,9 @@ import { changeFileExtension } from '~/utils/file';
 
 export default function useUploadLogo() {
     const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([])
-    const [pct, setPct] = useState(100)
+    const [logo, setLogo] = useState<UploadedImage | null>(null)
+    const [pct, setPct] = useState(0)
+    const [isUploading, setIsUploading] = useState<string>('')
     const { userId } = useAppContext()
     const putToS3WithProcess = async (
         url: string,
@@ -47,6 +49,9 @@ export default function useUploadLogo() {
                 })
             });
             if (deleteRes.status === 200) {
+                if (selectedImage.url === logo?.url) {
+                    setLogo(null)
+                }
                 setUploadedImages(prev => prev.filter(i => i.key !== selectedImage.key && i.url !== selectedImage.url))
             }
         } catch (error) {
@@ -85,10 +90,10 @@ export default function useUploadLogo() {
         getLibrary()
     }, [userId])
 
-    const onUploadFile = async (file: File) => {
+    const onUploadFile = async (file: File, id: string) => {
+
         if (!userId) return
-        setPct(0)
-      
+        setIsUploading(id)
         const filename = changeFileExtension(file.name, file.type);
         const key = `images/${new Date().getFullYear()}/${userId}/${filename}`;
         const bucket = "globylibrary-" + userId
@@ -108,12 +113,16 @@ export default function useUploadLogo() {
                     const response = await putToS3WithProcess(signedUrl, file)
                     if (response.status === 200) {
                         const previewUrl = URL.createObjectURL(file)
-                        setUploadedImages((prev) => [...prev, {
+                        const newImage = {
                             key,
                             url: previewUrl,
                             bucket,
                             content_type
-                        }])
+                        }
+                        if (id === 'upload-logo') {
+                            setLogo(newImage)
+                        }
+                        setUploadedImages((prev) => [...prev, newImage])
                     }
 
                 } catch (error) {
@@ -121,6 +130,9 @@ export default function useUploadLogo() {
                     if (error instanceof AxiosError) {
                         toast.error(error.message || "Unable to upload the file. Try again later")
                     }
+                } finally {
+                    setIsUploading('')
+                    setPct(0)
                 }
             }
 
@@ -135,6 +147,8 @@ export default function useUploadLogo() {
         pct,
         onUploadFile,
         uploadedImages,
-        onDeleteImage
+        onDeleteImage,
+        isUploading,
+        logo
     }
 }

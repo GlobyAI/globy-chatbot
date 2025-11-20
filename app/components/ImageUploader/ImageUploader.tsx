@@ -2,19 +2,20 @@ import React, { type ChangeEvent, type HTMLAttributes } from 'react'
 import PlusIcon from '/icons/plus.svg'
 
 interface Props extends HTMLAttributes<HTMLInputElement> {
-  onUploadFile: (file: File) => void,
+  onUploadFile: (file: File, id: string) => void,
   pct: number,
+  isUploading?: string
 }
 
-export default function ImageUploader({ onUploadFile, pct, id, ...props }: Props) {
+export default function ImageUploader({ onUploadFile, pct, id='', isUploading = '', ...props }: Props) {
   function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return
     const file = e.target.files[0]
     if (file) {
-      onUploadFile(file)
+      onUploadFile(file, id)
     }
   }
-  if (pct < 100)
+  if (isUploading === id && pct < 100)
     return (
       <div className='image-uploader' title="Uploading...">
         <span className="circular-progress" style={{ "--percent": pct } as React.CSSProperties}>

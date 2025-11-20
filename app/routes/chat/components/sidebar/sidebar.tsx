@@ -9,8 +9,8 @@ import Profile from './profile'
 type Props = { toggleSidebar: () => void }
 
 export default function Sidebar({ toggleSidebar }: Props) {
-    const { onUploadFile,pct, uploadedImages,onDeleteImage } = useUploadLogo()
-  
+    const { onUploadFile, pct, uploadedImages, onDeleteImage, isUploading ,logo} = useUploadLogo()
+
     return (
         <div className={`sidebar `} >
             <span className="sidebar__toggle-icon" onClick={toggleSidebar}>
@@ -21,10 +21,10 @@ export default function Sidebar({ toggleSidebar }: Props) {
             </div>
             <QualityScoreCard />
             <div className="sidebar__styles">
-                <UploadLogo pct={pct} onUploadFile={onUploadFile} />
-                <ImageLibrary pct={pct} uploadedImages={uploadedImages} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage}/>
+                <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} />
+                <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
             </div>
-            <Profile/>
+            <Profile />
         </div>
     )
 }

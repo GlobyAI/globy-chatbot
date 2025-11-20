@@ -5,13 +5,12 @@ import QualityScoreCard from './quality-score-card'
 import UploadLogo from './upload-logo'
 import ImageLibrary from './image-library'
 import useUploadLogo from '~/hooks/useUploadLogo'
+import Profile from './profile'
 type Props = { toggleSidebar: () => void }
 
 export default function Sidebar({ toggleSidebar }: Props) {
     const { onUploadFile,pct, uploadedImages,onDeleteImage } = useUploadLogo()
-    const { user } = useAuth0()
-    if (!user) return null
-
+  
     return (
         <div className={`sidebar `} >
             <span className="sidebar__toggle-icon" onClick={toggleSidebar}>
@@ -25,13 +24,7 @@ export default function Sidebar({ toggleSidebar }: Props) {
                 <UploadLogo pct={pct} onUploadFile={onUploadFile} />
                 <ImageLibrary pct={pct} uploadedImages={uploadedImages} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage}/>
             </div>
-            <div className="sidebar__settings">
-                <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />
-                <div className="user-info">
-                    <strong>{formatName(user)}</strong>
-                    <p>{user?.email}</p>
-                </div>
-            </div>
+            <Profile/>
         </div>
     )
 }

@@ -3,7 +3,6 @@ import { formatName } from '~/utils/helper'
 import ArrowRightIcon from '/icons/arrow-right.svg'
 import QualityScoreCard from './quality-score-card'
 import UploadLogo from './upload-logo'
-import ColorPicker from '~/components/ColorPicker/ColorPicker';
 
 type Props = { toggleSidebar: () => void }
 
@@ -19,9 +18,6 @@ export default function Sidebar({ toggleSidebar }: Props) {
                 <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
             </div>
             <QualityScoreCard />
-            <div className='sidebar__color-picker'>
-                <ColorPicker />
-            </div>
             <div className="sidebar__styles">
                 <UploadLogo />
             </div>

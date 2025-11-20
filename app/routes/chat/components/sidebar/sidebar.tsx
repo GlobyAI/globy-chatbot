@@ -4,12 +4,24 @@ import ArrowRightIcon from '/icons/arrow-right.svg'
 import QualityScoreCard from './quality-score-card'
 import UploadLogo from './upload-logo'
 import ColorPicker from '~/components/ColorPicker/ColorPicker';
+import { setUserColorPreferences } from '~/services/appApis'
+import { useAppContext } from '~/providers/AppContextProvider'
 
 
 type Props = { toggleSidebar: () => void }
 
+const postSelectedColor = async(userId: string, color: string, prompt: string) => {
+    try {
+        await setUserColorPreferences(userId, [color], prompt)
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 export default function Sidebar({ toggleSidebar }: Props) {
     const { user } = useAuth0()
+    const { userId } = useAppContext();
+    
     if (!user) return null
     return (
         <div className={`sidebar `} >
@@ -21,7 +33,11 @@ export default function Sidebar({ toggleSidebar }: Props) {
             </div>
             <QualityScoreCard />
             <div className='sidebar__color-picker'>
-                <ColorPicker />
+                <ColorPicker onBlur={(hsva) => {
+                    if (userId && hsva) {
+                        postSelectedColor(userId, hsva, '')
+                    }
+                }}/>
             </div>
             <div className="sidebar__styles">
                 <UploadLogo />

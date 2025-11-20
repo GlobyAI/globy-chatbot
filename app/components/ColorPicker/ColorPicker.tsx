@@ -2,17 +2,14 @@ import type { RgbaColor, HsvaColor } from '@uiw/react-color'
 import { hsvaToHex, rgbaToHex, rgbaToHsva, Saturation, Hue, Alpha, hexToHsva, hsvaToRgba } from '@uiw/react-color'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { convertAlphaToPercent } from '~/utils/colorPickerHelp'
-import { setUserColorPreferences } from '~/services/appApis'
-import { useAppContext } from '~/providers/AppContextProvider'
 
 type Props = {
     value?: RgbaColor
     onChange?: (color: RgbaColor) => void
-    onBlur?: () => void
+    onBlur?: (selectedColor: string) => void
 }
 
 export default function ColorPicker({ value, onChange, onBlur }: Props) {
-    const { userId } = useAppContext();
     const [show, setShow] = useState(false)
     const [opacity, setOpacity] = useState<string>('100')
     const [text, setText] = useState('#420A7F')
@@ -21,15 +18,6 @@ export default function ColorPicker({ value, onChange, onBlur }: Props) {
     const firstRenderRef = useRef(true)
     const pickerRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
-
-
-    const postSelectedColor = async(userId: string, color: string, prompt: string) => {
-        try {
-            await setUserColorPreferences(userId, [color], prompt)
-        } catch(error) {
-            console.log(error)
-        }
-    }
 
     // Initialize from value prop
     useEffect(() => {
@@ -98,8 +86,16 @@ export default function ColorPicker({ value, onChange, onBlur }: Props) {
 
     const close = () => {
         if (onBlur && !firstRenderRef.current) {
-            onBlur()
+            let latestColor = text
+                setText((currentText) => {
+                latestColor = currentText;  
+                    
+                    return currentText
+                });
+
+            onBlur(latestColor)
         }
+
         setShow(false)
     }
 

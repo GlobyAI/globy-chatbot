@@ -45,3 +45,23 @@ export function fetchKpis(userId: string): Promise<KpisResponse> {
     })
 }
 
+export interface ColorsPreferencesResponse {
+     user_id: string,
+     data: {
+        "colors": string[],
+        "prompt": string
+    }
+}
+
+export function setUserColorPreferences(userId: string, colors: string[], prompt: string): Promise<ColorsPreferencesResponse> {
+    return axiosInstance({
+        url: `/chatbot/v1/colors`,
+        method: "POST",
+        data: {
+            user_id: userId,
+            colors: colors,
+            prompt: prompt
+        }
+    });
+}
+

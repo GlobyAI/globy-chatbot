@@ -5,8 +5,8 @@ import useResizeTextarea from '~/hooks/useResizeTextarea'
 import UploadFile from './upload-file'
 import FilePreviews from './file-previews'
 import useScrollChatBox from '~/hooks/useScrollChatBox'
-import useChatBox from '~/hooks/useChatbox'
 import { useRef } from 'react'
+import useChatBox from '~/hooks/useChatBox'
 
 type Props = {}
 

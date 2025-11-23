@@ -67,7 +67,7 @@ function ContinueConfirm({
     }
 
     return (
-        <Modal open={true}>
+        <Modal open={willComplete}>
             {isRedirecting || isLoading ? (
                 <div className="redirecting">
                     <div className="loader"></div>
@@ -85,7 +85,7 @@ function ContinueConfirm({
                         <p>
                             Everything you&#39;ve shared is saved. <br />
                             We&#39;ll start preparing your website and you can continue building
-                            it from the site editor.
+                            it from the site editor.    
                         </p>
                     </div>
                     <div className="confirm__btns">

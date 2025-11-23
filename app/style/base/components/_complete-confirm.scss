@@ -38,12 +38,11 @@
       @include text($white-2, 600, $text-xl);
     }
     > p {
+      text-align: center;
       margin: 0.6rem 0 1.6rem;
       @include text($gray-100, 400, $text-md, 2.4rem);
     }
-    > span {
-      @include text($gray-300, 400, $text-xs, 1.6rem);
-    }
+    
   }
   &__btns {
     width: 100%;

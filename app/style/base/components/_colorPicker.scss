@@ -36,6 +36,10 @@
   @include text($gray-100, 400, $text-sm);
 }
 
+.flex {
+    display: flex;
+}
+
 .color-palette {
   display: flex;
   flex-direction: row; //  Changed from column to row
@@ -45,72 +49,70 @@
   flex-wrap: wrap; //  Allow wrapping if needed
 }
 
+.color-palette-remove-button {
+  background: transparent;
+  height: 100%;
+  padding: 0.6rem;
+  background: #212325; 
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+}
+
 .color-palette-item {
   position: relative;
   display: flex;
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
   padding: 0.6rem;
   background: #212325; 
   box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
   align-items: center;
   gap: 0.6rem;
+  width: 10rem;
   @include text($gray-100, 400, $text-sm);
+
 
   .color-text {
     flex: 1;
   }
 
-  .remove-color-btn {
-    position: absolute;
-    top: -0.6rem;
-    right: -0.6rem;
-    width: 1.6rem;
-    height: 1.6rem;
-    border-radius: 50%;
-    // background: #ef4444;
-    border: 0.2rem solid $black-900;
-    // color: $white;
-    font-size: 1.4rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    transition: all 0.2s ease;
-    padding: 0;
+  // .remove-color-btn {
+  //   position: absolute;
+  //   top: -0.6rem;
+  //   right: -0.6rem;
+  //   width: 1.6rem;
+  //   height: 1.6rem;
+  //   border-radius: 50%;
+  //   // background: #ef4444;
+  //   border: 0.2rem solid $black-900;
+  //   // color: $white;
+  //   font-size: 1.4rem;
+  //   font-weight: bold;
+  //   cursor: pointer;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   line-height: 1;
+  //   transition: all 0.2s ease;
+  //   padding: 0;
 
-    // &:focus {
-    //   outline: 0.2rem solid $dark-purple;
-    //   outline-offset: 0.2rem;
-    // }
-  }
+  // }
 }
 
 .add-color-btn {
-  // width: 2.8rem; //  Changed from 100% to fixed width
   height: 2.8rem;
   padding: 2px 6px;
 
-  border-radius: 0.8rem; //  Changed from 0.4rem
+  border-radius: 0.8rem;
   font-size: 1.6rem;
   background: transparent;
   color: $white;
-  // font-size: 0.87rem; //  Larger + symbol
   font-weight: 400;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-
-  
-  // &:hover {
-  //   border-color: $dark-purple;
-  //   color: $dark-purple;
-  //   background: rgba($dark-purple, 0.05);
-  //   transform: scale(1.05);
-  // }
 
   &:focus {
     outline: 0.2rem solid $dark-purple;

@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import Minus from '/icons/minus.svg'
 
 type Props = {
     selectedColors: string[]
@@ -32,25 +32,29 @@ export default function ColorPalette({
                 </button>
             )}
             {selectedColors.map((color, index) => (
-                <div key={index} className="color-palette-item">
-                    <button
-                        ref={el => { buttonRefs.current[index] = el }} 
-                        type="button"
-                        className={`globy-color-picker ${activeColorIndex === index ? 'active' : ''}`}
-                        onClick={() => onSelectColor(index)}
-                        style={{ background: color }}
-                        aria-label={`Select color ${index + 1}`}
-                    />
-                    <span className="color-text">{color}</span>
+                <div key={index} className='flex'>
+                    <div className="color-palette-item">
+                        <button
+                            ref={el => { buttonRefs.current[index] = el }} 
+                            type="button"
+                            className={`globy-color-picker ${activeColorIndex === index ? 'active' : ''}`}
+                            onClick={() => onSelectColor(index)}
+                            style={{ background: color }}
+                            aria-label={`Select color ${index + 1}`}
+                        />
+                        <span className="color-text">{color}</span>
+                    </div>
                     {selectedColors.length > 1 && (
+                    <div>
                         <button
                             type="button"
-                            className="remove-color-btn"
+                            className="color-palette-remove-button"
                             onClick={(e) => onRemoveColor(index, e)}
                             aria-label="Remove color"
                         >
-                            ×
+                            <img src={Minus} alt="Remove color" />
                         </button>
+                    </div>
                     )}
                 </div>
             ))}

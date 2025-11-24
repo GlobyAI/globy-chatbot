@@ -235,7 +235,7 @@ export default function ColorPicker({ value, onChange, onSelectionChange, maxCol
     return (
         <Fragment>
             <b>Colors</b>
-            <p>Choose your brand colors (up to {maxColors}).</p>
+            <p>Choose your brand colors.</p>
             
             <ColorPalette
                 selectedColors={selectedColors}

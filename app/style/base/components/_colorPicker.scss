@@ -1,9 +1,8 @@
 @use "../../abstracts" as *;
 
 .globy-color-picker {
-  width: 2.8rem;
-  height: 2.8rem;
-  border-radius: 0.8rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 0.1rem solid rgba($white, 0.2);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -18,6 +17,11 @@
     outline: 0.2rem solid $dark-purple;
     outline-offset: 0.2rem;
   }
+
+  &.active {
+    border-color: $dark-purple;
+    box-shadow: 0 0 0 0.2rem rgba($dark-purple, 0.3);
+  }
 }
 
 .color-picker-selector-area {
@@ -30,6 +34,100 @@
   gap: 0.6rem;
   align-self: stretch;
   @include text($gray-100, 400, $text-sm);
+}
+
+.color-palette {
+  display: flex;
+  flex-direction: row; //  Changed from column to row
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  flex-wrap: wrap; //  Allow wrapping if needed
+}
+
+.color-palette-item {
+  position: relative;
+  display: flex;
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+  background: #212325; 
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+  align-items: center;
+  gap: 0.6rem;
+  @include text($gray-100, 400, $text-sm);
+
+  .color-text {
+    flex: 1;
+  }
+
+  .remove-color-btn {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.6rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    // background: #ef4444;
+    border: 0.2rem solid $black-900;
+    // color: $white;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.2s ease;
+    padding: 0;
+
+    // &:focus {
+    //   outline: 0.2rem solid $dark-purple;
+    //   outline-offset: 0.2rem;
+    // }
+  }
+}
+
+.add-color-btn {
+  // width: 2.8rem; //  Changed from 100% to fixed width
+  height: 2.8rem;
+  padding: 2px 6px;
+
+  border-radius: 0.8rem; //  Changed from 0.4rem
+  font-size: 1.6rem;
+  background: transparent;
+  color: $white;
+  // font-size: 0.87rem; //  Larger + symbol
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  
+  // &:hover {
+  //   border-color: $dark-purple;
+  //   color: $dark-purple;
+  //   background: rgba($dark-purple, 0.05);
+  //   transform: scale(1.05);
+  // }
+
+  &:focus {
+    outline: 0.2rem solid $dark-purple;
+    outline-offset: 0.2rem;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &:hover {
+      border-color: rgba($white, 0.3);
+      color: rgba($white, 0.6);
+      background: transparent;
+      transform: none;
+    }
+  }
 }
 
 .color-picker-overlay {

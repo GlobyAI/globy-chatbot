@@ -10,9 +10,9 @@ import { useAppContext } from '~/providers/AppContextProvider'
 
 type Props = { toggleSidebar: () => void }
 
-const postSelectedColor = async(userId: string, color: string, prompt: string) => {
+const postSelectedColor = async(userId: string, color: string[], prompt: string) => {
     try {
-        await setUserColorPreferences(userId, [color], prompt)
+        await setUserColorPreferences(userId, color, prompt)
     } catch(error) {
         console.log(error)
     }
@@ -33,9 +33,9 @@ export default function Sidebar({ toggleSidebar }: Props) {
             </div>
             <QualityScoreCard />
             <div className='sidebar__color-picker'>
-                <ColorPicker onBlur={(hsva) => {
-                    if (userId && hsva) {
-                        postSelectedColor(userId, hsva, '')
+                <ColorPicker onSelectionChange={(selectedColors) => {
+                    if (userId && selectedColors) {
+                        postSelectedColor(userId, selectedColors, '')
                     }
                 }}/>
             </div>

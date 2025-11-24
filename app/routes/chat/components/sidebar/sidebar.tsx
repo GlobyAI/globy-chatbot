@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { formatName } from '~/utils/helper'
-import ArrowRightIcon from '/icons/arrow-right.svg'
+import ArrowRightIcon from '/icons/arrow-left.svg'
 import ArrowUpIcon from '/icons/keyboard-arrow-up.svg'
 import QualityScoreCard from './quality-score-card'
 import UploadLogo from './upload-logo'

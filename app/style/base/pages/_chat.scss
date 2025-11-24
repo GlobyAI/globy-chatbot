@@ -17,7 +17,7 @@
         }
         &__toggle-icon {
           > img {
-            transform: rotate(0);
+            transform: rotate(180deg) scale(0.65);
           }
         }
         &__quality-score {

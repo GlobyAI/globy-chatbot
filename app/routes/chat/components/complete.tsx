@@ -96,7 +96,7 @@ function ContinueConfirm({
                             Stay in chat
                         </button>
                         <button className="btn btn--primary" onClick={handComplete}>
-                            Go to Dashboard{" "}
+                            Build my site{" "}
                         </button>
                     </div>
                 </div>

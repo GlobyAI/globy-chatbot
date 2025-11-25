@@ -44,7 +44,7 @@ export default function ColorPalette({
                         />
                         <span className="color-text">{color}</span>
                     </div>
-                    {selectedColors.length > 1 && (
+                    {selectedColors.length > 0 && (
                     <div className="color-palette-remove-item">
                         <button
                             type="button"

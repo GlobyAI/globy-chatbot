@@ -203,7 +203,7 @@ export default function ColorPicker({ value, onChange, onSelectionChange, maxCol
     const handleRemoveColor = useCallback((index: number, e: React.MouseEvent) => {
         e.stopPropagation()
         
-        if (selectedColors.length > 1) {
+        if (selectedColors.length > 0) {
             const newColors = selectedColors.filter((_, i) => i !== index)
             setSelectedColors(newColors)
             

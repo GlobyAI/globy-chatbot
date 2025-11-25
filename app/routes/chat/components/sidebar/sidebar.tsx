@@ -62,19 +62,19 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                 <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
             </div>
             <QualityScoreCard />
-            <div className='sidebar__color-picker'>
-                <ColorPicker onSelectionChange={(selectedColors) => {
-                    if (userId && selectedColors) {
-                        postSelectedColor(userId, selectedColors, '')
-                    }
-                }}/>
-            </div>
             <div className="sidebar__styles">
                 <input type="checkbox" name="" id="styles" defaultChecked={true} hidden />
                 <label className='style-toggle' htmlFor="styles">Styles
                     <img src={ArrowUpIcon} alt="arrow up" />
                 </label>
                 <div className="style-options">
+                    <div className='sidebar__color-picker'>
+                        <ColorPicker onSelectionChange={(selectedColors) => {
+                            if (userId && selectedColors) {
+                                postSelectedColor(userId, selectedColors, '')
+                            }
+                        }}/>
+                    </div>
                     <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} />
                     <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
                 </div>

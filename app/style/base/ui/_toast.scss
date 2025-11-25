@@ -9,7 +9,7 @@
   padding: 0.8rem 1.2rem !important;
   gap: 0.8rem;
   align-items: flex-start !important;
-  @include breakpoint(lg) {
+  @include breakpoint(xl) {
     margin-bottom: 2rem;
     padding: 1.2rem 2.4rem !important;
   }
@@ -21,7 +21,7 @@
     text-align: center;
     color: $purple;
     font-size: 1.2rem;
-    @include breakpoint(lg) {
+    @include breakpoint(xl) {
       font-size: 1.6rem;
     }
   }

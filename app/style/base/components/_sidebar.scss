@@ -6,26 +6,52 @@
   width: 100%;
   max-width: 34.5rem;
   height: 100%;
-  padding: 2.4rem 1.6rem;
+  padding: 4rem 1.6rem;
   background-color: $black-900;
-  display: none;
-  @include breakpoint(lg) {
-    @include flex(flex-start, flex-start, column, 2.4rem);
+  z-index: 9999;
+  @include breakpoint(xl) {
+    padding: 2.4rem 1.6rem;
   }
-
+  @include flex(flex-start, flex-start, column, 2.4rem);
+  
   &__toggle-icon {
     z-index: 100;
     cursor: pointer;
     background-color: $black-900;
     position: absolute;
-    top: 3rem;
+    top: 4rem;
     right: -1.2rem;
     border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
     border: 1px solid $gray-800;
-    @include flex(center, center);
     @include box(2.8rem, 2.8rem);
+    @include breakpoint(xl) {
+      display: flex;
+    }
     > img {
       transform: scale(0.65);
+      @include box(100%, 100%);
+    }
+  }
+  &__close {
+    z-index: 100;
+    cursor: pointer;
+    background-color: $black-900;
+    position: absolute;
+    top: 3rem;
+    right: 1.6rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+    @include box(1.8rem, 1.8rem);
+    @include breakpoint(xl) {
+      display: none;
+    }
+    > img {
       @include box(100%, 100%);
     }
   }
@@ -34,12 +60,15 @@
     width: 100%;
     img {
       object-fit: cover;
-      @include box(2.8rem, 3.2rem);
+      @include box(2.1rem, 2.4rem);
+      @include breakpoint(xl) {
+        @include box(2.8rem, 3.2rem);
+      }
     }
   }
 
   &__styles {
-    margin: 4.4rem 0 auto;
+    margin:auto;
     flex: 1;
     width: 100%;
     min-height: 0;
@@ -52,6 +81,10 @@
     }
     input[type="checkbox"]:checked ~ .style-toggle > img {
       transform: rotate(180deg);
+    }
+    @include breakpoint(xl){
+    margin: 4.4rem 0 auto;
+
     }
     .style-toggle {
       cursor: pointer;
@@ -134,10 +167,15 @@
       cursor: pointer;
       @include flex(left, center, row, 1.2rem);
       .user-avatar {
-        width: 4rem;
-        height: 4rem;
+        width: 3.2rem;
+        height: 3.2rem;
         border-radius: 50%;
         object-fit: contain;
+        @include breakpoint(xl){
+          width: 4rem;
+          height: 4rem;
+
+        }
       }
       .user-info {
         > strong {

@@ -3,6 +3,7 @@ import { fetchKpis } from '~/services/appApis'
 import { useAppContext } from '~/providers/AppContextProvider'
 import { useWebSocketStore } from '~/stores/websocketStore'
 import { MessageType } from '~/types/enums'
+import useAppStore from '~/stores/appStore'
 
 
 export function useFetchKpis() {
@@ -11,6 +12,7 @@ export function useFetchKpis() {
   const prevConfidence = useRef<number>(-1)
   const isConnected = useWebSocketStore.getState().isConnected
   const lastMessage = useWebSocketStore.getState().lastMessage
+  const setHasNews = useAppStore(s => s.setHasNews)
   const retryTimer = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export function useFetchKpis() {
         const newConfidence = kpis.data.kpis.confidence
         if (newConfidence !== prevConfidence.current) {
           prevConfidence.current = newConfidence
+          setHasNews(true)
           setConfidence(kpis.data.kpis.confidence);
         } else {
           retryTimer.current = setTimeout(loadKpis, 3000)
@@ -50,6 +53,7 @@ export function useFetchKpis() {
   }, [userId, lastMessage, isConnected]);
 
   const hasIncreasedConfidence = useMemo(() => confidence > 0 && confidence >= prevConfidence.current, [confidence])
+
 
   return { confidence, hasIncreasedConfidence };
 }

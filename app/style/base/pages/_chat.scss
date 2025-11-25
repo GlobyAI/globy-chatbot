@@ -9,8 +9,12 @@
     display: none;
   }
   &.hide {
-    @include breakpoint(lg) {
+    .sidebar {
+      display: none;
+    }
+    @include breakpoint(xl) {
       .sidebar {
+        display: flex;
         width: 8rem;
         &__logo {
           text-align: center;
@@ -45,7 +49,7 @@
     padding: 0 1.6rem;
     height: 100%;
     @include flex(flex-start, flex-start, column);
-    @include breakpoint(lg) {
+    @include breakpoint(xl) {
       margin-left: 34.5rem;
     }
     .heading {
@@ -55,8 +59,34 @@
       z-index: 1;
       @include position(sticky, 0, null, null, null);
       @include flex(space-between, center);
-      @include breakpoint(lg) {
+      @include breakpoint(xl) {
         height: 9.6rem;
+      }
+      .menu-icon {
+        position: relative;
+        margin: auto 0;
+        display: block;
+        @include breakpoint(xl) {
+          display: none;
+        }
+        > img {
+          @include box(2.4rem, 2.4rem);
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+          border-radius: 50%;
+          background: $purple;
+          @include box(1rem, 1rem);
+        }
+        &.news {
+          &::after {
+            display: block;
+          }
+        }
       }
       &__brand {
         flex: 1;
@@ -70,10 +100,13 @@
         }
       }
       .move-on {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
+        position: relative;
+        @include breakpoint(xl) {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+        }
         button {
           margin: auto;
           background-color: transparent;
@@ -85,7 +118,7 @@
           &:hover {
             background-color: $purple;
           }
-          @include breakpoint(lg) {
+          @include breakpoint(xl) {
             border-radius: 2rem;
             width: auto;
             padding: 0.8rem 1.2rem;
@@ -94,14 +127,14 @@
           @include flex(center, center, row, 0.4rem);
           p {
             display: none;
-            @include breakpoint(lg) {
+            @include breakpoint(xl) {
               display: block;
             }
           }
           img {
             display: block;
             @include box(2.4rem, 2.4rem);
-            @include breakpoint(lg) {
+            @include breakpoint(xl) {
               display: none;
             }
           }
@@ -142,7 +175,7 @@
           &--user {
             max-width: 80%;
             margin-left: auto;
-            @include breakpoint(lg) {
+            @include breakpoint(xl) {
               max-width: 70%;
             }
             .message__logo {
@@ -173,7 +206,7 @@
       // .continue {
       //   width: 100%;
       //   display: none;
-      //   @include breakpoint(lg) {
+      //   @include breakpoint(xl) {
       //     @include flex(center, center, row, 2.4rem);
       //   }
       // }

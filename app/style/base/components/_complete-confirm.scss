@@ -15,7 +15,7 @@
   border-top-right-radius: 5rem;
   padding: 2.8rem 1.8rem 1.8rem;
   background-color: $black-900;
-  @include breakpoint(lg) {
+  @include breakpoint(xl) {
     border-radius: 2rem;
     margin: auto;
     padding: 3.2rem;
@@ -47,7 +47,7 @@
   &__btns {
     width: 100%;
     @include flex(left, center, column, 1.6rem);
-    @include breakpoint(lg) {
+    @include breakpoint(xl) {
       @include flex(left, center, row, 1.6rem);
     }
     .btn {
@@ -58,13 +58,13 @@
         order: 2;
         border: none;
         background-color: $dark-gray;
-        @include breakpoint(lg) {
+        @include breakpoint(xl) {
           order: 1;
         }
       }
       &--primary {
         order: 1;
-        @include breakpoint(lg) {
+        @include breakpoint(xl) {
           order: 2;
         }
       }

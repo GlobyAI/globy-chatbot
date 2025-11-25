@@ -9,7 +9,8 @@ import { SENDER } from "~/types/enums";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
-
+import MenuIcon from "/icons/menu.svg";
+import useAppStore from "~/stores/appStore";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -23,15 +24,28 @@ function Chat() {
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
+  const setHasNews = useAppStore(s => s.setHasNews)
+  const hasNews = useAppStore(s => s.hasNews)
+
   const [show, setShow] = useState(true)
-  const toggleSidebar = () => {
+  const handleCloseSidebar = () => {
+    setShow(false)
+  }
+  const handleOpenSidebar = () => {
+    setShow(true)
+    setHasNews(false)
+  }
+  const handleToggle = () => {
     setShow(prev => !prev)
   }
 
   return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
-    <Sidebar toggleSidebar={toggleSidebar} />
+    <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />
     <div className="chat-window" >
       <div className="heading">
+        <span className={`menu-icon ${hasNews ? 'news' : ''}`}>
+          <img src={MenuIcon} onClick={handleOpenSidebar} />
+        </span>
         <div className="heading__brand">
           <strong>Globy.ai </strong>
           <small>Onboarding</small>

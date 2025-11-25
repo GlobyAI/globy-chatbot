@@ -42,21 +42,40 @@
 
 .color-palette {
   display: flex;
-  flex-direction: row; //  Changed from column to row
+  flex-direction: row;
   align-items: center;
   gap: 0.8rem;
   width: 100%;
-  flex-wrap: wrap; //  Allow wrapping if needed
+  flex-wrap: wrap;
 }
 
 .color-palette-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
-  height: 100%;
-  padding: 0.6rem;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  
+  img {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+  }
+}
+
+
+.color-palette-remove-item {
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
   background: #212325; 
   box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
-  margin-left: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
 }
 
 .color-palette-item {

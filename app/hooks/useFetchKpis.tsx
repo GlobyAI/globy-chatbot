@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { fetchKpis } from '~/services/appApis'
 import { useAppContext } from '~/providers/AppContextProvider'
 import { useWebSocketStore } from '~/stores/websocketStore'
@@ -11,8 +11,14 @@ export function useFetchKpis() {
   const prevConfidence = useRef<number>(-1)
   const isConnected = useWebSocketStore.getState().isConnected
   const lastMessage = useWebSocketStore.getState().lastMessage
+  const retryTimer = useRef<NodeJS.Timeout | null>(null)
+
   useEffect(() => {
-    
+    if (retryTimer.current) {
+      clearTimeout(retryTimer.current)
+      retryTimer.current = null
+    }
+
     if (!userId || (lastMessage && lastMessage.type !== MessageType.ASSISTANT_DONE)) {
       return;
     }
@@ -23,12 +29,13 @@ export function useFetchKpis() {
       try {
         const kpis = await fetchKpis(userId);
         const newConfidence = kpis.data.kpis.confidence
-        if(newConfidence !== prevConfidence.current){
-          prevConfidence.current= newConfidence
+        if (newConfidence !== prevConfidence.current) {
+          prevConfidence.current = newConfidence
           setConfidence(kpis.data.kpis.confidence);
-        }else{
-          setTimeout(loadKpis,3000)
+        } else {
+          retryTimer.current = setTimeout(loadKpis, 3000)
         }
+
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);
         setConfidence(0);
@@ -37,13 +44,12 @@ export function useFetchKpis() {
       }
     };
 
-    const seconds = isConnected && lastMessage ? 3000:0
-    setTimeout(() => {
-      if (isConnected) {
-        loadKpis();
-      }
-    }, seconds)
+    if (isConnected) {
+      loadKpis();
+    }
   }, [userId, lastMessage, isConnected]);
 
-  return { confidence };
+  const hasIncreasedConfidence = useMemo(() => confidence > 0 && confidence >= prevConfidence.current, [confidence])
+
+  return { confidence, hasIncreasedConfidence };
 }

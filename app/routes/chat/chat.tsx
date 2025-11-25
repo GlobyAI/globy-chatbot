@@ -6,7 +6,7 @@ import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";

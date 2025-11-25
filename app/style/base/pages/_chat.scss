@@ -196,7 +196,6 @@
       position: sticky;
       bottom: 0;
       width: 100%;
-      z-index: 1000;
       padding-bottom: 4rem;
       min-height: 0;
       height: fit-content;
@@ -211,5 +210,13 @@
       //   }
       // }
     }
+  }
+}
+
+.redirecting {
+  @include flex(center, center, column, 1.2rem);
+
+  > p {
+    @include text($white-2, 500, $text-lg);
   }
 }

@@ -8,56 +8,150 @@
   height: 100%;
   padding: 2.4rem 1.6rem;
   background-color: $black-900;
-  display: none;
-  @include breakpoint(lg) {
-    @include flex(flex-start, flex-start, column, 2.4rem);
+  z-index: 9999;
+  @include breakpoint(xl) {
+    padding: 2.4rem 1.6rem;
   }
-
+  @include flex(flex-start, flex-start, column, 2.4rem);
+  
   &__toggle-icon {
     z-index: 100;
     cursor: pointer;
     background-color: $black-900;
     position: absolute;
-    top: 3rem;
+    top: 4rem;
     right: -1.2rem;
     border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
     border: 1px solid $gray-800;
     @include box(2.8rem, 2.8rem);
-    @include flex(center, center);
+    @include breakpoint(xl) {
+      display: flex;
+    }
     > img {
-      transform: rotate(180deg);
-      @include box(1.6rem, 1.6rem);
+      transform: scale(0.65);
+      @include box(100%, 100%);
+    }
+  }
+  &__close {
+    z-index: 100;
+    cursor: pointer;
+    background-color: $black-900;
+    position: absolute;
+    top: 3rem;
+    right: 1.6rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+    @include box(1.8rem, 1.8rem);
+    @include breakpoint(xl) {
+      display: none;
+    }
+    > img {
+      @include box(100%, 100%);
     }
   }
   &__logo {
     text-align: left;
     width: 100%;
-    img{
+    img {
       object-fit: cover;
-      @include box(2.8rem, 3.2rem);
+      @include box(2.1rem, 2.4rem);
+      @include breakpoint(xl) {
+        @include box(2.8rem, 3.2rem);
+      }
     }
   }
+
   &__styles {
-    margin: 4.4rem 0;
+    margin:auto;
     flex: 1;
     width: 100%;
+    min-height: 0;
+    overflow-y: hidden;
     @include flex(flex-start, flex-start, column, 2.4rem);
-    .upload-logo{
-      width: 100%;
-      @include flex(flex-start, flex-start, column, 0.8rem);
-      > b{
-        @include text($gray-100, 400,$text-sm);
-      }
-      > p{
-        @include text($gray-300, 400,$text-sm);
-      }
+    input[type="checkbox"]:checked ~ .style-options {
+      visibility: visible;
+      opacity: 1;
+      display: flex;
+    }
+    input[type="checkbox"]:checked ~ .style-toggle > img {
+      transform: rotate(180deg);
+    }
+    @include breakpoint(xl){
+    margin: 4.4rem 0 auto;
 
-      > label{
-        cursor: pointer;
+    }
+    .style-toggle {
+      cursor: pointer;
+      @include text($white-2, 500, $text-md);
+      @include flex(left, center, row, 0.4rem);
+    }
+
+    .style-options {
+      flex: 1;
+      min-height: 0;
+      padding-bottom: 2.4rem;
+      overflow-y: scroll;
+      display: none;
+      visibility: hidden;
+      opacity: 0;
+      @include flex(flex-start, flex-start, column, 2.4rem);
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .upload-logo {
+        width: 100%;
+        @include flex(flex-start, flex-start, column, 0.6rem);
+        > b {
+          @include text($gray-100, 400, $text-sm);
+        }
+        > p {
+          @include text($gray-300, 400, $text-sm);
+        }
+      }
+      .image-library {
+        width: 100%;
+        @include flex(flex-start, flex-start, column, 0.6rem);
+        > b {
+          @include text($gray-100, 400, $text-sm);
+        }
+        > p {
+          @include text($gray-300, 400, $text-sm);
+        }
+        .images {
+          width: 100%;
+        }
+      }
+      .uploaded-img {
         border-radius: 0.8rem;
-        background-color: $dark-gray;
         @include box(4.8rem, 4.8rem);
-        @include flex(center, center);
+        position: relative;
+        .close {
+          position: absolute;
+          z-index: 10;
+          top: 0.3rem;
+          right: 0.3rem;
+          cursor: pointer;
+          border: 1px solid $gray-500;
+          border-radius: 50%;
+          background-color: $black-900;
+          color: $white-2;
+          font-size: 1rem;
+          padding: 0.2rem;
+          width: 1.4rem;
+          height: 1.4rem;
+          @include flex(center, center);
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
   }
@@ -78,20 +172,54 @@
 
   &__settings {
     margin-top: auto;
-    padding: 0.6rem;
-    @include flex(left, center, row, 1.2rem);
-    .user-avatar {
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
-      object-fit: contain;
-    }
-    .user-info {
-      > strong {
-        @include text($white, 400, $text-md);
+    position: relative;
+    .profile {
+      cursor: pointer;
+      @include flex(left, center, row, 1.2rem);
+      .user-avatar {
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        object-fit: contain;
+        @include breakpoint(xl){
+          width: 4rem;
+          height: 4rem;
+
+        }
       }
-      > p {
-        @include text($white, 400, $text-sm);
+      .user-info {
+        > strong {
+          @include text($white-2, 400, $text-md);
+        }
+        > p {
+          @include text($gray-100, 400, $text-sm);
+        }
+      }
+    }
+
+    .settings {
+      z-index: 100;
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      box-shadow: 0px 3px 10px 1px rgba($color: $black-900, $alpha: 0.4);
+      background-color: $black-500;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 1.2rem;
+      display: none;
+      &.open {
+        display: block;
+      }
+      p {
+        height: 4rem;
+        cursor: pointer;
+        padding: 0.2rem 0.8rem;
+        @include flex(left, center, row, 0.4rem);
+        @include text($white-2, 400, $text-sm);
+        > img {
+          @include box(1.8rem, 1.8rem);
+        }
       }
     }
   }

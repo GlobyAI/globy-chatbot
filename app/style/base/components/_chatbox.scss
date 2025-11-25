@@ -4,7 +4,7 @@
   max-width: 78.4rem;
   margin: 0 auto;
   width: 100%;
-  border-radius: 2rem;
+  border-radius: 99rem;
   background-color: $dark-gray;
   box-shadow: 0px 6px 20px 0px rgba($color: $black-950, $alpha: 0.4);
   max-height: 28.2rem;
@@ -15,13 +15,16 @@
 
   &.has-image {
     padding: 0 1.2rem 1.2rem;
+    border-radius: 2rem;
     .textfield {
+      margin-top: 1.2rem;
       textarea {
         bottom: 2.4rem;
         padding: 0 7.2rem;
       }
     }
     .chat-box__actions {
+      padding: 0;
       width: 100%;
       // background-color: $dark-gray;
       .icons {
@@ -41,6 +44,7 @@
     border-radius: 2rem;
     padding: 0 1.2rem 1.2rem;
     .textfield {
+      margin-top: 1.2rem;
       textarea {
         position: relative;
         left: unset;
@@ -51,6 +55,7 @@
     .chat-box__actions {
       width: 100%;
       background-color: $dark-gray;
+      padding: 0;
       .icons {
         &--plus {
           background-color: $gray-900;
@@ -65,12 +70,13 @@
   }
   .textfield {
     order: 1;
-    flex: 1;  
+    flex: 1;
     overflow: scroll;
     width: 100%;
     height: auto;
     display: block;
     overflow-x: hidden;
+    margin-top: 0;
     &::-webkit-scrollbar {
       width: 3px;
     }
@@ -97,7 +103,7 @@
         height: 5.8rem;
         min-width: 5.8rem;
 
-        @include breakpoint(lg) {
+        @include breakpoint(xl) {
           border-radius: 1.2rem;
           height: 13rem;
           min-width: 13rem;
@@ -150,7 +156,7 @@
       }
     }
     textarea {
-      padding: 0 6rem;
+      padding: 0 5rem;
       position: absolute;
       bottom: 1.2rem;
       left: 0;
@@ -166,6 +172,9 @@
       white-space: pre-wrap;
       resize: none;
       @include text($white-2, 400, $text-md);
+      @include breakpoint(xl) {
+        padding: 0 6rem;
+      }
       &::-webkit-scrollbar {
         display: none;
       }
@@ -182,22 +191,39 @@
     pointer-events: none;
     order: 2;
     z-index: 0;
-    height: 4.8rem;
+    min-height: 4.8rem;
+    height: auto;
+    padding: 0.2rem 0.4rem;
     @include flex(space-between, center);
+    @include breakpoint(xl) {
+      padding: 0;
+    }
     .icons {
       pointer-events: all;
       border-radius: 50%;
       padding: 1.2rem;
       z-index: 100;
       position: relative;
-      @include box(4.8rem, 4.8rem);
+      @include flex(center, center);
+      @include box(4rem, 4rem);
+      @include breakpoint(xl) {
+        @include box(4.8rem, 4.8rem);
+      }
       &--plus {
         order: 2;
+        background-color: $gray-900;
         cursor: pointer;
+        @include breakpoint(xl) {
+          background-color: transparent;
+        }
       }
       &--send {
+        background-color: $gray-900;
         order: 4;
         cursor: not-allowed;
+        @include breakpoint(xl) {
+          background-color: transparent;
+        }
       }
       &.open {
         .options-popup {
@@ -230,39 +256,5 @@
         }
       }
     }
-  }
-}
-
-.circular-progress {
-  --percent: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
-  border-radius: 50%;
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: conic-gradient(
-      $white calc(var(--percent) * 3.6deg),
-      $gray-500 0deg
-    );
-    -webkit-mask: radial-gradient(
-      farthest-side,
-      transparent calc(100% - 0.4rem),
-      $black-700 calc(100% - 0.4rem + 1px)
-    );
-    mask: radial-gradient(
-      farthest-side,
-      transparent calc(100% - 0.4rem),
-      $black-700 calc(100% - 0.4rem + 1px)
-    );
   }
 }

@@ -2,25 +2,7 @@
 
 .redirecting {
   @include flex(flex-start, center, column, 1.2rem);
-  .loader {
-    width: 7rem;
-    padding: 8px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: $purple;
-    --_m:
-      conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
-    -webkit-mask: var(--_m);
-    mask: var(--_m);
-    -webkit-mask-composite: source-out;
-    mask-composite: subtract;
-    animation: l3 1s infinite linear;
-  }
-  @keyframes l3 {
-    to {
-      transform: rotate(1turn);
-    }
-  }
+ 
   > p {
     @include text($white-2, 500, $text-lg);
   }
@@ -33,7 +15,7 @@
   border-top-right-radius: 5rem;
   padding: 2.8rem 1.8rem 1.8rem;
   background-color: $black-900;
-  @include breakpoint(lg) {
+  @include breakpoint(xl) {
     border-radius: 2rem;
     margin: auto;
     padding: 3.2rem;
@@ -56,17 +38,16 @@
       @include text($white-2, 600, $text-xl);
     }
     > p {
+      text-align: center;
       margin: 0.6rem 0 1.6rem;
       @include text($gray-100, 400, $text-md, 2.4rem);
     }
-    > span {
-      @include text($gray-300, 400, $text-xs, 1.6rem);
-    }
+    
   }
   &__btns {
     width: 100%;
     @include flex(left, center, column, 1.6rem);
-    @include breakpoint(lg) {
+    @include breakpoint(xl) {
       @include flex(left, center, row, 1.6rem);
     }
     .btn {
@@ -77,13 +58,13 @@
         order: 2;
         border: none;
         background-color: $dark-gray;
-        @include breakpoint(lg) {
+        @include breakpoint(xl) {
           order: 1;
         }
       }
       &--primary {
         order: 1;
-        @include breakpoint(lg) {
+        @include breakpoint(xl) {
           order: 2;
         }
       }

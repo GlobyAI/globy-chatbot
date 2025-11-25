@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 type Props = {
     value: any;
     textareaRef: React.RefObject<HTMLTextAreaElement | null>;
-    containerRef: React.RefObject<HTMLDivElement | null>;
+    containerRef: React.RefObject<HTMLLabelElement | null>;
     hasImage: boolean
 }
     ;
@@ -27,7 +27,9 @@ export default function useResizeTextarea({
                 if (hasImage) {
                     container.classList.remove('has-image')
                 }
-                container.classList.add('has-value')
+                if (h > 24) {
+                    container.classList.add('has-value')
+                }
             } else {
                 if (hasImage) {
                     container.classList.add('has-image')

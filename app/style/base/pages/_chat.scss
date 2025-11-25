@@ -9,20 +9,23 @@
     display: none;
   }
   &.hide {
-    @include breakpoint(lg) {
+    .sidebar {
+      display: none;
+    }
+    @include breakpoint(xl) {
       .sidebar {
+        display: flex;
         width: 8rem;
         &__logo {
           text-align: center;
         }
         &__toggle-icon {
           > img {
-            transform: rotate(0);
+            transform: rotate(180deg) scale(0.65);
           }
         }
         &__quality-score {
-          visibility: hidden;
-          opacity: 0;
+          display: none;
         }
         &__settings {
           overflow-x: hidden;
@@ -30,6 +33,9 @@
             visibility: hidden;
             opacity: 0;
           }
+        }
+        &__styles {
+          display: none;
         }
       }
       .chat-window {
@@ -43,7 +49,7 @@
     padding: 0 1.6rem;
     height: 100%;
     @include flex(flex-start, flex-start, column);
-    @include breakpoint(lg) {
+    @include breakpoint(xl) {
       margin-left: 34.5rem;
     }
     .heading {
@@ -53,25 +59,54 @@
       z-index: 1;
       @include position(sticky, 0, null, null, null);
       @include flex(space-between, center);
-      @include breakpoint(lg) {
+      @include breakpoint(xl) {
         height: 9.6rem;
+      }
+      .menu-icon {
+        position: relative;
+        margin: auto 0;
+        display: block;
+        @include breakpoint(xl) {
+          display: none;
+        }
+        > img {
+          @include box(2.4rem, 2.4rem);
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+          border-radius: 50%;
+          background: $purple;
+          @include box(1rem, 1rem);
+        }
+        &.news {
+          &::after {
+            display: block;
+          }
+        }
       }
       &__brand {
         flex: 1;
         height: 100%;
         @include flex(center, center, column);
         > strong {
-          @include text($white, 500, $text-lg);
+          @include text($white-2, 500, $text-lg);
         }
         > small {
           @include text($gray-300, 400, $text-sm);
         }
       }
       .move-on {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
+        position: relative;
+        @include breakpoint(xl) {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+        }
         button {
           margin: auto;
           background-color: transparent;
@@ -83,23 +118,23 @@
           &:hover {
             background-color: $purple;
           }
-          @include breakpoint(lg) {
+          @include breakpoint(xl) {
             border-radius: 2rem;
             width: auto;
             padding: 0.8rem 1.2rem;
           }
-          @include text($white, 400, $text-md);
+          @include text($white-2, 400, $text-md);
           @include flex(center, center, row, 0.4rem);
           p {
             display: none;
-            @include breakpoint(lg) {
+            @include breakpoint(xl) {
               display: block;
             }
           }
           img {
             display: block;
             @include box(2.4rem, 2.4rem);
-            @include breakpoint(lg) {
+            @include breakpoint(xl) {
               display: none;
             }
           }
@@ -138,7 +173,11 @@
             }
           }
           &--user {
+            max-width: 80%;
             margin-left: auto;
+            @include breakpoint(xl) {
+              max-width: 70%;
+            }
             .message__logo {
               visibility: hidden;
             }
@@ -146,7 +185,7 @@
               border-radius: 1.2rem;
               padding: 1.2rem;
               font-size: $text-lg;
-              color: $white;
+              color: $white-2;
               background-color: $dark-purple;
             }
           }
@@ -167,7 +206,7 @@
       // .continue {
       //   width: 100%;
       //   display: none;
-      //   @include breakpoint(lg) {
+      //   @include breakpoint(xl) {
       //     @include flex(center, center, row, 2.4rem);
       //   }
       // }

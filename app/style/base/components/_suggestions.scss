@@ -38,7 +38,7 @@
     cursor: pointer;
     margin-bottom: 4px;
     opacity: 0.8;
-    @include text($white, 400, 12px, 20px);
+    @include text($white-2, 400, 12px, 20px);
     @include flex(left, center, row, 4px);
     > svg {
       margin-top: 2px;

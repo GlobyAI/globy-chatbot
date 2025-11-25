@@ -1,0 +1,52 @@
+@use "../../abstracts" as *;
+
+.slider {
+  width: 100%;
+  overflow: visible;
+  position: relative;
+  &__container {
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__pagination {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      266.18deg,
+      #02080f 3.13%,
+      rgba(2, 8, 15, 0) 127.09%
+    );
+    height: 100%;
+    z-index: 100;
+    width: 3rem;
+    @include flex(center, center);
+    > .pagination-icon {
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: $dark-gray;
+      @include flex(center, center);
+      @include box(2.4rem, 2.4rem);
+      > img{
+        
+        @include box(1.6rem, 1.6rem);
+      }
+    }
+    &.left {
+      left: 0;
+      transform: translateY(-50%) rotate(180deg);
+    }
+    &.right {
+      right: 0;
+    }
+  }
+}

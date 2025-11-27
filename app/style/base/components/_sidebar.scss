@@ -1,5 +1,5 @@
 @use "../../abstracts" as *;
-.sidebar-overlay{
+.sidebar-overlay {
   content: "";
   display: block;
   position: fixed;
@@ -9,7 +9,7 @@
   height: 100%;
   z-index: 100;
   background-color: rgba($color: $black-950, $alpha: 0.25);
-  @include breakpoint(xl){
+  @include breakpoint(xl) {
     display: none;
   }
 }
@@ -23,13 +23,24 @@
   padding: 2.4rem 1.6rem;
   background-color: $black-900;
   z-index: 9999;
-  
-  @include flex(flex-start, flex-start, column, 0.8rem);
-  @include breakpoint(sm){
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+  border-top-right-radius: 1.6rem;
+  border-bottom-right-radius: 1.6rem;
+  @include flex(flex-start, flex-start, column, 1.6rem);
+  @include breakpoint(sm) {
     max-width: 34.5rem;
   }
   @include breakpoint(xl) {
     z-index: 0;
+    opacity: unset;
+    visibility: unset;
+    transition: unset;
+    transform: unset;
+    border-radius: 0;
+    transform: unset;
     padding: 2.4rem 1.6rem;
     @include flex(flex-start, flex-start, column, 2.4rem);
   }

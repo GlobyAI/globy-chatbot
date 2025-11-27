@@ -14,7 +14,7 @@
   }
 }
 .sidebar {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -23,10 +23,13 @@
   padding: 2.4rem 1.6rem;
   background-color: $black-900;
   z-index: 9999;
+  
   @include flex(flex-start, flex-start, column, 0.8rem);
+  @include breakpoint(sm){
+    max-width: 34.5rem;
+  }
   @include breakpoint(xl) {
     z-index: 0;
-    max-width: 34.5rem;
     padding: 2.4rem 1.6rem;
     @include flex(flex-start, flex-start, column, 2.4rem);
   }

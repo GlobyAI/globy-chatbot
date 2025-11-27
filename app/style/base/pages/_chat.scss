@@ -9,10 +9,14 @@
     display: none;
   }
   &.hide {
+    .sidebar-overlay {
+      display: none;
+    }
     .sidebar {
       display: none;
     }
     @include breakpoint(xl) {
+      
       .sidebar {
         display: flex;
         width: 8rem;

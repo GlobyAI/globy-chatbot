@@ -10,11 +10,12 @@ type Props = {
     onChange?: (color: RgbaColor) => void
     onSelectionChange?: (selectedColors: string[]) => void
     maxColors?: number
+    preSelectedColors?: string[]
 }
 
 const DEFAULT_COLOR = '#420A7F'
 
-export default function ColorPicker({ value, onChange, onSelectionChange, maxColors = 2 }: Props) {
+export default function ColorPicker({ value, onChange, onSelectionChange, maxColors = 2, preSelectedColors = [] }: Props) {
     // State management
     const [show, setShow] = useState(false)
     const [opacity, setOpacity] = useState<string>('100')
@@ -38,6 +39,11 @@ export default function ColorPicker({ value, onChange, onSelectionChange, maxCol
             setOpacity(convertAlphaToPercent(hsvaColor.a).toString())
         }
     }, [value])
+
+    useEffect(() => {
+        setSelectedColors(preSelectedColors)
+        setActiveColorIndex(selectedColors.length)
+    }, [preSelectedColors])
 
     // Handle clicks outside to close picker
     useEffect(() => {

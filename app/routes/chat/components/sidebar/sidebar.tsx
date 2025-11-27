@@ -11,6 +11,7 @@ import ImageLibrary from './image-library'
 import useUploadLogo from '~/hooks/useUploadLogo'
 import Profile from './profile'
 import { useClickOutside } from '~/hooks/useClickOutsite'
+import { useUserColorPreferences} from '~/hooks/useUserColorPreferences'
 import { useEffect, useRef, useState } from 'react'
 
 type Props = {
@@ -32,6 +33,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
     const { onUploadFile, pct, uploadedImages, onDeleteImage, isUploading, logo } = useUploadLogo()
     const sideBarRef = useRef<HTMLDivElement>(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < LARGE_SCREEN_WIDTH)
+    const { userColorPreferences } = useUserColorPreferences()
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < LARGE_SCREEN_WIDTH) {
@@ -69,11 +71,14 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                 </label>
                 <div className="style-options">
                     <div className='sidebar__color-picker'>
-                        <ColorPicker onSelectionChange={(selectedColors) => {
-                            if (userId && selectedColors) {
-                                postSelectedColor(userId, selectedColors, '')
-                            }
-                        }}/>
+                        <ColorPicker  
+                            preSelectedColors={userColorPreferences}
+                            onSelectionChange={(selectedColors) => {
+                                if (userId && selectedColors) {
+                                    postSelectedColor(userId, selectedColors, '')
+                                }
+                            }}
+                        />
                     </div>
                     <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} />
                     <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />

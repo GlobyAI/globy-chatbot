@@ -3,7 +3,6 @@ import axiosInstance from "./axiosInstance";
 import { MESSAGE_LIMIT } from "~/utils/vars";
 import type { HistoryResponse, ImageLibraryResponse, KpisResponse, UploadedImage } from "~/types/models";
 import type { AxiosResponse } from "axios";
-import axios from "axios";
 import { envConfig } from "~/utils/envConfig";
 
 export function completeWorkFlow(userId: string) {
@@ -41,7 +40,24 @@ export function fetchKpis(userId: string): Promise<KpisResponse> {
     })
 }
 
-export interface ColorsPreferencesResponse {
+export interface GetColorsPreferencesResponse {
+     data: {
+        user_id: string,
+        data: {
+            colors: string[],
+            prompt: string
+        }
+    }
+}
+
+export function fetchUserColorPreferences(userId: string): Promise<GetColorsPreferencesResponse> {
+    return axiosInstance({
+       url: `/chatbot/v1/colors?user_id=${userId}`,
+       method: "GET" 
+    })
+}
+
+export interface PostColorsPreferencesResponse {
      user_id: string,
      data: {
         "colors": string[],
@@ -49,7 +65,7 @@ export interface ColorsPreferencesResponse {
     }
 }
 
-export function setUserColorPreferences(userId: string, colors: string[], prompt: string): Promise<ColorsPreferencesResponse> {
+export function setUserColorPreferences(userId: string, colors: string[], prompt: string): Promise<PostColorsPreferencesResponse> {
     return axiosInstance({
         url: `/chatbot/v1/colors`,
         method: "POST",
@@ -66,5 +82,4 @@ export function fetchImageLibrary(userId: string): Promise<AxiosResponse<ImageLi
         baseURL: `${envConfig.IMAGE_LIBRARY_API}/images?bucket=globylibrary-${userId}`,
         method: "GET",
     })
-
 }

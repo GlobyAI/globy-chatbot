@@ -21,7 +21,7 @@ export default function ColorPicker({ value, onChange, onSelectionChange, maxCol
     const [text, setText] = useState(DEFAULT_COLOR)
     const [hsva, setHsva] = useState<HsvaColor>(() => hexToHsva(DEFAULT_COLOR))
     const [position, setPosition] = useState({ top: 0, left: 0 })
-    const [selectedColors, setSelectedColors] = useState<string[]>([DEFAULT_COLOR])
+    const [selectedColors, setSelectedColors] = useState<string[]>([])
     const [activeColorIndex, setActiveColorIndex] = useState<number>(0)
     
     // Refs
@@ -202,12 +202,18 @@ export default function ColorPicker({ value, onChange, onSelectionChange, maxCol
 
     const handleRemoveColor = useCallback((index: number, e: React.MouseEvent) => {
         e.stopPropagation()
-        
         if (selectedColors.length > 0) {
             const newColors = selectedColors.filter((_, i) => i !== index)
             setSelectedColors(newColors)
+
+            if(newColors.length === 0) {
+                if (onSelectionChange) {
+                    onSelectionChange(newColors)
+                }
+                return;
+            }
             
-            const newActiveIndex = index === 0 ? 0 : index - 1
+            const newActiveIndex = index === 1 ? 0 : index - 1
             setActiveColorIndex(newActiveIndex)
             
             const activeColor = newColors[newActiveIndex]

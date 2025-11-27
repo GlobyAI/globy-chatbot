@@ -33,7 +33,7 @@
   align-items: center;
   gap: 0.6rem;
   align-self: stretch;
-  @include text($gray-100, 400, $text-sm);
+  @include text($gray-100, 400, $text-sm, 0);
 }
 
 .flex {
@@ -82,46 +82,22 @@
   position: relative;
   display: flex;
   border-radius: 0.5rem;
-  padding: 0.6rem;
+  padding: 0.5rem;
   background: #212325; 
   box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
   align-items: center;
   gap: 0.6rem;
   width: 10rem;
-  @include text($gray-100, 400, $text-sm);
+  @include text($gray-100, 400, $text-sm, 0);
 
 
   .color-text {
     flex: 1;
   }
-
-  // .remove-color-btn {
-  //   position: absolute;
-  //   top: -0.6rem;
-  //   right: -0.6rem;
-  //   width: 1.6rem;
-  //   height: 1.6rem;
-  //   border-radius: 50%;
-  //   // background: #ef4444;
-  //   border: 0.2rem solid $black-900;
-  //   // color: $white;
-  //   font-size: 1.4rem;
-  //   font-weight: bold;
-  //   cursor: pointer;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   line-height: 1;
-  //   transition: all 0.2s ease;
-  //   padding: 0;
-
-  // }
 }
 
 .add-color-btn {
-  height: 2.8rem;
-  padding: 2px 6px;
-
+  padding: 0.5rem;
   border-radius: 0.8rem;
   font-size: 1.6rem;
   background: transparent;
@@ -133,22 +109,6 @@
   justify-content: center;
   transition: all 0.2s ease;
 
-  &:focus {
-    outline: 0.2rem solid $dark-purple;
-    outline-offset: 0.2rem;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    
-    &:hover {
-      border-color: rgba($white, 0.3);
-      color: rgba($white, 0.6);
-      background: transparent;
-      transform: none;
-    }
-  }
 }
 
 .color-picker-overlay {

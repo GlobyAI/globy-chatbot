@@ -14,7 +14,6 @@ export function useFetchKpis() {
   const lastMessage = useWebSocketStore.getState().lastMessage
   const setHasNews = useAppStore(s => s.setHasNews)
   const retryTimer = useRef<NodeJS.Timeout | null>(null)
-
   useEffect(() => {
     if (retryTimer.current) {
       clearTimeout(retryTimer.current)
@@ -35,6 +34,7 @@ export function useFetchKpis() {
           prevConfidence.current = newConfidence
           setHasNews(true)
           setConfidence(kpis.data.kpis.confidence);
+          retryTimer.current = null
         } else {
           retryTimer.current = setTimeout(loadKpis, 3000)
         }

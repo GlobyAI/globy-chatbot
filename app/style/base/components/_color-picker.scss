@@ -1,51 +1,226 @@
 @use "../../abstracts" as *;
 
 .globy-color-picker {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 0.1rem solid rgba($white, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+
+  &:hover {
+    border-color: rgba($white, 0.4);
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 0.2rem solid $dark-purple;
+    outline-offset: 0.2rem;
+  }
+
+  &.active {
+    border-color: $dark-purple;
+    box-shadow: 0 0 0 0.2rem rgba($dark-purple, 0.3);
+  }
 }
+
+.color-picker-selector-area {
+  display: flex;
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+  background: #212325; 
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+  align-items: center;
+  gap: 0.6rem;
+  align-self: stretch;
+  @include text($gray-100, 400, $text-sm, 0);
+}
+
+.flex {
+    display: flex;
+}
+
+.color-palette {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.color-palette-remove-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  
+  img {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+  }
+}
+
+
+.color-palette-remove-item {
+  display: flex;
+  margin-left: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  background: #212325; 
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+  border-radius: 0.4rem;
+}
+
+.color-palette-item {
+  position: relative;
+  display: flex;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background: #212325; 
+  box-shadow: 0 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.25);
+  align-items: center;
+  gap: 0.6rem;
+  width: 10rem;
+  @include text($gray-100, 400, $text-sm, 0);
+
+
+  .color-text {
+    flex: 1;
+  }
+}
+
+.add-color-btn {
+  padding: 0.5rem;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  background: transparent;
+  color: $white;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+}
+
+.color-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
 .color-picker-wrapper {
-  position: absolute;
-  right: 50%;
-  top:0;
-  transform: translateX(50%);
   z-index: 9999;
   background-color: $black-900;
-  padding: 10px;
-  width: 200px;
-  box-shadow: 0px 4px 10px 0px #00000040;
-  border: 1px solid rgba($color: $white, $alpha: 0.1);
-  border-radius: 15px;
-  @include flex(flex-start, normal, column, 10px);
+  padding: 1rem;
+  width: 20rem;
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.6);
+  border: 0.1rem solid rgba($white, 0.1);
+  border-radius: 1.5rem;
+  @include flex(flex-start, normal, column, 1rem);
+
+  @include breakpoint(xs) {
+    width: 18rem;
+  }
+
   > .w-color-interactive {
     width: 100% !important;
-    height: 150px !important;
-    border-radius: 10px !important;
+    height: 15rem !important;
+    border-radius: 1rem !important;
   }
+
   .slides {
     width: 100%;
-    padding: 0 10px;
-    @include flex(flex-start, normal, column, 8px);
+    @include flex(flex-start, normal, column, 0.8rem);
+
+    .w-color-hue,
     .w-color-alpha {
-      border-radius: 20px;
+      border-radius: 2rem !important;
+      height: 1.2rem !important;
     }
   }
 
   .color-input {
     width: 100%;
-    margin-top: 15px;
-    @include flex(flex-start, center, row, 4px);
-    > span {
-      margin-right: 4px;
-      @include text($white-2, 400, 12px);
+    margin-top: 0.5rem;
+    @include flex(space-between, stretch, row, 0.8rem);
+
+    @include breakpoint(xs) {
+      @include flex(flex-start, stretch, column, 0.8rem);
     }
-    input {
-      border: none;
-      outline: none;
-      box-shadow: none !important;
-      color: $white-2 !important;
-      opacity: 0.9;
-      font-size: 12px !important;
+
+    &__field {
+      flex: 1;
+      @include flex(flex-start, flex-start, column, 0.4rem);
+
+      label {
+        @include text(rgba($white-2, 0.7), 400, 1rem);
+
+        @include breakpoint(xs) {
+          font-size: 0.9rem;
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border: 0.1rem solid rgba($white, 0.1);
+        border-radius: 0.6rem;
+        background-color: rgba($white, 0.05);
+        outline: none;
+        box-shadow: none !important;
+        @include text($white-2, 400, 1.2rem);
+        transition: all 0.2s ease;
+
+        &:focus {
+          border-color: $dark-purple;
+          background-color: rgba($white, 0.08);
+        }
+
+        &::placeholder {
+          color: rgba($white-2, 0.4);
+        }
+
+        @include breakpoint(xs) {
+          font-size: 1.1rem;
+          padding: 0.5rem 0.7rem;
+        }
+      }
+    }
+
+    .input-with-suffix {
+      position: relative;
+      width: 100%;
+
+      input {
+        padding-right: 2.5rem;
+      }
+
+      .input-field__icon {
+        position: absolute;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        @include text(rgba($white-2, 0.6), 500, 1.2rem);
+        pointer-events: none;
+
+        @include breakpoint(xs) {
+          font-size: 1.1rem;
+        }
+      }
     }
   }
 }

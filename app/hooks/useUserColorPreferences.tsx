@@ -15,7 +15,7 @@ export const useUserColorPreferences = () => {
         const fetchColors = async(userId: string) => {
             try {
                 const userColors = await fetchUserColorPreferences(userId);
-                setUserColorPreferences(userColors.data.data.colors)
+                setUserColorPreferences(userColors.data.data.colors || [])
             } catch(err) {
                 console.log(err);
             }

@@ -220,7 +220,7 @@
       &--send {
         background-color: $gray-900;
         order: 4;
-        cursor: not-allowed;
+        cursor: pointer;
         @include breakpoint(xl) {
           background-color: transparent;
         }

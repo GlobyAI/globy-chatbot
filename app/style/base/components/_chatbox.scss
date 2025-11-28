@@ -1,5 +1,9 @@
 @use "../../abstracts" as *;
 
+$min-h-lg: 6rem;
+$min-h-sm: 4.8rem;
+$textarea-h: 2.4rem;
+
 .chat-box {
   max-width: 78.4rem;
   margin: 0 auto;
@@ -15,7 +19,7 @@
 
   &.has-image {
     padding: 0 1.2rem 1.2rem;
-    border-radius: 2rem;
+    border-radius: 2rem !important;
     .textfield {
       margin-top: 1.2rem;
       textarea {
@@ -24,9 +28,22 @@
       }
     }
     .chat-box__actions {
-      padding: 0;
       width: 100%;
-      // background-color: $dark-gray;
+      .icons {
+        &--plus {
+          background-color: $gray-900;
+          cursor: pointer;
+        }
+        &--send {
+          background-color: $purple;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &.has-text {
+    .chat-box__actions {
+      width: 100%;
       .icons {
         &--plus {
           background-color: $gray-900;
@@ -158,14 +175,14 @@
     textarea {
       padding: 0 5rem;
       position: absolute;
-      bottom: 1.2rem;
+      bottom: calc(($min-h-sm - $textarea-h) / 2);
       left: 0;
       order: 2;
       display: block;
       box-sizing: border-box;
       width: 100%;
       height: auto;
-      min-height: 2.4rem !important;
+      min-height: $textarea-h !important;
       background-color: inherit;
       overflow-y: hidden;
       box-sizing: border-box;
@@ -174,6 +191,7 @@
       @include text($white-2, 400, $text-md);
       @include breakpoint(xl) {
         padding: 0 6rem;
+        bottom: calc(($min-h-lg - $textarea-h) / 2);
       }
       &::-webkit-scrollbar {
         display: none;
@@ -196,7 +214,8 @@
     padding: 0.2rem 0.4rem;
     @include flex(space-between, center);
     @include breakpoint(xl) {
-      padding: 0;
+      padding: 0 0.4rem;
+      min-height: 6rem;
     }
     .icons {
       pointer-events: all;
@@ -205,7 +224,7 @@
       z-index: 100;
       position: relative;
       @include flex(center, center);
-      @include box(4rem, 4rem);
+      @include box(3.2rem, 3.2rem);
       @include breakpoint(xl) {
         @include box(4.8rem, 4.8rem);
       }
@@ -218,7 +237,7 @@
         }
       }
       &--send {
-        background-color: $gray-900;
+        background-color: transparent;
         order: 4;
         cursor: pointer;
         @include breakpoint(xl) {

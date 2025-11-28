@@ -17,11 +17,11 @@ export default function AuthProvider({ children }: Props) {
     return (
         <Auth0Provider
             domain={envConfig.AUTH0_DOMAIN || ""}
-            clientId={envConfig.AUTH0_CLIENT_ID|| ""}
+            clientId={envConfig.AUTH0_CLIENT_ID || ""}
             authorizationParams={{
                 redirect_uri: envConfig.APP_DOMAIN,
                 audience: envConfig.AUTH0_AUDIENCE,
-                scope: "openid profile email read:current_user"
+                scope: envConfig.AUTH0_SCOPE
             }}
             onRedirectCallback={onRedirectCallback}
             cacheLocation="memory"

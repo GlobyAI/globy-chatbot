@@ -1,0 +1,23 @@
+@use "../../abstracts/" as *;
+
+.btn {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 99rem;
+  height: 4.8rem;
+  min-width: 12rem;
+  padding: 1.2rem 1.6rem;
+  @include text($white, 500, $text-md);
+  &--primary {
+    background-color: $purple;
+  }
+  &--secondary {
+    border: 1px solid $purple;
+    background-color: $black-900;
+  }
+  &:disabled {
+    background-color: $gray-500 !important;
+    cursor: not-allowed;
+  }
+}

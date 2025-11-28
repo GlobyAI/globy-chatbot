@@ -1,42 +1,42 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, } from 'react'
 import TypingIndicator from '~/components/ui/TypingIndicator/TypingIndicator'
 import { useWebSocket } from '~/providers/WSProdivder'
 import { SENDER } from '~/types/enums'
-
+import ReactMarkdown from "react-markdown";
 
 export default function History() {
     const { messages, isPending } = useWebSocket()
 
     const targetRef = useRef<HTMLLIElement | null>(null); // Reference for auto-scroll
+    const chatRef = useRef<HTMLUListElement | null>(null); // Reference for auto-scroll
     const scrollToBottom = () => {
         if (targetRef.current) {
             targetRef.current?.scrollIntoView({ behavior: "smooth" });
         }
     }
-
     useEffect(() => {
-        if (messages.length > 0 && !isPending) {
-            scrollToBottom()
-        }
+        scrollToBottom();
     }, [messages])
     return (
-        <div className="chat">
-            <ul className="chat__history">
+        <div className="chat" >
+            <ul className="chat__history" ref={chatRef}>
                 {
                     messages.length > 0 && messages.map(msg => {
-                        const isUser = msg.sender === SENDER.USER
+                        const isUser = msg.role as SENDER === SENDER.USER
                         return (
-                            <li key={msg.message_id} className={`message ${isUser ? "message--user" : ''}`}>
+                            <li key={msg.message_id + msg.role} className={`message ${isUser ? "message--user" : 'markdown-body'}`}>
                                 {
                                     !isUser &&
                                     <div className="message__logo">
                                         <img src="/images/globy_symbol.png" alt="Globy avatar" />
-                                        Globy.ai
+                                        Globy
                                     </div>
                                 }
-                                <p className="message__content ">
-                                    {msg.content}
-                                </p>
+                                <div className="message__content " >
+                                    {
+                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                    }
+                                </div>
                             </li>
                         )
                     })

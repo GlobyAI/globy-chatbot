@@ -2,30 +2,19 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-import axios from "axios";
-import { createSale, getSales } from "~/services/saleApi";
-import { verifyUser } from "~/services/authApi";
+// import axios from "axios";
+// import { createSale, getSales } from "~/services/saleApi";
+import { verifyUser } from "~/services/authApis";
 import { updateAuth0AppMetadata } from "~/services/auth0Apis";
 import { envConfig } from "~/utils/envConfig";
+import useAppStore from "~/stores/appStore";
 
 interface AppContextType {
   userId: string | null;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  showVerifyEmailReminder: {
-    status: boolean;
-    authId: string;
-  };
 }
 
 export const AppContext = createContext<AppContextType>({
   userId: null,
-  isLoading: false,
-  setIsLoading: () => { },
-  showVerifyEmailReminder: {
-    status: false,
-    authId: "",
-  },
 });
 
 export default function AppContextProvider({
@@ -33,12 +22,8 @@ export default function AppContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [userId, setUserId] = useState<string | null>("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [showVerifyEmailReminder, setShowVerifyEmailReminder] = useState({
-    status: false,
-    authId: "",
-  });
+  const [userId, setUserId] = useState<string | null>(null);
+  const setIsLoading = useAppStore(s => s.setLoading)
   const {
     user,
     isAuthenticated,
@@ -85,67 +70,74 @@ export default function AppContextProvider({
             Object.fromEntries(
               Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
             ) || {};
-          const verifyUserRes = await verifyUser(token, payload || {});
-          const globyUserId = verifyUserRes?.data.user_id;
-          const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
-          const ref_id = user["https://globy.ai/ref_id"] || "";
+          try {
+            const verifyUserRes = await verifyUser(token, payload || {});
+            const globyUserId = verifyUserRes?.data.user_id;
+            const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
+            // const ref_id = user["https://globy.ai/ref_id"] || "";
+
+            // if (ref_id) {
+            //   try {
+            //     const saleRes = await getSales(token, ref_id, globyUserId);
+            //     if (saleRes.data.message === "NO_SALES_FOR_USER") {
+            //       await createSale(token, {
+            //         user_id: globyUserId,
+            //         ref_id,
+            //       });
+            //     }
+            //   } catch (err) {
+            //     if (axios.isAxiosError(err)) {
+            //       const message = err.response?.data.error
+            //       switch (message) {
+            //         case 'Message.BAD_REQUEST_UNKNOWN_REF':
+            //         case 'Message.SALE_ALREADY_EXISTS':
+            //           toast.error("Invalid Reference ID. Contact Globy support");
+            //           await updateAuth0AppMetadata(user.sub || "", {
+            //             app_metadata: {
+            //               ref_id: "",
+            //             },
+            //           });
+            //           setTimeout(() => {
+            //             sessionStorage.removeItem("appSession");
+            //             logout({
+            //               logoutParams: {
+            //                 returnTo:
+            //                   envConfig.LANDING_PAGE + "/auth/logout",
+            //               },
+            //             });
+            //           }, 2000);
+            //           break;
+            //         default:
+            //           toast.error(err.response?.data.message || 'Something wrong. Contact Globy support"');
+            //           break;
+            //       }
+            //     }else{
+            //       console.log('Sale error:',err)
+            //     }
+            //     return;
+            //   }
+            // }
+            // add globy id i auth0 metadata
+            if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
+              try {
+                await updateAuth0AppMetadata(user.sub || "", {
+                  user_metadata: { globy_id: globyUserId },
+                }, token);
+              } catch (error) {
+                console.log("Update Auth0 app metadata error:", error);
+              }
+            }
+
+            if (verifyUserRes.status === 200 && globyUserId) {
+              setUserId(globyUserId);
+
+            } else {
+              toast.error("missing user id on auth api");
+            }
+          } catch (error) {
+            console.log("Auth error:", error)
+          }
           // validate ref id och create sale record
-          if (ref_id) {
-            try {
-              const saleRes = await getSales(token, ref_id, globyUserId);
-              if (saleRes.data.message === "NO_SALES_FOR_USER") {
-                await createSale(token, {
-                  user_id: globyUserId,
-                  ref_id,
-                });
-              }
-            } catch (err) {
-              if (axios.isAxiosError(err)) {
-                const message = err.response?.data.error
-                switch (message) {
-                  case 'Message.BAD_REQUEST_UNKNOWN_REF':
-                  case 'Message.SALE_ALREADY_EXISTS':
-                    toast.error("Invalid Reference ID. Contact Globy support");
-                    await updateAuth0AppMetadata(user.sub || "", {
-                      app_metadata: {
-                        ref_id: "",
-                      },
-                    });
-                    setTimeout(() => {
-                      sessionStorage.removeItem("appSession");
-                      logout({
-                        logoutParams: {
-                          returnTo:
-                            envConfig.LANDING_PAGE + "/auth/logout",
-                        },
-                      });
-                    }, 2000);
-                    break;
-                  default:
-                    toast.error(err.response?.data.message || 'Something wrong. Contact Globy support"');
-                    break;
-                }
-              }
-              return;
-            }
-          }
-          // add globy id i auth0 metadata
-          if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
-            try {
-              await updateAuth0AppMetadata(user.sub || "", {
-                app_metadata: { globy_id: globyUserId },
-              });
-            } catch (error) {
-              console.log("error when adding globy id into auth0 user data");
-            }
-          }
-
-          if (verifyUserRes.status === 200 && globyUserId) {
-            setUserId(globyUserId);
-
-          } else {
-            toast.error("missing user id on auth api");
-          }
           // if (user.email_verified === false) {
           //   setIsLoading(false);
           //   setShowVerifyEmailReminder({
@@ -172,10 +164,7 @@ export default function AppContextProvider({
   return (
     <AppContext.Provider
       value={{
-        showVerifyEmailReminder,
         userId,
-        isLoading,
-        setIsLoading,
       }}
     >
       {children}

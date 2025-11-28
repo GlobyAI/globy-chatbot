@@ -1,22 +1,18 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN npm ci
+# Dockerfile
+FROM node:22-alpine
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
 WORKDIR /app
-RUN npm ci --omit=dev
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+# 1. Copy package files và cài deps
+COPY package*.json ./
+RUN npm install
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
-WORKDIR /app
-CMD ["npm", "run", "start"]
+# 2. Copy source code
+COPY . .
+
+
+# 5. Expose port trong container
+EXPOSE 3004
+
+# 6. Chạy server: react-router-serve ./build/server/index.js
+CMD ["npm", "run","dev"]

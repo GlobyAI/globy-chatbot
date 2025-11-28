@@ -4,98 +4,171 @@
   display: grid;
   width: 100%;
   height: 100%;
-  @include position(fixed, 0,0,0,0);
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-width: 34.5rem;
-    height: 100%;
-    padding: 2.4rem 1.6rem;
-    background-color: $black;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
     display: none;
-    @include breakpoint(lg) {
-      @include flex(flex-start, flex-start, column);
+  }
+  &.hide {
+    .sidebar-overlay {
+      display: none;
     }
-    .logo {
-      width: 3.5rem;
-      height: 4rem;
+    .sidebar {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50rem);
     }
-    &__process {
-      flex: 1;
-      background-color: red;
-    }
+    @include breakpoint(xl) {
+      .sidebar {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
 
-    &__settings {
-      padding: 0.6rem;
-      @include flex(left, center, row, 1.2rem);
-      .user-avatar {
-        width: 4rem;
-        height: 4rem;
-        border-radius: 50%;
-        object-fit: contain;
+        display: flex;
+        width: 8rem;
+        &__logo {
+          text-align: center;
+        }
+        &__toggle-icon {
+          > img {
+            transform: rotate(180deg) scale(0.65);
+          }
+        }
+        &__quality-score {
+          display: none;
+        }
+        &__settings {
+          overflow-x: hidden;
+          .user-info {
+            visibility: hidden;
+            opacity: 0;
+          }
+        }
+        &__styles {
+          display: none;
+        }
       }
-      .user-info {
-        > strong {
-          @include text($white, 400, $text-md);
-        }
-        > p {
-          @include text($white, 400, $text-sm);
-        }
+      .chat-window {
+        margin-left: 8rem;
       }
     }
   }
-
+  @include position(fixed, 0, 0, 0, 0);
   .chat-window {
+    max-width: 100%;
     padding: 0 1.6rem;
     height: 100%;
-    @include flex(flex-start, flex-start, column,1.2rem);
-    @include breakpoint(lg) {
+    @include flex(flex-start, flex-start, column);
+    @include breakpoint(xl) {
       margin-left: 34.5rem;
     }
     .heading {
       width: 100%;
       height: 8.4rem;
-      background-color: $black-1;
+      background-color: $black-700;
       z-index: 1;
       @include position(sticky, 0, null, null, null);
-      @include flex(center, center, column);
-      @include breakpoint(lg) {
+      @include flex(space-between, center);
+      @include breakpoint(xl) {
         height: 9.6rem;
       }
-      > strong {
-        @include text($white-2, 500, $text-lg);
+      .menu-icon {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: auto 0;
+        display: block;
+        cursor: pointer;
+        @include breakpoint(xl) {
+          display: none;
+        }
+        > img {
+          @include box(2.4rem, 2.4rem);
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+          border-radius: 50%;
+          background: $purple;
+          @include box(1rem, 1rem);
+        }
+        &.news {
+          &::after {
+            display: block;
+          }
+        }
       }
-      > small {
-        @include text($gray-300, 400, $text-sm);
+      &__brand {
+        flex: 1;
+        height: 100%;
+        @include flex(center, center, column);
+        > strong {
+          @include text($white-2, 500, $text-lg);
+        }
+        > small {
+          @include text($gray-300, 400, $text-sm);
+        }
+      }
+      .move-on {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        @include breakpoint(xl) {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+        }
+        button {
+          margin: auto;
+          background-color: transparent;
+          border-radius: 50%;
+          background-color: $black-700;
+          border-radius: 2rem;
+          width: auto;
+          height: 3.6rem;
+          border: 1px solid $purple;
+          padding: 0.4rem 0.6rem;
+          &:hover {
+            background-color: $purple;
+          }
+          @include breakpoint(xl) {
+            padding: 0.8rem 1.2rem;
+          }
+          @include text($white-2, 400, $text-md);
+          @include flex(center, center, row, 0.4rem);
+          p {
+            display: block;
+          }
+        }
       }
     }
     .chat {
       padding-top: 5.4rem;
-      flex:1;
+      flex: 1 1 auto;
       margin: 0 auto;
       width: 100%;
       position: relative;
       max-width: 78.4rem;
-      height: fit-content;
-      overflow: hidden;
-      @include flex(flex-end, flex-start, column, 5.7rem);
+      min-height: 0;
+      overflow-y: auto;
+
+      @include flex(flex-start, flex-start, column, 5.7rem);
       &__history {
         flex: 1 1 auto;
         width: 100%;
-        @include flex(flex-end, flex-start, column);
+        @include flex(flex-start, flex-start, column);
         .message {
           min-width: 0;
           width: auto;
           min-height: 5rem;
-          margin-bottom: 1.4rem;
+          margin-bottom: 3.8rem;
           background-color: transparent;
-          @include text($white-2, 400, $text-md, 2.6rem);
-          @include breakpoint(lg){
-            
-            max-width: 59.3rem;
-          }
+          // @include text($white-2, 400, $text-md, 2.6rem);
           &__logo {
             @include text($gray-300, 400, $text-xs);
 
@@ -106,7 +179,11 @@
             }
           }
           &--user {
+            max-width: 80%;
             margin-left: auto;
+            @include breakpoint(xl) {
+              max-width: 70%;
+            }
             .message__logo {
               visibility: hidden;
             }
@@ -114,24 +191,38 @@
               border-radius: 1.2rem;
               padding: 1.2rem;
               font-size: $text-lg;
-              color: $white;
+              color: $white-2;
               background-color: $dark-purple;
             }
           }
         }
-        
       }
     }
     .prompt-box {
       position: sticky;
       bottom: 0;
       width: 100%;
-      z-index: 1000;
       padding-bottom: 4rem;
       min-height: 0;
       height: fit-content;
-      background-color: $black-1;
+      background-color: $black-700;
       @include flex(flex-end, center, column, 1.2rem);
+
+      // .continue {
+      //   width: 100%;
+      //   display: none;
+      //   @include breakpoint(xl) {
+      //     @include flex(center, center, row, 2.4rem);
+      //   }
+      // }
     }
+  }
+}
+
+.redirecting {
+  @include flex(center, center, column, 1.2rem);
+
+  > p {
+    @include text($white-2, 500, $text-lg);
   }
 }

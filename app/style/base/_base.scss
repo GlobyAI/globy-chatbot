@@ -10,10 +10,9 @@ html {
 }
 
 body {
-  background-color: $black-1;
+  background-color: $black-700;
   letter-spacing: 0.25px;
   color: $white;
-  
 }
 
 ul,
@@ -37,25 +36,25 @@ input,
 textarea {
   outline: none;
   border: none;
-  &::placeholder{
+  &::placeholder {
     font-size: 12px;
     font-family: $font-family;
-    @include breakpoint(sm){
+    @include breakpoint(sm) {
       font-size: 14px;
     }
-   
   }
-
 }
 
 label {
   display: block;
 }
 
-button:disabled {
-  background-color: #b1b1b1;
-  cursor: not-allowed;
-  &:hover {
-    background-color: #b1b1b1;
+button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:disabled {
+    background-color: $gray-500 !important;
+    cursor: not-allowed; 
   }
 }

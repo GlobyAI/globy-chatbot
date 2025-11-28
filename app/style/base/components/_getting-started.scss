@@ -1,0 +1,113 @@
+@use "../../abstracts" as *;
+
+.getting-started {
+  height: 100%;
+  width: 100%;
+  background-color: $black-500;
+  @include flex($justify-content: center, $align-items: center);
+  &__container {
+    width: 100%;
+    max-width: 536px;
+    padding: 0 16px;
+    @include breakpoint(md) {
+      padding: 0 32px;
+    }
+    @include text($white, 400, 14px);
+    @include breakpoint(md) {
+      font-size: 16px;
+    }
+    @include flex($direction: column, $align-items: center, $gap: 16px);
+    .heading {
+      font-size: 28px;
+      font-weight: 400;
+      @include breakpoint(md) {
+        font-size: 36px;
+      }
+    }
+
+    .button {
+      margin-top: 10px;
+      width: fit-content;
+    }
+    .select-language {
+      @include flex($direction: column, $align-items: center, $gap: 16px);
+      > .select-wrapper {
+        > .dropdown {
+          > #dropdown-btn {
+            background-color: transparent;
+            > p {
+              color: $white-2;
+            }
+          }
+        }
+      }
+    }
+
+    .identity-type {
+      @include flex($direction: column, $align-items: center, $gap: 16px);
+      &__options {
+        @include flex(flex-start, flex-start, column, 16px);
+        .option {
+          cursor: pointer;
+          width: 100%;
+          padding: 8px;
+          border-radius: 4px;
+          border: 1px solid rgba($color: $white-2, $alpha: 0.1);
+          @include flex(left, center, row, 8px);
+          @include breakpoint(md) {
+            gap: 16px;
+            padding: 16px;
+          }
+          &:hover,
+          &.selected {
+            border-color: $purple;
+            background-color: rgba($color: $purple, $alpha: 0.05);
+          }
+          &.selected {
+            border-color: $purple;
+            background-color: rgba($color: $purple, $alpha: 0.2);
+          }
+          &__avatar {
+            background-color: $purple;
+            border-radius: 4px;
+            @include flex(center, center);
+            @include box(32px, 32px);
+            @include breakpoint(md){
+              
+              @include box(42px, 42px);
+            }
+          }
+
+          &__detail {
+            flex: 1;
+            @include flex(flex-start, flex-start, column);
+            > strong {
+              font-size: 16px;
+              @include breakpoint(md) {
+                font-size: 20px;
+              }
+            }
+            > p {
+              font-size: 12px;
+              text-align: left;
+              @include breakpoint(md) {
+                font-size: 16px;
+              }
+            }
+          }
+        }
+      }
+      > button{
+        background-color: $purple;
+        border-radius: 1.2rem;
+        height: 5rem;
+        min-width: 12rem;
+        &:hover{
+          background-color: $dark-purple;
+        }
+        @include flex(center, center);
+        @include text($white-2, 600, $text-md);
+      }
+    }
+  }
+}

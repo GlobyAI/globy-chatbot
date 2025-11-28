@@ -1,11 +1,19 @@
-import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig, loadEnv } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { reactRouter } from '@react-router/dev/vite';
 
-export default defineConfig({
-  plugins: [ reactRouter(), tsconfigPaths()],
-  build:{
-    cssMinify:true
-  }
-
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    plugins: [reactRouter(), tsconfigPaths()],
+    base: env.VITE_BASE_PATH || '/',
+    logLevel: 'info',
+    build: {
+      ssr:false,
+      cssMinify: true,
+    },
+    server: {
+      allowedHosts: true,
+    },
+  };
 });

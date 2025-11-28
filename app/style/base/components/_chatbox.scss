@@ -4,30 +4,32 @@
   max-width: 78.4rem;
   margin: 0 auto;
   width: 100%;
-  border-radius: 2rem;
+  border-radius: 99rem;
   background-color: $dark-gray;
-  box-shadow: 0px 6px 20px 0px rgba($color: $black, $alpha: 0.4);
+  box-shadow: 0px 6px 20px 0px rgba($color: $black-950, $alpha: 0.4);
   max-height: 28.2rem;
   height: auto;
   min-height: 0;
-  padding: 0 1.2rem;
   position: relative;
   @include flex(space-between, center, column);
 
   &.has-image {
-    padding-bottom: 1.2rem;
+    padding: 0 1.2rem 1.2rem;
+    border-radius: 2rem;
     .textfield {
+      margin-top: 1.2rem;
       textarea {
         bottom: 2.4rem;
         padding: 0 7.2rem;
       }
     }
     .chat-box__actions {
+      padding: 0;
       width: 100%;
       // background-color: $dark-gray;
       .icons {
         &--plus {
-          background-color: $gray-500;
+          background-color: $gray-900;
           cursor: pointer;
         }
         &--send {
@@ -40,8 +42,9 @@
   &.has-value {
     gap: 1.2rem;
     border-radius: 2rem;
-    padding-bottom: 1.2rem;
+    padding: 0 1.2rem 1.2rem;
     .textfield {
+      margin-top: 1.2rem;
       textarea {
         position: relative;
         left: unset;
@@ -52,9 +55,10 @@
     .chat-box__actions {
       width: 100%;
       background-color: $dark-gray;
+      padding: 0;
       .icons {
         &--plus {
-          background-color: $gray-500;
+          background-color: $gray-900;
           cursor: pointer;
         }
         &--send {
@@ -70,7 +74,9 @@
     overflow: scroll;
     width: 100%;
     height: auto;
+    display: block;
     overflow-x: hidden;
+    margin-top: 0;
     &::-webkit-scrollbar {
       width: 3px;
     }
@@ -87,17 +93,25 @@
     .images-container {
       margin-bottom: 1.2rem;
       width: 100%;
-
+      flex-wrap: wrap;
+      @include flex(left, flex-start, row, 1.2rem);
       .selected-img {
-        width: 5.8rem;
-        height: 5.8rem;
         border-radius: 0.8rem;
         border: 1px solid $gray-500;
         position: relative;
-        @include breakpoint(lg) {
+        width: fit-content;
+        height: 5.8rem;
+        min-width: 5.8rem;
+
+        @include breakpoint(xl) {
           border-radius: 1.2rem;
-          width: 13rem;
           height: 13rem;
+          min-width: 13rem;
+        }
+        &.is-file {
+          max-height: 5.6rem;
+          padding: 0.6rem 1.2rem;
+          @include flex(left, flex-start, row, 0.8rem);
         }
         &:hover {
           .delete-img {
@@ -124,14 +138,25 @@
           }
         }
         > .image {
-          width: 100%;
+          aspect-ratio: 1/1;
           height: 100%;
           object-fit: cover;
+        }
+        > .file {
+          margin: auto 0;
+          width: 2.4rem;
+          height: 2.4rem;
+          object-fit: cover;
+        }
+        figcaption {
+          height: 100%;
+          @include flex(space-around, flex-start, column);
+          @include text($white-2, 400, 1.6rem);
         }
       }
     }
     textarea {
-      padding: 0 6rem;
+      padding: 0 5rem;
       position: absolute;
       bottom: 1.2rem;
       left: 0;
@@ -147,6 +172,9 @@
       white-space: pre-wrap;
       resize: none;
       @include text($white-2, 400, $text-md);
+      @include breakpoint(xl) {
+        padding: 0 6rem;
+      }
       &::-webkit-scrollbar {
         display: none;
       }
@@ -163,30 +191,69 @@
     pointer-events: none;
     order: 2;
     z-index: 0;
-    height: 4.8rem;
+    min-height: 4.8rem;
+    height: auto;
+    padding: 0.2rem 0.4rem;
     @include flex(space-between, center);
+    @include breakpoint(xl) {
+      padding: 0;
+    }
     .icons {
       pointer-events: all;
       border-radius: 50%;
       padding: 1.2rem;
       z-index: 100;
       position: relative;
-      @include box(4.8rem, 4.8rem);
+      @include flex(center, center);
+      @include box(4rem, 4rem);
+      @include breakpoint(xl) {
+        @include box(4.8rem, 4.8rem);
+      }
       &--plus {
         order: 2;
+        background-color: $gray-900;
         cursor: pointer;
+        @include breakpoint(xl) {
+          background-color: transparent;
+        }
       }
       &--send {
+        background-color: $gray-900;
         order: 4;
         cursor: not-allowed;
+        @include breakpoint(xl) {
+          background-color: transparent;
+        }
+      }
+      &.open {
+        .options-popup {
+          visibility: visible;
+          opacity: 1;
+          display: block;
+        }
       }
       .options-popup {
+        visibility: hidden;
+        opacity: 0;
+        display: none;
         position: absolute;
         left: 0;
         bottom: 100%;
         z-index: 100;
-        background-color: $dark-gray;
-        
+        border-radius: 1.2rem;
+        min-width: max-content;
+        box-shadow: 0px 3px 10px 1px rgba($color: $black-700, $alpha: 0.4);
+        background-color: $gray-900;
+        > ul {
+          > li {
+            padding: 1.2rem;
+            @include text($white-2, 400, 1.6rem);
+            > labeL {
+              cursor: pointer;
+              @include flex(left, center, row, 0.4rem);
+            }
+          }
+        }
       }
     }
   }

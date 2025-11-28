@@ -8,77 +8,120 @@ import { useWebSocketStore } from '~/stores/websocketStore';
 import { useAppContext } from './AppContextProvider';
 import { MessageType, SENDER } from '~/types/enums';
 import type { ChatMessage, MessageData, MessageResponse } from '~/types/models';
-import toast from 'react-hot-toast';
 import { generateMessageId } from '~/utils/helper';
+import IdentityType from '~/components/IdentityType/IdentityType';
+import { fetchHistory } from '~/services/appApis';
+import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
+import useAppStore from '~/stores/appStore';
 
 
 
 interface WebSocketContextValue {
     messages: ChatMessage[];
-    isConnected: boolean;
     sendMessage: (data: MessageData) => void;
     clearMessages: () => void;
-    isPending: boolean
+    getConversation: () => void;
+    isPending: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { socket, connect, isConnected, send } = useWebSocketStore();
+    const { connect, send, lastMessage } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [fetchedHistory, setFetchedHistory] = useState(false)
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
-    // Connect once when the provider mounts
-    useEffect(() => {
-        if (userId) {
-            setIsPending(true)
-            connect(userId);
+    const [hasIdentity, setHasIdentity] = useState(false)
+    const setOffset = useAppStore(s => s.setOffset)
+    async function getConversation() {
+        if (!userId) return
+        const offset = useAppStore.getState().offset
+        if (offset < 0) return
+        try {
+            const res = await fetchHistory(userId, offset)
+            const pagination = res.data.pagination
+            const oldMessages: ChatMessage[] = res.data.messages
+            if (oldMessages) {
+                const reversedMessages = oldMessages.reverse()
+                setMessages(prev => [...reversedMessages, ...prev])
+            }
+            const next = pagination.next_offset
+            setOffset(next ?? -1)
+
+        } catch (error) {
+            if (error instanceof AxiosError && error.response?.status !== 404) {
+                toast.error(error.message)
+            }
+        } finally {
+            setFetchedHistory(true)
 
         }
-    }, [connect, userId]);
 
+    }
+    useEffect(() => {
+
+        if (userId) {
+            getConversation()
+        }
+    }, [userId])
+    useEffect(() => {
+        if (userId && fetchedHistory && hasIdentity) {
+            if (!messages.length) {
+                const initMsg = {
+                    type: MessageType.USER_MESSAGE,
+                    message_id: generateMessageId(),
+                    text: "___ HELLO ___",
+                    research: false,
+                };
+                connect(userId, initMsg);
+            } else {
+                connect(userId);
+            }
+
+        }
+    }, [connect, userId, messages, fetchedHistory, hasIdentity]);
+
+
+    const handleContinue = () => {
+        setHasIdentity(true)
+    }
     // Attach message handler whenever socket changes
     useEffect(() => {
-        if (!socket) return;
+        if (!lastMessage) return;
+        if (lastMessage.type === MessageType.ASSISTANT_DONE) {
+            setIsPending(false)
+        }
+        if (lastMessage.type === MessageType.ASSISTANT_DElTA) {
+            const lastMsg = messages.find(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT)
+            if (!lastMsg) {
+                setMessages((prev) => {
+                    const newMessage: ChatMessage = {
+                        message_id: lastMessage.message_id,
+                        content: lastMessage.delta,
+                        role: SENDER.ASSISTANT,
+                        created_at: new Date()
+                    };
+                    return [...prev, newMessage]
 
-        const handleMessage = (event: MessageEvent) => {
-            let data: MessageResponse = event.data;
-            try {
-                data = JSON.parse(event.data);
-                if (data.type === MessageType.ASSISTANT_DElTA) {
-                    setMessages((prev) => {
-                        const lastMsg = prev.find(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY)
-                        if (!lastMsg) {
-                            const newMessage: ChatMessage = {
-                                message_id: data.message_id,
-                                content: data.delta,
-                                sender: SENDER.GLOBY
-
-                            };
-                            return [...prev, newMessage]
-                        }
-                        return prev.map(msg => msg.message_id === data.message_id && msg.sender === SENDER.GLOBY ? {
-                            ...msg,
-                            content: msg.content.concat(data.delta)
-                        } : msg)
-                    });
-                } else {
-                    setIsPending(false)
-
-                }
-            } catch (e) {
-                toast.error(e as string)
+                });
+            } else {
+                setMessages(prev => {
+                    return prev.map(msg => msg.message_id === lastMessage.message_id && msg.role === SENDER.ASSISTANT ? {
+                        ...msg,
+                        content: msg.content.concat(lastMessage.delta)
+                    } : msg)
+                })
             }
 
 
-        };
+        }
 
-        socket.addEventListener('message', handleMessage);
 
-        return () => {
-            socket.removeEventListener('message', handleMessage);
-        };
-    }, [socket, messages]);
+
+
+    }, [lastMessage]);
 
     const clearMessages = () => setMessages([]);
 
@@ -86,9 +129,10 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         setIsPending(true)
         const message_id = generateMessageId()
         setMessages(prev => [...prev, {
-            sender: SENDER.USER,
+            role: SENDER.USER,
             content: data.text ? data.text : data.image_urls?.join("\n") || '',
-            message_id
+            message_id,
+            created_at: new Date(),
         }])
         const newMsg = {
             ...data,
@@ -99,13 +143,14 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }
     const value: WebSocketContextValue = {
         messages,
-        isConnected,
         sendMessage,
-        clearMessages, isPending
+        clearMessages, isPending,
+        getConversation,
     };
 
     return (
         <WebSocketContext.Provider value={value}>
+            <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
             {children}
         </WebSocketContext.Provider>
     );

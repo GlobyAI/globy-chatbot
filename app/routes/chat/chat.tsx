@@ -1,11 +1,16 @@
 import type { Route } from "../../+types/root";
-import Suggestions from "./components/suggestions";
-import ChatBox from "./components/chat-box";
+import ChatBox from "./components/chatbox/chat-box";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
-import Sidebar from "./components/sidebar";
-
+import Sidebar from "./components/sidebar/sidebar";
+import { useWebSocket } from "~/providers/WSProdivder";
+import { SENDER } from "~/types/enums";
+import { useMemo, useState } from "react";
+import Complete from "./components/complete";
+import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
+import MenuIcon from "/icons/menu.svg";
+import useAppStore from "~/stores/appStore";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -14,19 +19,51 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 function Chat() {
+  const { messages } = useWebSocket()
+  const { containerRef } = useLoadMoreHistory()
+  const canContinue = useMemo(() => {
+    return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
+  }, [messages])
+  const setHasNews = useAppStore(s => s.setHasNews)
+  const hasNews = useAppStore(s => s.hasNews)
 
-  return <main className="chat-bot">
-    <Sidebar />
-    <div className="chat-window">
+  const [show, setShow] = useState(true)
+  const handleCloseSidebar = () => {
+    setShow(false)
+  }
+  const handleOpenSidebar = () => {
+    setShow(true)
+    setHasNews(false)
+  }
+  const handleToggle = () => {
+    setShow(prev => !prev)
+  }
+
+  return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
+    <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />
+    <div className="chat-window" >
       <div className="heading">
-        <strong>Globy.ai </strong>
-        <small>Onboarding</small>
+        <span className={`menu-icon ${hasNews ? 'news' : ''}`}>
+          <img src={MenuIcon} onClick={handleOpenSidebar} />
+        </span>
+        <div className="heading__brand">
+          <strong>Globy.ai </strong>
+          <small>Onboarding</small>
+
+        </div>
+        {
+          canContinue &&
+          <Complete />
+        }
       </div>
       <History />
       <div className="prompt-box">
-        <Suggestions />
+        {/* <Suggestions /> */}
+        {/* <Continue/> */}
         <ChatBox />
+
       </div>
+      <p></p>
     </div>
   </main>;
 }

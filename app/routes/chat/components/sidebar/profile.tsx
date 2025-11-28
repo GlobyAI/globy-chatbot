@@ -29,7 +29,7 @@ export default function Profile() {
             <div className={`settings ${show ? 'open' : ""}`} ref={menuRef}>
                 <p onClick={() => logout({
                     logoutParams: {
-                        returnTo: envConfig.LANDING_PAGE
+                        returnTo: envConfig.LANDING_PAGE+'/auth/logout'
                     }
                 })}>
                     <img src={LogoutIcon} alt="Logout" />

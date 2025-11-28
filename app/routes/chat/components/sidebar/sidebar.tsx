@@ -53,38 +53,41 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
         }
     })
     return (
-        <div className={`sidebar `} ref={sideBarRef}>
-            <span className="sidebar__toggle-icon" onClick={handleToggle}>
-                <img src={ArrowRightIcon} alt=" Toggle icon" />
-            </span>
-            <span className="sidebar__close" onClick={handleCloseSidebar}>
-                <img src={PlusIcon} alt=" Close icon" />
-            </span>
-            <div className="sidebar__logo">
-                <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
-            </div>
-            <QualityScoreCard />
-            <div className="sidebar__styles">
-                <input type="checkbox" name="" id="styles" defaultChecked={true} hidden />
-                <label className='style-toggle' htmlFor="styles">Styles
-                    <img src={ArrowUpIcon} alt="arrow up" />
-                </label>
-                <div className="style-options">
-                    <div className='sidebar__color-picker'>
-                        <ColorPicker  
-                            preSelectedColors={userColorPreferences}
-                            onSelectionChange={(selectedColors) => {
-                                if (userId && selectedColors) {
-                                    postSelectedColor(userId, selectedColors, '')
-                                }
-                            }}
-                        />
-                    </div>
-                    <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} />
-                    <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
+        <>
+            <div className="sidebar-overlay"></div>
+            <div className={`sidebar `} ref={sideBarRef}>
+                <span className="sidebar__toggle-icon" onClick={handleToggle}>
+                    <img src={ArrowRightIcon} alt=" Toggle icon" />
+                </span>
+                <span className="sidebar__close" onClick={handleCloseSidebar}>
+                    <img src={PlusIcon} alt=" Close icon" />
+                </span>
+                <div className="sidebar__logo">
+                    <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
                 </div>
+                <QualityScoreCard />
+                <div className="sidebar__styles">
+                    <input type="checkbox" name="" id="styles" defaultChecked={true} hidden />
+                    <label className='style-toggle' htmlFor="styles">Styles
+                        <img src={ArrowUpIcon} alt="arrow up" />
+                    </label>
+                        <div className="style-options">
+                            <div className='sidebar__color-picker'>
+                            <ColorPicker  
+                                preSelectedColors={userColorPreferences}
+                                onSelectionChange={(selectedColors) => {
+                                    if (userId && selectedColors) {
+                                        postSelectedColor(userId, selectedColors, '')
+                                    }
+                                }}
+                            />
+                        </div>
+                        {/* <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} /> */}
+                        <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
+                    </div>
+                </div>
+                <Profile />
             </div>
-            <Profile />
-        </div>
+        </>
     )
 }

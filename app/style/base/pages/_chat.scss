@@ -9,11 +9,20 @@
     display: none;
   }
   &.hide {
-    .sidebar {
+    .sidebar-overlay {
       display: none;
+    }
+    .sidebar {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50rem);
     }
     @include breakpoint(xl) {
       .sidebar {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+
         display: flex;
         width: 8rem;
         &__logo {
@@ -63,9 +72,13 @@
         height: 9.6rem;
       }
       .menu-icon {
-        position: relative;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
         margin: auto 0;
         display: block;
+        cursor: pointer;
         @include breakpoint(xl) {
           display: none;
         }
@@ -100,7 +113,10 @@
         }
       }
       .move-on {
-        position: relative;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
         @include breakpoint(xl) {
           position: absolute;
           top: 50%;
@@ -110,33 +126,23 @@
         button {
           margin: auto;
           background-color: transparent;
-          height: 4rem;
-          width: 4rem;
           border-radius: 50%;
           background-color: $black-700;
+          border-radius: 2rem;
+          width: auto;
+          height: 3.6rem;
           border: 1px solid $purple;
+          padding: 0.4rem 0.6rem;
           &:hover {
             background-color: $purple;
           }
           @include breakpoint(xl) {
-            border-radius: 2rem;
-            width: auto;
             padding: 0.8rem 1.2rem;
           }
           @include text($white-2, 400, $text-md);
           @include flex(center, center, row, 0.4rem);
           p {
-            display: none;
-            @include breakpoint(xl) {
-              display: block;
-            }
-          }
-          img {
             display: block;
-            @include box(2.4rem, 2.4rem);
-            @include breakpoint(xl) {
-              display: none;
-            }
           }
         }
       }
@@ -196,7 +202,6 @@
       position: sticky;
       bottom: 0;
       width: 100%;
-      z-index: 1000;
       padding-bottom: 4rem;
       min-height: 0;
       height: fit-content;
@@ -211,5 +216,13 @@
       //   }
       // }
     }
+  }
+}
+
+.redirecting {
+  @include flex(center, center, column, 1.2rem);
+
+  > p {
+    @include text($white-2, 500, $text-lg);
   }
 }

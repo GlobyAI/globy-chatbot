@@ -121,8 +121,8 @@ export default function AppContextProvider({
             if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
               try {
                 await updateAuth0AppMetadata(user.sub || "", {
-                  app_metadata: { globy_id: globyUserId },
-                });
+                  user_metadata: { globy_id: globyUserId },
+                }, token);
               } catch (error) {
                 console.log("Update Auth0 app metadata error:", error);
               }

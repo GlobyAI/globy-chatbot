@@ -57,7 +57,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                         <img src={ArrowUpIcon} alt="arrow up" />
                     </label>
                     <div className="style-options">
-                        <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} />
+                        {/* <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} /> */}
                         <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
                     </div>
                 </div>

@@ -13,8 +13,8 @@ import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Globy.ai | Chatbot", },
+    { name: "description", content: "Globy.ai transforms your identity into a powerful brand through color, motion, shape, imagery, and copy - fused into one living website" },
   ];
 }
 

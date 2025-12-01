@@ -60,6 +60,7 @@ export default function History() {
     }
 
     useEffect(() => {
+        if(!isPending) return
         scrollToBottom();
     }, [messages])
     return (

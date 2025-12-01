@@ -20,6 +20,8 @@ export interface MessageData {
   image_urls?: string[];
   research?: boolean;
   expect_json?: boolean;
+  message_id?: string;
+
 }
 
 export interface MessageRequest extends MessageBase {}

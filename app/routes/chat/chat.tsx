@@ -49,7 +49,6 @@ function Chat() {
         <div className="heading__brand">
           <strong>Globy.ai </strong>
           <small>Onboarding</small>
-
         </div>
         {
           canContinue &&

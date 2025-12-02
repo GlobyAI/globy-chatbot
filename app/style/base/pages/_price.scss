@@ -1,0 +1,268 @@
+@use "../../abstracts/" as *;
+
+.price {
+  @include position(fixed, 0, 0, 0, 0);
+  @include box(100%, 100%);
+  @include flex(center);
+  background-color: $black-700;
+  padding: 0 0 50px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  overflow-y: auto;
+  &__container {
+    width: 100%;
+    margin: auto;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    width: 100%;
+    > h2 {
+      width: 100%;
+      text-align: center;
+      @include text($white-2, 400, 40px);
+      @include breakpoint(lg) {
+        font-size: 64px;
+      }
+      position: relative;
+      border-radius: 50%;
+      margin: auto;
+      padding: 50px 16px;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba($purple  , 0.52),
+          transparent 80%
+        );
+        filter: blur(60px);
+        z-index: -1;
+        pointer-events: none;
+        border-radius: 50%;
+        // backdrop-filter: blur(300px);
+
+        @include breakpoint(sm) {
+          filter: blur(100px);
+        }
+        @include breakpoint(lg) {
+          background: radial-gradient(
+            circle,
+            rgba($purple, 0.5),
+            transparent 80%
+          );
+        }
+      }
+    }
+    > p {
+      padding: 0 8px;
+      @include text($white, 400, 14px);
+      @include breakpoint(md) {
+        font-size: 16px;
+      }
+    }
+    .error {
+      max-width: 400px;
+      @include text($white, 400, 16px);
+      > a {
+        color: $purple;
+      }
+    }
+    .subscription {
+      @include flex(center, center, column, 16px);
+      .billing-circle {
+        outline: none;
+        padding: 1px;
+        border-radius: 50px;
+        margin: 0 auto;
+        border: 1px solid rgba($black-950, 0.2);
+        background: linear-gradient(
+          180deg,
+          rgba($black-950, 0.05) 0%,
+          rgba(153, 153, 153, 0.05) 100%
+        );
+        width: 150px;
+        position: relative;
+        @include flex(space-between, center);
+        @include breakpoint(lg) {
+          width: 210px;
+        }
+        &__options {
+          width: 75px;
+          height: 25px;
+          border-radius: 20px;
+          background-color: transparent;
+          position: relative;
+          cursor: pointer;
+          @include text($white, 400, 12px);
+          @include flex(space-around, center);
+          @include breakpoint(lg) {
+            height: 32px;
+            font-size: 16px;
+            width: 105px;
+          }
+          &.selected {
+            background-color: $white;
+            color: $black-950;
+          }
+        }
+      }
+      > .sub-title {
+        opacity: 0.8;
+        @include text($white, 400, 14px);
+      }
+      .pricing-tiers {
+        margin: 0 auto;
+        width: 100%;
+        position: relative;
+        text-align: left;
+        padding: 0 8px;
+        max-width: 280px;
+        @include grid(repeat(1, 1fr), auto, 30px);
+        @include breakpoint(sm) {
+          max-width: 560px;
+          @include grid(repeat(2, 1fr), auto, 20px);
+        }
+        @include breakpoint(xl) {
+          max-width: 1110px;
+          @include grid(repeat(4, 1fr), auto, 16px);
+        }
+
+        &__options {
+          width: 100%;
+          border: 1px solid rgba($color: $white, $alpha: 0.2);
+          background:
+            linear-gradient(
+              199.9deg,
+              rgba($black-950, 0.05) 0%,
+              rgba($black-950, 0.03) 99.12%
+            ),
+            linear-gradient(
+              0.46deg,
+              rgba($black-700, 0) 0.38%,
+              rgba(178, 57, 232, 0.2) 99.6%
+            );
+          padding: 50px 16px;
+          opacity: 0;
+          min-height: 500px;
+          height: 100%;
+          max-width: 280px;
+          transform: translateY(50px);
+          transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+          will-change: opacity, transform;
+          border-radius: 15px;
+          width: 100%;
+          margin: 0 auto;
+          backdrop-filter: blur(90px);
+          @supports (-webkit-appearance: none) {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+          @include flex(flex-start, flex-start, column, 20px);
+          @include breakpoint(lg) {
+            gap: 30px;
+          }
+          .option-detail {
+            width: 100%;
+
+            @include flex(space-between, flex-start, column, 20px);
+            &__name {
+              @include flex(left, center, row, 16px);
+              @include text($white, 500, 18px);
+            }
+            &__price {
+              width: 100%;
+              @include text($white, 600, 28px);
+              @include flex(left, center, row, 4px);
+              span {
+                margin-top: auto;
+                @include text($white, 400, 20px);
+                opacity: 0.9;
+              }
+            }
+            &__description {
+              opacity: 0.9;
+              height: 48px;
+              @include text($white, 400, 16px, 1.5);
+            }
+          }
+
+          > a {
+            width: 100%;
+            height: 42px;
+          }
+          .btn {
+            background-color: transparent;
+            border-radius: 50%;
+            background-color: $black-700;
+            border-radius: 2rem;
+            width: 100%;
+            height: 4.2rem;
+            border: 1px solid $purple;
+            padding: 0.8rem 1.2rem;
+            @include text($white-2, 400, $text-md);
+            @include flex(center, center, row, 0.4rem);
+            p {
+              display: block;
+            }
+            &.shadow {
+              box-shadow:
+                0px 0px 7px 3px rgba(178, 57, 232, 1),
+                0px 0px 5.5px 1px rgba(#e2bbf3, 0.5) inset;
+            }
+            &:hover {
+              background-color: $purple;
+            }
+            @include breakpoint(lg) {
+              font-weight: 400;
+              font-size: 16px;
+            }
+          }
+
+          .support-details {
+            width: 100%;
+            flex: 1;
+            margin-bottom: 1rem;
+            @include text($white, 400, 1rem, 1.4);
+            @include flex(flex-start, flex-start, column, 20px);
+            @include breakpoint(md) {
+              font-size: 14px;
+            }
+            @include breakpoint(xl) {
+              font-size: 16px;
+              line-height: 19px;
+            }
+
+            &__items {
+              width: 100%;
+              @include flex(center, flex-start, row, 6px);
+              .image {
+                position: relative;
+                display: inline-block;
+                width: 17px;
+                height: 17px;
+              }
+              > .content {
+                line-height: 1.5;
+                flex: 1;
+                font-size: 14px;
+                > img {
+                  margin-top: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

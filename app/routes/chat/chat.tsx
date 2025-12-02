@@ -1,16 +1,18 @@
 import type { Route } from "../../+types/root";
 import ChatBox from "./components/chatbox/chat-box";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0, User, withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
+import { useNavigate } from "react-router";
+import { APP_ROUTES } from "~/utils/vars";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Globy.ai | Chatbot", },
@@ -20,7 +22,9 @@ export function meta({ }: Route.MetaArgs) {
 
 function Chat() {
   const { messages } = useWebSocket()
+  const { user, isAuthenticated, isLoading } = useAuth0()
   const { containerRef } = useLoadMoreHistory()
+  const navigate = useNavigate()
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
@@ -38,6 +42,33 @@ function Chat() {
   const handleToggle = () => {
     setShow(prev => !prev)
   }
+  const hasPaid = (user: User | undefined) => {
+    if (
+      user &&
+      user["https://globy.ai/has_paid"] === true
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && user) {
+      const currentPlan = user["https://globy.ai/plan"];
+      // No plan selected  → invalid
+      if (!currentPlan) {
+        navigate(APP_ROUTES.PRICE);
+        return
+      }
+
+      // Non-free plan but not paid → invalid
+      if (currentPlan !== "FREE" && !hasPaid(user)) {
+        navigate(APP_ROUTES.PRICE);
+        return
+      }
+    }
+
+  }, [user, isAuthenticated, isLoading])
 
   return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
     <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />

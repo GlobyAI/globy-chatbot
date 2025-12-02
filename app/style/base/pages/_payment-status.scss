@@ -1,0 +1,64 @@
+@use "../../abstracts" as *;
+
+.payment-status {
+  @include position(fixed, 0, 0, 0, 0);
+  width: 100%;
+  height: 100%;
+  @include flex(center, center, column);
+  &.success {
+    > div {
+      > h2 {
+        > svg {
+          color: green;
+        }
+      }
+    }
+  }
+  .logo {
+    position: absolute;
+    top: 0;
+    margin-top: 5rem;
+    @include breakpoint(lg) {
+      margin-top: 6rem;
+    }
+  }
+  > div {
+    margin: auto;
+    padding: 0 1.6rem;
+    max-width: 80rem;
+    @include flex(center, center, column, 0.8rem);
+    @include text($white, 600);
+    > h2 {
+      max-width: 60rem;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 2.4rem;
+
+      @include flex(center, center, row, 0.8rem);
+      @include breakpoint(lg) {
+        font-size: 2.4rem;
+      }
+    }
+    > a {
+      display: block;
+      width: 100%;
+    }
+
+    button {
+      background-color: transparent;
+      border-radius: 50%;
+      background-color: $black-700;
+      border-radius: 2rem;
+      min-width: 12rem;
+      width: fit-content;
+      height: 4rem;
+      border: 1px solid $purple;
+      padding: 0.8rem 1.2rem;
+      @include text($white-2, 400, $text-md);
+      @include flex(center, center, row, 0.4rem);
+      p {
+        display: block;
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ export const envConfig = {
     API_URL:import.meta.env.VITE_API_URL,
     LANDING_PAGE:import.meta.env.VITE_LANDING_PAGE,
     IMAGE_LIBRARY_API:import.meta.env.VITE_IMAGE_LIBRARY_API,
-    
+    CHECKOUT_URL:import.meta.env.VITE_CHECKOUT_URL,
+    STRIPE_PUBLISHABLE_KEY:import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
 
 }

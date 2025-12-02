@@ -13,3 +13,8 @@ export enum IdentityTypeEnum {
   PERSONAL = "personal",
   BUSINESS = "business",
 }
+
+export enum PaymentInterval {
+  MONTH = "MONTH",
+  YEAR = "YEAR"
+}

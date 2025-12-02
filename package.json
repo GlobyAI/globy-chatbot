@@ -12,6 +12,8 @@
     "@auth0/auth0-react": "^2.8.0",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
+    "@stripe/react-stripe-js": "^3.8.0",
+    "@stripe/stripe-js": "^7.9.0",
     "@uiw/react-color": "^2.9.2",
     "axios": "^1.13.2",
     "isbot": "^5.1.31",

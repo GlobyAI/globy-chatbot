@@ -102,7 +102,6 @@ export default function PricingTier() {
 
     const goToCheckOutPage = async (product_name: string) => {
         if (!product_name) return
-        if (product_name === 'FREE') return
         const stripePromise: StripeJs | null = await loadStripe(envConfig.STRIPE_PUBLISHABLE_KEY!);
         if (!stripePromise) {
             console.error('Stripe.js is not loaded yet');

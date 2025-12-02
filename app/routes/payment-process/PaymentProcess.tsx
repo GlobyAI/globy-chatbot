@@ -17,23 +17,23 @@ export default function PaymentProcess() {
     const navigate = useNavigate()
     const { loginWithRedirect } = useAuth0()
     useEffect(() => {
-        // const processCallback = async () => {
-        //     if (sessionId) {
-        //         await loginWithRedirect({
-        //             appState: {
-        //                 returnTo: '/payment-success?session_id=' + sessionId
-        //             },
-        //             authorizationParams: {
-        //                 prompt: 'none',
-        //             }
-        //         })
-        //     }
-        //     else {
-        //         navigate(APP_ROUTES.INDEX)
-        //     }
+        const processCallback = async () => {
+            if (sessionId) {
+                await loginWithRedirect({
+                    appState: {
+                        returnTo: '/payment-success?session_id=' + sessionId
+                    },
+                    authorizationParams: {
+                        prompt: 'none',
+                    }
+                })
+            }
+            else {
+                navigate(APP_ROUTES.INDEX)
+            }
 
-        // }
-        // processCallback();
+        }
+        processCallback();
     }, []);
     return <div className="payment-status ">
         <div className="content">

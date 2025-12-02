@@ -13,6 +13,7 @@ import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
 import { useNavigate } from "react-router";
 import { APP_ROUTES } from "~/utils/vars";
+import useCheckPayment from "~/hooks/useCheckPayment";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Globy.ai | Chatbot", },
@@ -22,9 +23,8 @@ export function meta({ }: Route.MetaArgs) {
 
 function Chat() {
   const { messages } = useWebSocket()
-  const { user, isAuthenticated, isLoading } = useAuth0()
   const { containerRef } = useLoadMoreHistory()
-  const navigate = useNavigate()
+  useCheckPayment()
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
@@ -42,33 +42,7 @@ function Chat() {
   const handleToggle = () => {
     setShow(prev => !prev)
   }
-  const hasPaid = (user: User | undefined) => {
-    if (
-      user &&
-      user["https://globy.ai/has_paid"] === true
-    ) {
-      return true;
-    }
-    return false;
-  };
 
-  useEffect(() => {
-    if (!isLoading && isAuthenticated && user) {
-      const currentPlan = user["https://globy.ai/plan"];
-      // No plan selected  → invalid
-      if (!currentPlan) {
-        navigate(APP_ROUTES.PRICE);
-        return
-      }
-
-      // Non-free plan but not paid → invalid
-      if (currentPlan !== "FREE" && !hasPaid(user)) {
-        navigate(APP_ROUTES.PRICE);
-        return
-      }
-    }
-
-  }, [user, isAuthenticated, isLoading])
 
   return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
     <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />

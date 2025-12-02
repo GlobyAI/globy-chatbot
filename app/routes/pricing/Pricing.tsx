@@ -4,8 +4,9 @@ import axiosInstance from "~/services/axiosInstance";
 import { PaymentInterval } from "~/types/enums";
 import { loadStripe, type Stripe as StripeJs, type StripeCheckoutSession } from '@stripe/stripe-js';
 import { envConfig } from "~/utils/envConfig";
-import type { Route } from "./+types/pricing";
+
 import { APP_ROUTES } from "~/utils/vars";
+import type { Route } from "../../+types/root";
 
 
 const DISCOUNT = 30
@@ -63,7 +64,7 @@ export function meta({ }: Route.MetaArgs) {
         { title: "Globy.ai | Pricing", },
     ];
 }
-export default function PricingTier() {
+export default withAuthenticationRequired(function PricingTier() {
 
     const { user, loginWithRedirect } = useAuth0()
     const [selectedPlan, setSelectedPlan] = useState<PaymentInterval>(PaymentInterval.MONTH)
@@ -269,4 +270,4 @@ export default function PricingTier() {
             </div>
         </div >
     )
-}
+})

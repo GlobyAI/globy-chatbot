@@ -74,7 +74,7 @@ function Chat() {
 
 
 const ChatPage = withAuthenticationRequired(Chat, {
-  returnTo: "/",
+  returnTo: window.location.pathname + window.location.search,
   onRedirecting: () => <SpinnerLoading />,
 });
 export default ChatPage

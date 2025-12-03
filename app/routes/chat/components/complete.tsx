@@ -6,12 +6,15 @@ import toast from "react-hot-toast";
 import Modal from "~/components/ui/Modal/Modal";
 import { envConfig } from "~/utils/envConfig";
 import { AxiosError } from "axios";
+import { useSearchParams } from "react-router";
 
 export default function Complete() {
     const { userId } = useAppContext();
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [noSite, setNoSite] = useState(true)
+    const [hasSite, setHasSite] = useState(true)
+    let [searchParams] = useSearchParams();
+    const needRegeneration = searchParams.get('regeneration')
     async function handComplete() {
         if (userId) {
             setIsLoading(true);
@@ -41,18 +44,14 @@ export default function Complete() {
         async function checkIfUserHasSite() {
             if (!userId) return
             const res = await checkSiteStatus(userId)
-            if (res.status !== 200) {
-                setNoSite(false)
+            if (res.status === 404) {
+                setHasSite(false)
                 return
             }
             const data = res.data
-            if (data.user_id !== userId) {
-                setNoSite(false)
-                return
-            }
             const status = data.status.toLowerCase()
             if (status !== 'live' || status !== 'ready') {
-                setNoSite(false)
+                setHasSite(false)
             }
         }
         if (userId) {
@@ -69,11 +68,11 @@ export default function Complete() {
                 </div>
             </Modal>
         )
-    if (noSite) return null
+    if (hasSite && needRegeneration === 'false') return null
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>
-                <p>Generate now</p>
+                <p>{needRegeneration ? 'Regenerate site' : "Generate now"}</p>
                 <img src={ArrowRightIcon} alt="Arrow right" />
             </button>
         </div>

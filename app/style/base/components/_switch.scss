@@ -1,0 +1,75 @@
+@use "../../abstracts" as *;
+
+.switch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.switch-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+
+  &:focus-visible + .switch-label .switch-track {
+    outline: 0.2rem solid $purple;
+    outline-offset: 0.2rem;
+  }
+
+  &:disabled + .switch-label {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  cursor: pointer;
+}
+
+.switch-track {
+  position: relative;
+  display: inline-block;
+  width: 5.2rem;
+  height: 2.2rem;
+  border-radius: 1.1rem;
+  background-color: rgba($white, 0.2);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .switch-input:checked + .switch-label & {
+    background-color: $purple;
+  }
+
+  .switch-input:hover:not(:disabled) + .switch-label & {
+    background-color: rgba($white, 0.3);
+  }
+
+  .switch-input:checked:hover:not(:disabled) + .switch-label & {
+    background-color: $dark-purple;
+  }
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background-color: $white;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .switch-input:checked + .switch-label & {
+    transform: translateX(3rem);
+  }
+}
+
+.switch-text {
+  @include text($white, 400, 1.4rem);
+  user-select: none;
+}

@@ -4,6 +4,7 @@ import axiosInstance from "~/services/axiosInstance";
 import { PaymentInterval } from "~/types/enums";
 import { loadStripe, type Stripe as StripeJs, type StripeCheckoutSession } from '@stripe/stripe-js';
 import { envConfig } from "~/utils/envConfig";
+import Switch from '~/components/Switch/Switch'
 
 import { APP_ROUTES } from "~/utils/vars";
 import type { Route } from "../../+types/root";
@@ -69,8 +70,11 @@ export default withAuthenticationRequired(function PricingTier() {
     const { user, loginWithRedirect } = useAuth0()
     const [selectedPlan, setSelectedPlan] = useState<PaymentInterval>(PaymentInterval.MONTH)
     const [error, setError] = useState(false)
-    const handleChangePlan = (plan: PaymentInterval) => {
-        setSelectedPlan(plan)
+
+    const isYearly = selectedPlan === PaymentInterval.YEAR
+
+    const handleChangePlan = (checked: boolean) => {
+        setSelectedPlan(checked ? PaymentInterval.YEAR : PaymentInterval.MONTH)
     }
 
     const calculatePriceWidthDiscount = useCallback(
@@ -145,19 +149,18 @@ export default withAuthenticationRequired(function PricingTier() {
                 <h2>
                     Pricing </h2>
                 <div className="subscription">
-                    <div className={`billing-circle ${selectedPlan}`}>
-                        <p
-                            className={`billing-circle__options ${selectedPlan === PaymentInterval.MONTH ? 'selected' : ''}  `}
-                            onClick={() => handleChangePlan(PaymentInterval.MONTH)}
-                        >
-                            Monthly
-                        </p>
-                        <p
-                            className={`billing-circle__options ${selectedPlan === PaymentInterval.YEAR ? 'selected' : ''}`}
-                            onClick={() => handleChangePlan(PaymentInterval.YEAR)}
-                        >
-                            Annually
-                        </p>
+                    <div className="billing-toggle">
+                        <span className={`billing-label ${!isYearly ? 'active' : ''}`}>
+                            Billed monthly
+                        </span>
+                        <Switch
+                            checked={isYearly}
+                            onChange={handleChangePlan}
+                            aria-label="Toggle billing period"
+                        />
+                        <span className={`billing-label ${isYearly ? 'active' : ''}`}>
+                            Billed yearly
+                        </span>
                     </div>
                     <p className="sub-title">Save {DISCOUNT}% with yearly billing</p>
                     {
@@ -170,7 +173,7 @@ export default withAuthenticationRequired(function PricingTier() {
                     <div className="pricing-tiers" key={selectedPlan}>
                         {
                             plans.map((p, index) => (
-                                <article key={p.id} className={`pricing-tiers__options `}>
+                                <article key={p.id} className={`pricing-tiers__options ${p.productName === 'SPOTLIGHT' ? 'pricing-tiers__popular_option' : ''} `}>
                                     <div className="option-detail">
                                         <h2 className="option-detail__name">
                                             {p.name}
@@ -251,7 +254,7 @@ export default withAuthenticationRequired(function PricingTier() {
                                         {p.benefits && p.benefits.map((f, idx) => (
                                             <li className="support-details__items" key={idx}>
                                                 <p className="image">
-                                                    <img src="/icons/ticket.svg" />
+                                                    <img src="/icons/ticker.svg" />
                                                 </p>
                                                 <p className="content">
                                                     {f}

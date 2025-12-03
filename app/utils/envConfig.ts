@@ -10,5 +10,6 @@ export const envConfig = {
     IMAGE_LIBRARY_API:import.meta.env.VITE_IMAGE_LIBRARY_API,
     CHECKOUT_URL:import.meta.env.VITE_CHECKOUT_URL,
     STRIPE_PUBLISHABLE_KEY:import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
+    SITE_STATUS:import.meta.env.VITE_SIDE_STATUS_API,
 
 }

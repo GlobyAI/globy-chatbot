@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "~/providers/AppContextProvider";
 import ArrowRightIcon from "/icons/arrow-right.svg";
-import { completeWorkFlow } from "~/services/appApis";
+import { checkSiteStatus, completeWorkFlow } from "~/services/appApis";
 import toast from "react-hot-toast";
 import Modal from "~/components/ui/Modal/Modal";
 import { envConfig } from "~/utils/envConfig";
@@ -11,6 +11,7 @@ export default function Complete() {
     const { userId } = useAppContext();
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [noSite, setNoSite] = useState(true)
     async function handComplete() {
         if (userId) {
             setIsLoading(true);
@@ -36,6 +37,28 @@ export default function Complete() {
             }
         }
     }
+    useEffect(() => {
+        async function checkIfUserHasSite() {
+            if (!userId) return
+            const res = await checkSiteStatus(userId)
+            if (res.status !== 200) {
+                setNoSite(false)
+                return
+            }
+            const data = res.data
+            if (data.user_id !== userId) {
+                setNoSite(false)
+                return
+            }
+            const status = data.status.toLowerCase()
+            if (status !== 'live' || status !== 'ready') {
+                setNoSite(false)
+            }
+        }
+        if (userId) {
+            checkIfUserHasSite()
+        }
+    }, [userId])
 
     if (isRedirecting || isLoading)
         return (
@@ -46,6 +69,7 @@ export default function Complete() {
                 </div>
             </Modal>
         )
+    if (noSite) return null
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>

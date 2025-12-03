@@ -83,3 +83,10 @@ export function fetchImageLibrary(userId: string): Promise<AxiosResponse<ImageLi
         method: "GET",
     })
 }
+
+export function checkSiteStatus(userId:string) {
+     return axiosInstance({
+        baseURL: `${envConfig.SITE_STATUS}?user_id=${userId}`,
+        method: "GET",
+    })
+}

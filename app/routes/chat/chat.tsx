@@ -1,16 +1,19 @@
 import type { Route } from "../../+types/root";
 import ChatBox from "./components/chatbox/chat-box";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0, User, withAuthenticationRequired } from "@auth0/auth0-react";
 import History from "./components/history";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 import Sidebar from "./components/sidebar/sidebar";
 import { useWebSocket } from "~/providers/WSProdivder";
 import { SENDER } from "~/types/enums";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
+import { useNavigate } from "react-router";
+import { APP_ROUTES } from "~/utils/vars";
+import useCheckPayment from "~/hooks/useCheckPayment";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Globy.ai | Chatbot", },
@@ -21,6 +24,7 @@ export function meta({ }: Route.MetaArgs) {
 function Chat() {
   const { messages } = useWebSocket()
   const { containerRef } = useLoadMoreHistory()
+  useCheckPayment()
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])
@@ -39,6 +43,7 @@ function Chat() {
     setShow(prev => !prev)
   }
 
+
   return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
     <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />
     <div className="chat-window" >
@@ -49,7 +54,6 @@ function Chat() {
         <div className="heading__brand">
           <strong>Globy.ai </strong>
           <small>Onboarding</small>
-
         </div>
         {
           canContinue &&

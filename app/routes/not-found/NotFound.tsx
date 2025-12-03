@@ -1,7 +1,28 @@
-import { Navigate } from "react-router"
+import { Navigate, useNavigate } from "react-router"
+import type { Route } from "../../+types/root";
+import { APP_ROUTES } from "~/utils/vars";
 
-type Props = {}
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Globy.ai | Page Not Found", },
+  ];
+}
 
-export default function NotFound({}: Props) {
-  return <Navigate to={''} replace />
+export default function NotFound() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="payment-status ">
+      <div>
+        <h2>
+          404 - Page Not Found
+        </h2>
+        <button
+          onClick={() => navigate(APP_ROUTES.INDEX)}
+        >
+          Go to Home Page
+        </button>
+      </div>
+    </div>
+  )
 }

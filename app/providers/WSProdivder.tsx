@@ -127,13 +127,20 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     const sendMessage = (data: MessageData) => {
         setIsPending(true)
+
         const message_id = generateMessageId()
-        setMessages(prev => [...prev, {
-            role: SENDER.USER,
-            content: data.text ? data.text : data.image_urls?.join("\n") || '',
-            message_id,
-            created_at: new Date(),
-        }])
+        setMessages(prev => {
+            const newMsg = {
+                role: SENDER.USER,
+                content: data.text ? data.text : data.image_urls?.join("\n") || '',
+                message_id,
+                created_at: new Date(),
+            }
+            if (!data.message_id) return [...prev, newMsg]
+            const filtered = prev.filter(msg => msg.message_id !== data.message_id)
+            return [...filtered, newMsg]
+
+        })
         const newMsg = {
             ...data,
             message_id,

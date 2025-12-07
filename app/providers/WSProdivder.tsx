@@ -14,6 +14,7 @@ import { fetchHistory } from '~/services/appApis';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import useAppStore from '~/stores/appStore';
+import { getTokenFromSession } from '~/services/axiosInstance';
 
 
 
@@ -35,6 +36,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     const [isPending, setIsPending] = useState(false)
     const [hasIdentity, setHasIdentity] = useState(false)
     const setOffset = useAppStore(s => s.setOffset)
+
     async function getConversation() {
         if (!userId) return
         const offset = useAppStore.getState().offset
@@ -68,12 +70,15 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
+            const token = getTokenFromSession();
+
             if (!messages.length) {
                 const initMsg = {
                     type: MessageType.USER_MESSAGE,
                     message_id: generateMessageId(),
                     text: "___ HELLO ___",
                     research: false,
+                    token
                 };
                 connect(userId, initMsg);
             } else {

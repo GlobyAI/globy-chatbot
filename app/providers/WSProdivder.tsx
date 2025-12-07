@@ -7,14 +7,13 @@ import React, {
 import { useWebSocketStore } from '~/stores/websocketStore';
 import { useAppContext } from './AppContextProvider';
 import { MessageType, SENDER } from '~/types/enums';
-import type { ChatMessage, MessageData, MessageResponse } from '~/types/models';
+import type { ChatMessage, MessageData } from '~/types/models';
 import { generateMessageId } from '~/utils/helper';
 import IdentityType from '~/components/IdentityType/IdentityType';
 import { fetchHistory } from '~/services/appApis';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import useAppStore from '~/stores/appStore';
-import { getTokenFromSession } from '~/services/axiosInstance';
 
 
 
@@ -70,7 +69,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
-            const token = getTokenFromSession();
 
             if (!messages.length) {
                 const initMsg = {
@@ -78,7 +76,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
                     message_id: generateMessageId(),
                     text: "___ HELLO ___",
                     research: false,
-                    token
                 };
                 connect(userId, initMsg);
             } else {
@@ -149,7 +146,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         const newMsg = {
             ...data,
             message_id,
-            type: MessageType.USER_MESSAGE
+            type: MessageType.USER_MESSAGE,
+
         }
         send(newMsg)
     }

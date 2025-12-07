@@ -1,5 +1,6 @@
 // webSocketStore.ts
 import { create } from "zustand";
+import { getTokenFromSession } from "~/services/axiosInstance";
 import { MessageType } from "~/types/enums";
 import type { MessageRequest, MessageResponse } from "~/types/models";
 import { envConfig } from "~/utils/envConfig";
@@ -29,7 +30,9 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
       set({ isConnected: true });
 
       if (initMsg) {
-        socket.send(JSON.stringify(initMsg));
+        socket.send(
+          JSON.stringify({ ...initMsg, token: getTokenFromSession() })
+        );
       }
       console.log("[WS] connected");
     };
@@ -67,6 +70,6 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
       return;
     }
 
-    socket.send(JSON.stringify(payload));
+    socket.send(JSON.stringify({ ...payload, token: getTokenFromSession() }));
   },
 }));

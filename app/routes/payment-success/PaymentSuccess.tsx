@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { APP_ROUTES } from "~/utils/vars";
 import type { Route } from "../../+types/root";
+import { function_ } from "valibot";
 
 export function meta({ }: Route.MetaArgs) {
     return [
@@ -32,17 +33,19 @@ export default function PaymentSuccess() {
         };
 
         fireConversion();
+        if (!plan) {
 
-        // 🔐 If plan missing or 'impact', redirect to homepage silently
-        if (!plan || plan === "impact") {
-            loginWithRedirect({
-                appState: { returnTo: APP_ROUTES.INDEX },
-                authorizationParams: { prompt: "none" },
-            });
             window.location.href = APP_ROUTES.INDEX;
         }
-    }, []);
+    }, [plan]);
 
+    function onContinue() {
+        if (!plan) return
+        loginWithRedirect({
+            appState: { returnTo: APP_ROUTES.INDEX },
+            authorizationParams: { prompt: "none" },
+        });
+    }
     // 🔇 Avoid rendering page for “impact” plan redirect
     if (plan === "impact") return null;
 
@@ -54,7 +57,7 @@ export default function PaymentSuccess() {
                     Payment Success
                 </h2>
                 <button
-                    onClick={() => navigate(APP_ROUTES.INDEX)}
+                    onClick={onContinue}
                 >
                     Continue
                 </button>

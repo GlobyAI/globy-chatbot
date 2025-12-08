@@ -3,34 +3,55 @@
 .getting-started {
   height: 100%;
   width: 100%;
-  background-color: $black-500;
-  @include flex($justify-content: center, $align-items: center);
-  &__container {
+  background-color: $black-700;
+  @include flex($align-items: center, $direction: column);
+
+  .brand-logo {
     width: 100%;
-    max-width: 536px;
-    padding: 0 16px;
-    @include breakpoint(md) {
-      padding: 0 32px;
+    @include flex($justify-content: left, $align-items: left);
+
+    > img {
+      width: 8.6rem;
+      margin: 2rem;
     }
-    @include text($white, 400, 14px);
+  }
+
+  &__container {
+    flex: 1;
+    width: 100%;
+    max-width: 64rem;
+    padding: 0 1.6rem;
     @include breakpoint(md) {
-      font-size: 16px;
+      font-size: 1.6rem;
     }
-    @include flex($direction: column, $align-items: center, $gap: 16px);
-    .heading {
-      font-size: 28px;
-      font-weight: 400;
-      @include breakpoint(md) {
-        font-size: 36px;
+    @include text($white, 400, 1.4rem);
+    @include flex(
+      $justify-content: center,
+      $direction: column,
+      $align-items: center,
+      $gap: 1.6rem
+    );
+    .heading-container {
+      margin-bottom: 1rem;
+      .heading {
+        color: $white-2;
+        font-size: 2.4rem;
+        font-weight: 600;
+        line-height: 3.2rem;
+      }
+
+      .sub-heading {
+        color: $gray-300;
+        font-weight: 508;
       }
     }
 
     .button {
-      margin-top: 10px;
+      margin-top: 0.1rem;
       width: fit-content;
     }
     .select-language {
-      @include flex($direction: column, $align-items: center, $gap: 16px);
+      @include flex($direction: column, $align-items: center, $gap: 1.6rem);
       > .select-wrapper {
         > .dropdown {
           > #dropdown-btn {
@@ -44,37 +65,40 @@
     }
 
     .identity-type {
-      @include flex($direction: column, $align-items: center, $gap: 16px);
+      max-width: 50rem;
+      @include flex($direction: column, $align-items: left, $gap: 1.6rem);
       &__options {
-        @include flex(flex-start, flex-start, column, 16px);
+        @include flex(flex-start, flex-start, column, 2.4rem);
         .option {
           cursor: pointer;
           width: 100%;
-          padding: 8px;
-          border-radius: 4px;
-          border: 1px solid rgba($color: $white-2, $alpha: 0.1);
-          @include flex(left, center, row, 8px);
+          padding: 0.8rem;
+          border-radius: 1.2rem;
+          border: 0.1rem solid rgba($color: $white-2, $alpha: 0.1);
+          @include flex(left, center, row, 0.8rem);
           @include breakpoint(md) {
-            gap: 16px;
-            padding: 16px;
+            gap: 1.6rem;
+            padding: 1.6rem;
           }
-          &:hover,
+          &:hover {
+            background-color: $dark-gray;
+          }
           &.selected {
-            border-color: $purple;
             background-color: rgba($color: $purple, $alpha: 0.05);
           }
           &.selected {
-            border-color: $purple;
             background-color: rgba($color: $purple, $alpha: 0.2);
           }
           &__avatar {
-            background-color: $purple;
-            border-radius: 4px;
+            background-color: $gray-800;
+            border-radius: 0.8rem;
             @include flex(center, center);
-            @include box(32px, 32px);
-            @include breakpoint(md){
-              
-              @include box(42px, 42px);
+            @include box(3.2rem, 3.2rem);
+            @include breakpoint(md) {
+              @include box(4.2rem, 4.2rem);
+            }
+            &.selected {
+              background-color: $purple;
             }
           }
 
@@ -82,27 +106,33 @@
             flex: 1;
             @include flex(flex-start, flex-start, column);
             > strong {
-              font-size: 16px;
-              @include breakpoint(md) {
-                font-size: 20px;
-              }
+              font-size: 1.6rem;
+              color: $white-2;
+
             }
             > p {
-              font-size: 12px;
+              font-size: 1.2rem;
               text-align: left;
+              color: $gray-300;
               @include breakpoint(md) {
-                font-size: 16px;
+                font-size: 1.4rem;
               }
             }
           }
         }
       }
-      > button{
+    }
+
+    .action-container {
+      @include flex($justify-content: right, $align-items: right);
+      width: 100%;
+
+      > button {
         background-color: $purple;
         border-radius: 1.2rem;
         height: 5rem;
         min-width: 12rem;
-        &:hover{
+        &:hover {
           background-color: $dark-purple;
         }
         @include flex(center, center);

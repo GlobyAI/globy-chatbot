@@ -7,6 +7,8 @@ import { IdentityTypeEnum } from '~/types/enums';
 import SpinnerLoading from '../ui/SpinnerLoading/SpinnerLoading';
 import { AxiosError } from 'axios';
 import useAppStore from '~/stores/appStore';
+import UserIcon from '/icons/user.svg'
+import BriefcaseIcon from '/icons/briefcase.svg'
 
 
 export default function IdentityType({
@@ -77,40 +79,50 @@ export default function IdentityType({
   return (
     <Modal open={!hasIdentity && userId !== null}>
       <div className="getting-started">
+        <div className="brand-logo">
+              <img src="/images/globy-logo.svg" alt="Brand logo" />
+          </div>
         <div className="getting-started__container">
-          <div className='identity-type'>
-            <p className="sub-heading">
-              Do you want your website to be for a business or for personal use?
-            </p>
+          <div className="identity-type">
+            <div className="heading-container">
+              <p className="heading">
+                Let's create the perfect website for your needs
+              </p>
+              <p className="sub-heading">
+                  What kind of website are you creating?
+              </p>
+            </div>
 
             <div className="identity-type__options">
               <div className={`option ${type === IdentityTypeEnum.PERSONAL ? 'selected' : ''}`} onClick={() => handleChangeType(IdentityTypeEnum.PERSONAL)}>
-                <span className='option__avatar'>
-                  {/* <FontAwesomeIcon icon={faHouse} /> */}
+                <span className={`option__avatar ${type === IdentityTypeEnum.PERSONAL ? 'selected' : ''}`}>
+                  <img src={UserIcon} alt="PersonalIcon" />
                 </span>
                 <div className='option__detail'>
                   <strong>Personal</strong>
-                  <p>Personal website to share your own content.</p>
+                  <p>Perfect for expressing yourself and connecting with your audience.</p>
                 </div>
               </div>
               <div className={`option ${type === IdentityTypeEnum.BUSINESS ? 'selected' : ''}`} onClick={() => handleChangeType(IdentityTypeEnum.BUSINESS)}>
-                <span className='option__avatar'>
-                  {/* <FontAwesomeIcon icon={faBriefcase} /> */}
+                <span className={`option__avatar ${type === IdentityTypeEnum.BUSINESS ? 'selected' : ''}` }>
+                  <img src={BriefcaseIcon} alt="Business Icon" />
                 </span>
                 <div className='option__detail'>
                   <strong>Business</strong>
-                  <p>Professional website for your company or brand</p>
+                  <p>Get a professional website that attracts customers, builds trust and drives results.</p>
                 </div>
               </div>
 
 
             </div>
-            <button
-              onClick={handleClick}
-              disabled={!type}
-            >
-              Continue
-            </button>
+            <div className='action-container'>
+              <button
+                onClick={handleClick}
+                disabled={!type}
+              >
+                Continue
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { APP_ROUTES } from "~/utils/vars";
 import type { Route } from "../../+types/root";
-import { function_ } from "valibot";
 import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 
 export function meta({ }: Route.MetaArgs) {
@@ -42,6 +41,7 @@ export default function PaymentSuccess() {
                 appState: { returnTo: APP_ROUTES.INDEX },
                 authorizationParams: { prompt: "none" },
             });
+
         }
     }, [plan]);
 

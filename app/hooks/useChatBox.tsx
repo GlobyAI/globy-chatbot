@@ -16,12 +16,24 @@ export default function useChatBox() {
     }
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && e.shiftKey) {
-            // Allow newline
+            e.preventDefault();
+
+            const target = e.currentTarget;
+            const { selectionStart, selectionEnd, value } = target;
+
+            const newValue =
+                value.slice(0, selectionStart) + "\n" + value.slice(selectionEnd);
+
+            setContent(newValue);
+            requestAnimationFrame(() => {
+                target.selectionStart = target.selectionEnd = selectionStart + 1;
+            });
             return;
         }
         if (e.key === "Enter") {
             e.preventDefault();
             handleSubmit()
+            return
         }
     }
     const handleDeleteUploadedImage = async (f: IUploadFile) => {

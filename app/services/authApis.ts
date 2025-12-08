@@ -1,6 +1,7 @@
 import type { AxiosResponse } from "axios";
 import axiosInstance from "./axiosInstance";
 import type { User } from "@auth0/auth0-react";
+import { envConfig } from "~/utils/envConfig";
 
 export async function verifyUser(
   token: string,
@@ -10,7 +11,8 @@ export async function verifyUser(
     user_id: string;
   }>
 > {
-  return await axiosInstance(`/v1/auth`, {
+  return await axiosInstance( {
+    url:envConfig.AUTH_API_URL,
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,

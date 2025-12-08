@@ -7,7 +7,7 @@ import React, {
 import { useWebSocketStore } from '~/stores/websocketStore';
 import { useAppContext } from './AppContextProvider';
 import { MessageType, SENDER } from '~/types/enums';
-import type { ChatMessage, MessageData, MessageResponse } from '~/types/models';
+import type { ChatMessage, MessageData } from '~/types/models';
 import { generateMessageId } from '~/utils/helper';
 import IdentityType from '~/components/IdentityType/IdentityType';
 import { fetchHistory } from '~/services/appApis';
@@ -28,13 +28,14 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { connect, send, lastMessage } = useWebSocketStore();
+    const { connect, send, lastMessage, isConnected } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [fetchedHistory, setFetchedHistory] = useState(false)
     const { userId } = useAppContext()
     const [isPending, setIsPending] = useState(false)
     const [hasIdentity, setHasIdentity] = useState(false)
     const setOffset = useAppStore(s => s.setOffset)
+
     async function getConversation() {
         if (!userId) return
         const offset = useAppStore.getState().offset
@@ -68,6 +69,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
+
             if (!messages.length) {
                 const initMsg = {
                     type: MessageType.USER_MESSAGE,
@@ -144,7 +146,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         const newMsg = {
             ...data,
             message_id,
-            type: MessageType.USER_MESSAGE
+            type: MessageType.USER_MESSAGE,
+
         }
         send(newMsg)
     }
@@ -157,7 +160,10 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     return (
         <WebSocketContext.Provider value={value}>
-            <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
+            {
+                !isConnected &&
+                <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
+            }
             {children}
         </WebSocketContext.Provider>
     );

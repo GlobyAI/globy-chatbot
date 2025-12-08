@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { APP_ROUTES } from "~/utils/vars";
 import type { Route } from "../../+types/root";
 import { function_ } from "valibot";
+import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 
 export function meta({ }: Route.MetaArgs) {
     return [
@@ -34,8 +35,13 @@ export default function PaymentSuccess() {
 
         fireConversion();
         if (!plan) {
-
             window.location.href = APP_ROUTES.INDEX;
+        }
+        if (plan === 'impact') {
+            loginWithRedirect({
+                appState: { returnTo: APP_ROUTES.INDEX },
+                authorizationParams: { prompt: "none" },
+            });
         }
     }, [plan]);
 
@@ -47,7 +53,7 @@ export default function PaymentSuccess() {
         });
     }
     // 🔇 Avoid rendering page for “impact” plan redirect
-    if (plan === "impact") return null;
+    if (plan === "impact") return <SpinnerLoading />;
 
     return (
         <div className="payment-status success">

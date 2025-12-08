@@ -58,11 +58,7 @@ export default function AppContextProvider({
       let token = "";
       if (user)
         setIsLoading(true);
-      const hasPaid = checkPayment()
-      if (!hasPaid) {
-        navigate(APP_ROUTES.PRICE);
-        return
-      }
+
       try {
         token = await getAccessTokenSilently();
       } catch (err) {
@@ -84,6 +80,7 @@ export default function AppContextProvider({
         }
       }
       if (token) {
+
         sessionStorage.setItem("appSession", token);
         if (user) {
           const excludeKeys = [
@@ -185,6 +182,11 @@ export default function AppContextProvider({
       // !showVerifyEmailReminder.status &&
       isAuthenticated
     ) {
+      const hasPaid = checkPayment()
+      if (!hasPaid) {
+        navigate(APP_ROUTES.PRICE);
+        return
+      }
       fetchUserInfo();
     }
   }, [userId, isAuthLoading, isAuthenticated]);

@@ -1,10 +1,8 @@
 // webSocketStore.ts
 import { create } from "zustand";
 import { getTokenFromSession } from "~/services/axiosInstance";
-import { MessageType } from "~/types/enums";
 import type { MessageRequest, MessageResponse } from "~/types/models";
 import { envConfig } from "~/utils/envConfig";
-import { generateMessageId } from "~/utils/helper";
 
 interface WebSocketState {
   socket: WebSocket | null;
@@ -21,7 +19,6 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   lastMessage: null,
   connect: (userId: string, initMsg?: MessageRequest) => {
     if (!userId) return;
-    console.log('connect')
     const existing = get().socket;
     if (existing && existing.readyState === WebSocket.OPEN) return;
 

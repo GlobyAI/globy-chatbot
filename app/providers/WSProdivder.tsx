@@ -28,7 +28,7 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { connect, send, lastMessage } = useWebSocketStore();
+    const { connect, send, lastMessage, isConnected } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [fetchedHistory, setFetchedHistory] = useState(false)
     const { userId } = useAppContext()
@@ -160,7 +160,10 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     return (
         <WebSocketContext.Provider value={value}>
-            <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
+            {
+                !isConnected &&
+                <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
+            }
             {children}
         </WebSocketContext.Provider>
     );

@@ -21,6 +21,7 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   lastMessage: null,
   connect: (userId: string, initMsg?: MessageRequest) => {
     if (!userId) return;
+    console.log('connect')
     const existing = get().socket;
     if (existing && existing.readyState === WebSocket.OPEN) return;
 

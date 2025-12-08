@@ -160,10 +160,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     return (
         <WebSocketContext.Provider value={value}>
-            {
-                !isConnected &&
-                <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
-            }
+            <IdentityType hasIdentity={hasIdentity} onContinue={handleContinue} />
             {children}
         </WebSocketContext.Provider>
     );

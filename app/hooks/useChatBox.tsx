@@ -16,6 +16,8 @@ export default function useChatBox() {
     }
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && e.shiftKey) {
+            e.preventDefault();
+
             const target = e.currentTarget;
             const { selectionStart, selectionEnd, value } = target;
 
@@ -31,6 +33,7 @@ export default function useChatBox() {
         if (e.key === "Enter") {
             e.preventDefault();
             handleSubmit()
+            return
         }
     }
     const handleDeleteUploadedImage = async (f: IUploadFile) => {

@@ -11,9 +11,6 @@ import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
-import { useNavigate } from "react-router";
-import { APP_ROUTES } from "~/utils/vars";
-import useCheckPayment from "~/hooks/useCheckPayment";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Globy.ai | Chatbot", },
@@ -24,7 +21,6 @@ export function meta({ }: Route.MetaArgs) {
 function Chat() {
   const { messages } = useWebSocket()
   const { containerRef } = useLoadMoreHistory()
-  useCheckPayment()
   const canContinue = useMemo(() => {
     return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
   }, [messages])

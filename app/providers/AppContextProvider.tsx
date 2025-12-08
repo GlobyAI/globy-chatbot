@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
-// import axios from "axios";
-// import { createSale, getSales } from "~/services/saleApi";
 import { verifyUser } from "~/services/authApis";
 import { updateAuth0AppMetadata } from "~/services/auth0Apis";
 import { envConfig } from "~/utils/envConfig";
 import useAppStore from "~/stores/appStore";
+import { useNavigate } from "react-router";
+import { APP_ROUTES } from "~/utils/vars";
 
 interface AppContextType {
   userId: string | null;
@@ -24,6 +24,8 @@ export default function AppContextProvider({
 }) {
   const [userId, setUserId] = useState<string | null>(null);
   const setIsLoading = useAppStore(s => s.setLoading)
+  const navigate = useNavigate()
+
   const {
     user,
     isAuthenticated,
@@ -32,10 +34,35 @@ export default function AppContextProvider({
     logout,
   } = useAuth0();
 
+
+  function checkPayment() {
+    if (user) {
+      const currentPlan = user["https://globy.ai/plan"];
+      // No plan selected  → invalid
+      if (!currentPlan) {
+        return false
+      }
+
+      // Non-free plan but not paid → invalid
+      if (currentPlan !== "FREE" && user["https://globy.ai/has_paid"] !== true) {
+        return false
+      }
+      return true
+    }
+    return false
+  }
+
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       let token = "";
-      setIsLoading(true);
+      if (user)
+        setIsLoading(true);
+      const hasPaid = checkPayment()
+      if (!hasPaid) {
+        navigate(APP_ROUTES.PRICE);
+        return
+      }
       try {
         token = await getAccessTokenSilently();
       } catch (err) {

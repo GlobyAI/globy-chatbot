@@ -100,7 +100,7 @@ export default function IdentityType({
                 </span>
                 <div className='option__detail'>
                   <strong>Personal</strong>
-                  <p>Personal website to share your own content.</p>
+                  <p>Perfect for expressing yourself and connecting with your audience.</p>
                 </div>
               </div>
               <div className={`option ${type === IdentityTypeEnum.BUSINESS ? 'selected' : ''}`} onClick={() => handleChangeType(IdentityTypeEnum.BUSINESS)}>
@@ -109,7 +109,7 @@ export default function IdentityType({
                 </span>
                 <div className='option__detail'>
                   <strong>Business</strong>
-                  <p>Professional website for your company or brand</p>
+                  <p>Get a professional website that attracts customers, builds trust and drives results.</p>
                 </div>
               </div>
 

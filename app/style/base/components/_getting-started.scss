@@ -3,8 +3,8 @@
 .getting-started {
   height: 100%;
   width: 100%;
-  background-color: $black-500;
-  @include flex( $align-items: center, $direction: column);
+  background-color: $black-700;
+  @include flex($align-items: center, $direction: column);
 
   .brand-logo {
     width: 100%;
@@ -19,16 +19,18 @@
   &__container {
     flex: 1;
     width: 100%;
-    max-width: 536px;
+    max-width: 64rem;
     padding: 0 1.6rem;
-    @include breakpoint(md) {
-      padding: 0 3.2rem;
-    }
-    @include text($white, 400, 1.4rem);
     @include breakpoint(md) {
       font-size: 1.6rem;
     }
-    @include flex($justify-content: center, $direction: column, $align-items: center, $gap: 1.6rem);
+    @include text($white, 400, 1.4rem);
+    @include flex(
+      $justify-content: center,
+      $direction: column,
+      $align-items: center,
+      $gap: 1.6rem
+    );
     .heading-container {
       margin-bottom: 1rem;
       .heading {
@@ -63,9 +65,10 @@
     }
 
     .identity-type {
+      max-width: 50rem;
       @include flex($direction: column, $align-items: left, $gap: 1.6rem);
       &__options {
-        @include flex(flex-start, flex-start, column, 1.6rem);
+        @include flex(flex-start, flex-start, column, 2.4rem);
         .option {
           cursor: pointer;
           width: 100%;
@@ -91,8 +94,7 @@
             border-radius: 0.8rem;
             @include flex(center, center);
             @include box(3.2rem, 3.2rem);
-            @include breakpoint(md){
-              
+            @include breakpoint(md) {
               @include box(4.2rem, 4.2rem);
             }
             &.selected {
@@ -105,15 +107,15 @@
             @include flex(flex-start, flex-start, column);
             > strong {
               font-size: 1.6rem;
-              @include breakpoint(md) {
-                font-size: 2rem;
-              }
+              color: $white-2;
+
             }
             > p {
               font-size: 1.2rem;
               text-align: left;
+              color: $gray-300;
               @include breakpoint(md) {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
               }
             }
           }
@@ -125,12 +127,12 @@
       @include flex($justify-content: right, $align-items: right);
       width: 100%;
 
-      > button{
+      > button {
         background-color: $purple;
         border-radius: 1.2rem;
         height: 5rem;
         min-width: 12rem;
-        &:hover{
+        &:hover {
           background-color: $dark-purple;
         }
         @include flex(center, center);

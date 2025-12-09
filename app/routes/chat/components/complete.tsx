@@ -5,7 +5,7 @@ import { checkSiteStatus, completeWorkFlow } from "~/services/appApis";
 import toast from "react-hot-toast";
 import Modal from "~/components/ui/Modal/Modal";
 import { envConfig } from "~/utils/envConfig";
-import { AxiosError } from "axios";
+import { Axios, AxiosError } from "axios";
 import { useSearchParams } from "react-router";
 
 export default function Complete() {
@@ -15,6 +15,7 @@ export default function Complete() {
     const [hasSite, setHasSite] = useState(true)
     let [searchParams] = useSearchParams();
     const needRegeneration = searchParams.get('regeneration')
+    const refId = searchParams.get('ref')
     async function handComplete() {
         if (userId) {
             setIsLoading(true);
@@ -43,16 +44,22 @@ export default function Complete() {
     useEffect(() => {
         async function checkIfUserHasSite() {
             if (!userId) return
-            const res = await checkSiteStatus(userId)
-            if (res.status === 404) {
-                setHasSite(false)
-                return
+            try {
+
+                const res = await checkSiteStatus(userId)
+                const data = res.data
+                const status = data.status.toLowerCase()
+                if (status !== 'live' || status !== 'ready') {
+                    setHasSite(false)
+                }
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    if (error.status === 404) {
+                        setHasSite(false)
+                    }
+                }
             }
-            const data = res.data
-            const status = data.status.toLowerCase()
-            if (status !== 'live' || status !== 'ready') {
-                setHasSite(false)
-            }
+
         }
         if (userId) {
             checkIfUserHasSite()
@@ -68,11 +75,12 @@ export default function Complete() {
                 </div>
             </Modal>
         )
-    if (hasSite && needRegeneration === 'false') return null
+    const regenerateSite = needRegeneration && refId && needRegeneration === 'true' && refId === userId
+    if (hasSite && !regenerateSite) return null
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>
-                <p>{needRegeneration ? 'Regenerate site' : "Generate now"}</p>
+                <p>{regenerateSite ? 'Regenerate site' : "Generate now"}</p>
                 <img src={ArrowRightIcon} alt="Arrow right" />
             </button>
         </div>

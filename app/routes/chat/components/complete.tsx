@@ -80,7 +80,7 @@ export default function Complete() {
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>
-                <p>{regenerateSite ? 'Regenerate site' : "Generate now"}</p>
+                <p>Generate now</p>
                 <img src={ArrowRightIcon} alt="Arrow right" />
             </button>
         </div>

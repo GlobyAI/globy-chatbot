@@ -13,8 +13,8 @@ import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "Globy.ai | Chatbot", },
-    { name: "description", content: "Globy.ai transforms your identity into a powerful brand through color, motion, shape, imagery, and copy - fused into one living website" },
+    { title: "globy.ai  | Chatbot", },
+    { name: "description", content: "globy.ai  transforms your identity into a powerful brand through color, motion, shape, imagery, and copy - fused into one living website" },
   ];
 }
 
@@ -48,7 +48,7 @@ function Chat() {
           <img src={MenuIcon} onClick={handleOpenSidebar} />
         </span>
         <div className="heading__brand">
-          <strong>Globy.ai </strong>
+          <strong>globy.ai </strong>
           <small>Onboarding</small>
         </div>
         {

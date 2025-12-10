@@ -4,7 +4,7 @@ import { APP_ROUTES } from "~/utils/vars";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "Globy.ai | Page Not Found", },
+    { title: "globy.ai  | Page Not Found", },
   ];
 }
 

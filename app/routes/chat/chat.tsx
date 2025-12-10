@@ -11,6 +11,8 @@ import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
+import { useUserAlreadyHasSite } from '~/hooks/useUserAlreadyHasSite';
+
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "globy.ai  | Chatbot", },
@@ -39,6 +41,8 @@ function Chat() {
     setShow(prev => !prev)
   }
 
+  const { userAlreadyHasSite } = useUserAlreadyHasSite()
+
 
   return <main className={`chat-bot ${show ? '' : 'hide'}`} ref={containerRef}>
     <Sidebar handleCloseSidebar={handleCloseSidebar} handleToggle={handleToggle} />
@@ -56,13 +60,15 @@ function Chat() {
           <Complete />
         }
       </div>
-      <History />
-      <div className="prompt-box">
-        {/* <Suggestions /> */}
-        {/* <Continue/> */}
-        <ChatBox />
+      {userAlreadyHasSite && <>
+        <History />
+        <div className="prompt-box">
+          {/* <Suggestions /> */}
+          {/* <Continue/> */}
+          <ChatBox />
 
-      </div>
+        </div>
+      </>}
       <p></p>
     </div>
   </main>;

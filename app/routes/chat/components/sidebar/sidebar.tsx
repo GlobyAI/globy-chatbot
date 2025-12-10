@@ -13,6 +13,7 @@ import Profile from './profile'
 import { useClickOutside } from '~/hooks/useClickOutsite'
 import { useUserColorPreferences} from '~/hooks/useUserColorPreferences'
 import { useEffect, useRef, useState } from 'react'
+import { useUserAlreadyHasSite } from '~/hooks/useUserAlreadyHasSite';
 
 type Props = {
     handleCloseSidebar: () => void,
@@ -34,6 +35,8 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
     const sideBarRef = useRef<HTMLDivElement>(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < LARGE_SCREEN_WIDTH)
     const { userColorPreferences } = useUserColorPreferences()
+    const { userAlreadyHasSite } = useUserAlreadyHasSite()
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < LARGE_SCREEN_WIDTH) {
@@ -66,7 +69,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                     <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
                 </div>
                 <QualityScoreCard />
-                <div className="sidebar__styles">
+                {!userAlreadyHasSite && <div className="sidebar__styles">
                     <input type="checkbox" name="" id="styles" defaultChecked={true} hidden />
                     <label className='style-toggle' htmlFor="styles">Styles
                         <img src={ArrowUpIcon} alt="arrow up" />
@@ -85,7 +88,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                         {/* <UploadLogo logo={logo} pct={pct} onUploadFile={onUploadFile} isUploading={isUploading} onDeleteImage={onDeleteImage} /> */}
                         <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
                     </div>
-                </div>
+                </div>}
                 <Profile />
             </div>
         </>

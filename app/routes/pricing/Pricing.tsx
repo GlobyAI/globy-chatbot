@@ -62,7 +62,7 @@ const plans = [
 ]
 export function meta({ }: Route.MetaArgs) {
     return [
-        { title: "Globy.ai | Pricing", },
+        { title: "globy.ai  | Pricing", },
     ];
 }
 export default withAuthenticationRequired(function PricingTier() {

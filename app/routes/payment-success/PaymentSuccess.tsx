@@ -7,7 +7,7 @@ import SpinnerLoading from "~/components/ui/SpinnerLoading/SpinnerLoading";
 
 export function meta({ }: Route.MetaArgs) {
     return [
-        { title: "Globy.ai | Payment success", },
+        { title: "globy.ai  | Payment success", },
     ];
 }
 export default function PaymentSuccess() {

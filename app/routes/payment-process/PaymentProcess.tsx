@@ -8,7 +8,7 @@ import { APP_ROUTES } from "~/utils/vars";
 
 export function meta({ }: Route.MetaArgs) {
     return [
-        { title: "Globy.ai | Payment process", },
+        { title: "globy.ai  | Payment process", },
     ];
 }
 export default function PaymentProcess() {

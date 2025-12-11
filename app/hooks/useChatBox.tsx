@@ -27,6 +27,8 @@ export default function useChatBox() {
             setContent(newValue);
             requestAnimationFrame(() => {
                 target.selectionStart = target.selectionEnd = selectionStart + 1;
+                target.scrollTop = target.scrollHeight;
+
             });
             return;
         }

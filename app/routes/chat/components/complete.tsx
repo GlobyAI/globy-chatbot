@@ -14,8 +14,18 @@ export default function Complete() {
     const [isLoading, setIsLoading] = useState(false);
     const [hasSite, setHasSite] = useState(true)
     let [searchParams] = useSearchParams();
-    const needRegeneration = searchParams.get('regeneration')
-    const refId = searchParams.get('ref')
+
+
+    useEffect(() => {
+        if (!userId) return
+        // has not a site
+        if (!hasSite) return
+        const needRegeneration = searchParams.get('regeneration')
+        const refId = searchParams.get('ref')
+        // regeneration = true and ref id = user id , that mean user with the same user id want to generate a new site
+        if (needRegeneration && refId && needRegeneration === 'true' && refId === userId) return
+        window.location.href = envConfig.LANDING_PAGE + '/auth'
+    }, [searchParams, hasSite, userId])
     async function handComplete() {
         if (userId) {
             setIsLoading(true);
@@ -49,9 +59,7 @@ export default function Complete() {
                 const res = await checkSiteStatus(userId)
                 const data = res.data
                 const status = data.status.toLowerCase()
-                if (status !== 'live' || status !== 'ready') {
-                    setHasSite(false)
-                }
+                setHasSite(status !== 'onboarding')
             } catch (error) {
                 if (error instanceof AxiosError) {
                     if (error.status === 404) {
@@ -75,8 +83,6 @@ export default function Complete() {
                 </div>
             </Modal>
         )
-    const regenerateSite = needRegeneration && refId && needRegeneration === 'true' && refId === userId
-    if (hasSite && !regenerateSite) return null
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>

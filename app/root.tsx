@@ -22,6 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <script src="https://cdn-eu.pagesense.io/js/globyab/a85054401a7541b5944af1d55bb0efb1.js"></script>
         <Meta />
         <Links />
       </head>

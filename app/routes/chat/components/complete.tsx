@@ -12,9 +12,8 @@ export default function Complete() {
     const { userId } = useAppContext();
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [hasSite, setHasSite] = useState(true)
+    const [hasSite, setHasSite] = useState(false)
     let [searchParams] = useSearchParams();
-
 
     useEffect(() => {
         if (!userId) return
@@ -25,7 +24,7 @@ export default function Complete() {
         // regeneration = true and ref id = user id , that mean user with the same user id want to generate a new site
         if (needRegeneration && refId && needRegeneration === 'true' && refId === userId) return
         window.location.href = envConfig.LANDING_PAGE + '/auth'
-    }, [searchParams, hasSite, userId])
+    }, [searchParams,hasSite,userId])
     async function handComplete() {
         if (userId) {
             setIsLoading(true);

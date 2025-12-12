@@ -19,7 +19,7 @@ const plans = [
         price: 0,
         description: 'Because first impressions should last.',
         benefits: [
-            '10 Generations',
+            '25 Generations',
             'Hosted on a subdomain',
             'Advanced custom elements e.g. testimonials & pricing tables'
         ]
@@ -31,7 +31,7 @@ const plans = [
         price: 6,
         description: 'Make your brand unforgettable.',
         benefits: [
-            '50 Generations',
+            '50 credits',
             'Complete brand system',
             'Technical support',
             'Connect your custom domain'
@@ -44,7 +44,7 @@ const plans = [
         price: 39,
         description: 'Ready to scale and make business.',
         benefits: [
-            '500 Generations',
+            '500 credits',
             'Priority technical support',
         ],
     },
@@ -258,6 +258,15 @@ export default withAuthenticationRequired(function PricingTier() {
                                                 </p>
                                                 <p className="content">
                                                     {f}
+                                                    {
+                                                        idx === 0 &&
+                                                        <>
+                                                            <img src="icons/help.svg" alt="Info" width={16} height={16} />
+                                                            <p className="info">
+                                                                Building a site costs 10 credits.<br /> AI edits cost 1 credit each.
+                                                            </p>
+                                                        </>
+                                                    }
                                                 </p>
                                             </li>
                                         ))}

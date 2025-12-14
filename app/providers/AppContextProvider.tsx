@@ -24,13 +24,13 @@ export default function AppContextProvider({
 }) {
   const [userId, setUserId] = useState<string | null>(null);
   const setIsLoading = useAppStore(s => s.setLoading)
-  const navigate = useNavigate()
 
   const {
     user,
     isAuthenticated,
     isLoading: isAuthLoading,
     getAccessTokenSilently,
+    loginWithRedirect,
     logout,
   } = useAuth0();
 
@@ -56,9 +56,15 @@ export default function AppContextProvider({
   useEffect(() => {
     const fetchUserInfo = async () => {
       let token = "";
+      if (!user) return
       if (user)
         setIsLoading(true);
-
+      // validate ref id och create sale record
+      if (user.email_verified === false) {
+        setIsLoading(false);
+        window.location.href = envConfig.LANDING_PAGE + '/auth'
+        return;
+      }
       try {
         token = await getAccessTokenSilently();
       } catch (err) {
@@ -144,9 +150,19 @@ export default function AppContextProvider({
             // add globy id i auth0 metadata
             if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
               try {
-                await updateAuth0AppMetadata(user.sub || "", {
+                const res = await updateAuth0AppMetadata(user.sub || "", {
                   user_metadata: { globy_id: globyUserId },
                 }, token);
+                if (res?.status === 200) {
+                  await loginWithRedirect({
+                    appState: {
+                      returnTo: APP_ROUTES.INDEX,
+                    },
+                    authorizationParams: {
+                      prompt: 'none'
+                    }
+                  })
+                }
               } catch (error) {
                 console.log("Update Auth0 app metadata error:", error);
               }
@@ -182,11 +198,11 @@ export default function AppContextProvider({
       // !showVerifyEmailReminder.status &&
       isAuthenticated
     ) {
-      const hasPaid = checkPayment()
-      if (!hasPaid) {
-        navigate(APP_ROUTES.PRICE);
-        return
-      }
+      // const hasPaid = checkPayment()
+      // if (!hasPaid) {
+      //   navigate(APP_ROUTES.PRICE);
+      //   return
+      // }
       fetchUserInfo();
     }
   }, [userId, isAuthLoading, isAuthenticated]);

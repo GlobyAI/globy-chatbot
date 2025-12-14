@@ -80,4 +80,12 @@
     background: rgba(255,255,255,0.03);
     color: $white-2;
   }
+
+  a{
+    color: $purple;
+    font-weight: 500;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
 }

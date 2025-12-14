@@ -9,7 +9,7 @@ export async function updateAuth0AppMetadata(
   try {
     if (token) {
       try {
-        await axios(
+        return await axios(
           `${envConfig.AUTH0_DOMAIN}/api/v2/users/${encodeURIComponent(user_id)}`,
           {
             method: "PATCH",

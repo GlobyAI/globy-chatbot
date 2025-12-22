@@ -13,7 +13,6 @@ import AuthProvider from "./providers/AuthProvider";
 import AppContextProvider from "./providers/AppContextProvider";
 import GlobyToast from "./providers/GlobyToast";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
-import useGTMPageView from "./hooks/useGTMPageView";
 
 
 
@@ -55,7 +54,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  useGTMPageView()
   return <Outlet />;
 }
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

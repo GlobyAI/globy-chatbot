@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "~/providers/AppContextProvider";
-import ArrowRightIcon from "/icons/arrow-right.svg";
+import AiIcon from "/icons/sparkles.svg";
 import { checkSiteStatus, completeWorkFlow } from "~/services/appApis";
 import toast from "react-hot-toast";
 import Modal from "~/components/ui/Modal/Modal";
@@ -24,7 +24,7 @@ export default function Complete() {
         // regeneration = true and ref id = user id , that mean user with the same user id want to generate a new site
         if (needRegeneration && refId && needRegeneration === 'true' && refId === userId) return
         window.location.href = envConfig.LANDING_PAGE + '/auth'
-    }, [searchParams,hasSite,userId])
+    }, [searchParams, hasSite, userId])
     async function handComplete() {
         if (userId) {
             setIsLoading(true);
@@ -85,8 +85,8 @@ export default function Complete() {
     return (
         <div className={`move-on `}>
             <button onClick={handComplete}>
-                <p>Generate now</p>
-                <img src={ArrowRightIcon} alt="Arrow right" />
+                <img src={AiIcon} alt="Generate" />
+                <p>Generate Now</p>
             </button>
         </div>
     );

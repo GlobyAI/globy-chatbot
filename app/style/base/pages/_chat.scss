@@ -55,11 +55,12 @@
   @include position(fixed, 0, 0, 0, 0);
   .chat-window {
     max-width: 100%;
-    padding: 0 1.6rem;
+    padding: 0 0.8rem;
     height: 100%;
     @include flex(flex-start, flex-start, column);
     @include breakpoint(xl) {
       margin-left: 34.5rem;
+      padding: 0 1.6rem;
     }
     .heading {
       width: 100%;
@@ -104,7 +105,11 @@
       &__brand {
         flex: 1;
         height: 100%;
+        margin-right: 1.6rem;
         @include flex(center, center, column);
+        @include breakpoint(sm){
+          margin-right: 0
+        }
         > strong {
           @include text($white-2, 500, $text-lg);
         }
@@ -123,35 +128,44 @@
           right: 0;
           transform: translateY(-50%);
         }
+
         button {
           margin: auto;
-          background-color: transparent;
+          background-color: #332359;
           border-radius: 50%;
           background-color: $black-700;
           border-radius: 2rem;
           width: auto;
-          height: 3.6rem;
           border: 1px solid $purple;
           padding: 0.4rem 0.6rem;
+          height: 3rem;
           &:hover {
             background-color: $purple;
+          }
+          @include text($white-2, 400, $text-sm);
+          @include flex(center, center, row, 0.4rem);
+          @include breakpoint(md) {
+            font-size: $text-md;
+            height: 3.6rem;
           }
           @include breakpoint(xl) {
             padding: 0.8rem 1.2rem;
           }
-          @include text($white-2, 400, $text-md);
-          @include flex(center, center, row, 0.4rem);
-          p {
+          > img {
+            width: 1.2rem;
+            height: 1.2rem;
             display: none;
-            @include breakpoint(md){
+            @include breakpoint(sm) {
               display: block;
+              width: 1.4rem;
+              height: 1.4rem;
             }
           }
         }
       }
     }
     .chat {
-      padding-top: 5.4rem;
+      padding: 5.4rem 0.8rem 0;
       flex: 1 1 auto;
       margin: 0 auto;
       width: 100%;
@@ -159,8 +173,10 @@
       max-width: 78.4rem;
       min-height: 0;
       overflow-y: auto;
-
       @include flex(flex-start, flex-start, column, 5.7rem);
+      @include breakpoint(xl) {
+        padding: 5.4rem 0 0;
+      }
       &__history {
         flex: 1 1 auto;
         width: 100%;

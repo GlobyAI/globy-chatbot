@@ -41,7 +41,6 @@ export function useFetchKpis() {
 
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);
-        setConfidence(0);
       }
     };
 

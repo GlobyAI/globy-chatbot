@@ -6,6 +6,8 @@ import EditIcon from '/icons/edit.svg'
 import ReactMarkdown from "react-markdown";
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 import type { ChatMessage } from '~/types/models'
+import { useChatBoxContext } from '~/providers/ChatboxProvider'
+import FileIcon from '/icons/file-upload.svg'
 
 export default function History() {
     const { messages, isPending, sendMessage } = useWebSocket()
@@ -13,9 +15,8 @@ export default function History() {
         id: string,
         content: string
     } | null>(null)
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-    const containerRef = useRef<HTMLLabelElement | null>(null)
-    useResizeTextarea({ value: editingMsg?.content, textareaRef, containerRef })
+    const { isAnalyzing } = useChatBoxContext()
+    const { textareaRef, containerRef, } = useResizeTextarea({ value: editingMsg?.content, })
 
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         if (!isPending && editingMsg) {
@@ -60,9 +61,12 @@ export default function History() {
     }
 
     useEffect(() => {
-        if(!isPending) return
-        scrollToBottom();
-    }, [messages])
+        if (isPending || isAnalyzing || messages.length > 0) {
+            scrollToBottom();
+
+        }
+    }, [messages, isAnalyzing, isPending]);
+    console.log(messages)
     return (
         <div className="chat" >
             <ul className="chat__history" ref={chatRef}>
@@ -90,8 +94,35 @@ export default function History() {
                                 }
                                 <div className="message__content " >
                                     {
-                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                        msg.uploadedFiles && msg.uploadedFiles.length > 0 &&
+                                        <div className="images-container">
+                                            {
+                                                msg.uploadedFiles.map((f, idx) => {
+                                                    const isImage = f.file.type?.startsWith('image')
+                                                    return (
+                                                        <figure key={idx} className={`selected-img ${isImage ? '' : 'is-file'}`}>
+                                                            {
+                                                                isImage ?
+                                                                    <img src={f.url} key={idx} className='image' />
+                                                                    :
+                                                                    <>
+                                                                        <img src={FileIcon} key={idx} className='file' />
+                                                                        <figcaption>
+                                                                            <p>{f.file.name}</p>
+                                                                            <p>{f.file.type.split("/")[1]?.toUpperCase()}</p>
+                                                                        </figcaption>
+                                                                    </>
+                                                            }
+                                                        </figure>
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     }
+                                    {
+                                        <ReactMarkdown >{msg.content}</ReactMarkdown>
+                                    }
+
                                 </div>
                                 {
                                     isUser &&
@@ -101,11 +132,17 @@ export default function History() {
                         )
                     })
                 }
+                <li>
+                    {
+                        isAnalyzing && <div className='thinking'><p className='txt '>Analyzing...</p></div>
+                    }
+                    {
+                        !isAnalyzing && isPending && <TypingIndicator />
+                    }
+
+                </li>
                 <li className='target' ref={targetRef}></li>
             </ul>
-            {
-                isPending && <TypingIndicator />
-            }
         </div>
     )
 }

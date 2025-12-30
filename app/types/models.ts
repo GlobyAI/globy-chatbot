@@ -13,6 +13,7 @@ export interface ChatMessage {
   role: SENDER;
   content: string;
   created_at: Date;
+
 }
 
 export interface MessageData {
@@ -21,7 +22,7 @@ export interface MessageData {
   research?: boolean;
   expect_json?: boolean;
   message_id?: string;
-
+  id?: string;
 }
 
 export interface MessageRequest extends MessageBase {}

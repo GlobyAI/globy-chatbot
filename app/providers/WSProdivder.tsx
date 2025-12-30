@@ -7,7 +7,7 @@ import React, {
 import { useWebSocketStore } from '~/stores/websocketStore';
 import { useAppContext } from './AppContextProvider';
 import { MessageType, SENDER } from '~/types/enums';
-import type { ChatMessage, MessageData } from '~/types/models';
+import type { ChatMessage, IUploadFile, MessageData } from '~/types/models';
 import { generateMessageId } from '~/utils/helper';
 import IdentityType from '~/components/IdentityType/IdentityType';
 import { fetchHistory } from '~/services/appApis';
@@ -28,11 +28,11 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | null>(null);
 
 export const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const { connect, send, lastMessage, isConnected } = useWebSocketStore();
+    const { connect, send, lastMessage } = useWebSocketStore();
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [fetchedHistory, setFetchedHistory] = useState(false)
     const { userId } = useAppContext()
-    const [isPending, setIsPending] = useState(false)
+    const [isPending, setIsPending] = useState(true)
     const [hasIdentity, setHasIdentity] = useState(false)
     const setOffset = useAppStore(s => s.setOffset)
 
@@ -57,7 +57,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
             }
         } finally {
             setFetchedHistory(true)
-
         }
 
     }
@@ -69,7 +68,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
     useEffect(() => {
         if (userId && fetchedHistory && hasIdentity) {
-
+            setIsPending(false)
             if (!messages.length) {
                 const initMsg = {
                     type: MessageType.USER_MESSAGE,
@@ -124,6 +123,29 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
 
     }, [lastMessage]);
+    const escapePipe = (s = "") => String(s).replaceAll("|", "\\|"); // tránh phá format
+
+    const buildAttachmentsMarkdown = (uploadedFiles: IUploadFile[]) => {
+        // Mỗi attachment là 1 markdown node (image hoặc link)
+        // Tất cả để liền nhau trong 1 paragraph => dễ wrap thành <div class="uploaded-files">
+        return uploadedFiles
+            .map((f) => {
+                const name = f?.file?.name || "Unnamed";
+                const mime = f?.file?.type || "";
+                const isImage = mime.startsWith("image/");
+                const ext = mime.split("/")[1]?.toUpperCase() || "FILE";
+                const url = f?.url || "";
+
+                if (isImage) {
+                    // alt chứa metadata
+                    return `![attach|image|${escapePipe(name)}|${escapePipe(mime)}](${url})`;
+                }
+
+                // link text chứa metadata
+                return `[attach|file|${escapePipe(name)}|${escapePipe(ext)}](${url})`;
+            })
+            .join("\n"); // xuống dòng nhưng vẫn là 1 paragraph nếu không có dòng trống
+    };
 
     const clearMessages = () => setMessages([]);
 
@@ -131,14 +153,16 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         setIsPending(true)
 
         const message_id = generateMessageId()
+
         setMessages(prev => {
             const newMsg = {
                 role: SENDER.USER,
-                content: data.text ? data.text : data.image_urls?.join("\n") || '',
+                content: data.text,
                 message_id,
                 created_at: new Date(),
             }
             if (!data.message_id) return [...prev, newMsg]
+
             const filtered = prev.filter(msg => msg.message_id !== data.message_id)
             return [...filtered, newMsg]
 

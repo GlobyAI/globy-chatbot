@@ -11,17 +11,28 @@
   }
 
   // Headings
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-weight: 600;
     margin: 1.2rem 0 0.6rem;
   }
 
-  h1 { font-size: 2.4rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.8rem; }
+  h1 {
+    font-size: 2.4rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.8rem;
+  }
 
   // Lists
-  ul, ol, li {
+  ul,
+  ol,
+  li {
     margin: 0.5rem 0 1rem 1.6rem;
     padding-left: 1.2rem;
     list-style: circle;
@@ -37,7 +48,7 @@
     font-size: 1rem;
     padding: 0.4rem;
     border-radius: 0.4rem;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.4);
   }
 
   // Code block
@@ -62,13 +73,14 @@
     font-size: 0.95em;
   }
 
-  th, td {
-    border: 1px solid rgba(255,255,255,0.1);
+  th,
+  td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0.4rem 0.6rem;
   }
 
   th {
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     font-weight: 500;
   }
 
@@ -77,15 +89,80 @@
     margin: 1rem 0;
     padding: 0.6rem 1rem;
     border-left: 3px solid #cccccc;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     color: $white-2;
   }
 
-  a{
+  a {
     color: $purple;
     font-weight: 500;
-    &:hover{
+    &:hover {
       text-decoration: underline;
     }
   }
+  // .images-container {
+  //   margin-bottom: 1.2rem;
+  //   width: 100%;
+  //   flex-wrap: wrap;
+  //   @include flex(left, flex-start, row, 1.2rem);
+  //   .selected-img {
+  //     border-radius: 0.8rem;
+  //     border: 1px solid $gray-500;
+  //     position: relative;
+  //     width: fit-content;
+  //     height: 5.8rem;
+  //     min-width: 5.8rem;
+
+  //     @include breakpoint(xl) {
+  //       border-radius: 1.2rem;
+  //       height: 13rem;
+  //       min-width: 13rem;
+  //     }
+  //     &.is-file {
+  //       max-height: 5.6rem;
+  //       padding: 0.6rem 1.2rem;
+  //       @include flex(left, flex-start, row, 0.8rem);
+  //     }
+  //     &:hover {
+  //       .delete-img {
+  //         opacity: 1;
+  //         visibility: visible;
+  //       }
+  //     }
+  //     .delete-img {
+  //       opacity: 0;
+  //       visibility: hidden;
+  //       background-color: $gray-500;
+  //       z-index: 10;
+  //       position: absolute;
+  //       padding: 4px;
+  //       border-radius: 0.4rem;
+  //       cursor: pointer;
+  //       min-width: 1.6rem;
+  //       min-height: 1.6rem;
+  //       top: 0.6rem;
+  //       right: 0.6rem;
+  //       @include flex(center, center);
+  //       &:hover {
+  //         background-color: $gray-800;
+  //       }
+  //     }
+  //     > .image {
+  //       aspect-ratio: 1/1;
+  //       height: 100%;
+  //       object-fit: cover;
+  //     }
+  //     > .file {
+  //       margin: auto 0;
+  //       width: 2.4rem;
+  //       height: 2.4rem;
+  //       object-fit: cover;
+  //     }
+  //     figcaption {
+  //       height: 100%;
+  //       @include flex(space-around, flex-start, column);
+  //       @include text($white-2, 400, 1.6rem);
+  //     }
+  //   }
+  // }
 }

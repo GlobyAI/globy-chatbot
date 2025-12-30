@@ -1,10 +1,9 @@
-import React, { useEffect, type RefObject } from 'react'
+import React, { useEffect, useRef} from 'react'
 
-type Props = {
-    textfieldContainerRef: RefObject<HTMLDivElement | null>
-}
 
-export default function useScrollChatBox({ textfieldContainerRef }: Props) {
+export default function useScrollChatBox() {
+    const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
+
     // helpers
     const canScroll = (el: HTMLElement) =>
         el.scrollHeight > el.clientHeight;
@@ -38,4 +37,7 @@ export default function useScrollChatBox({ textfieldContainerRef }: Props) {
         return () => ta.removeEventListener("wheel", onWheel);
     }, []);
 
+    return {
+        textfieldContainerRef
+    }
 }

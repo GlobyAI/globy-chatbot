@@ -11,6 +11,7 @@ import Complete from "./components/complete";
 import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
+import ChatBoxProvider from "~/providers/ChatboxProvider";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "globy.ai  | Chatbot", },
@@ -56,13 +57,14 @@ function Chat() {
           <Complete />
         }
       </div>
-      <History />
-      <div className="prompt-box">
-        {/* <Suggestions /> */}
-        {/* <Continue/> */}
-        <ChatBox />
-
-      </div>
+      <ChatBoxProvider>
+        <History />
+        <div className="prompt-box">
+          {/* <Suggestions /> */}
+          {/* <Continue/> */}
+          <ChatBox />
+        </div>
+      </ChatBoxProvider>
       <p></p>
     </div>
   </main>;

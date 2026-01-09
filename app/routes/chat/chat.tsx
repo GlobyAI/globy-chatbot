@@ -12,6 +12,7 @@ import useLoadMoreHistory from "~/hooks/useLoadMoreHistory";
 import MenuIcon from "/icons/menu.svg";
 import useAppStore from "~/stores/appStore";
 import ChatBoxProvider from "~/providers/ChatboxProvider";
+import { useWebSocketStore } from "~/stores/websocketStore";
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "globy.ai  | Chatbot", },
@@ -20,11 +21,11 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 function Chat() {
-  const { messages } = useWebSocket()
+  const messages = useWebSocketStore(s => s.messages)
   const { containerRef } = useLoadMoreHistory()
-  const canContinue = useMemo(() => {
-    return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
-  }, [messages])
+  // const canContinue = useMemo(() => {
+  //   return messages.some(m => m.role === SENDER.USER) && messages[messages.length - 1].role === SENDER.ASSISTANT
+  // }, [messages])
   const setHasNews = useAppStore(s => s.setHasNews)
   const hasNews = useAppStore(s => s.hasNews)
 
@@ -52,10 +53,7 @@ function Chat() {
           <strong>globy.ai </strong>
           <small>Onboarding</small>
         </div>
-        {
-          canContinue &&
-          <Complete />
-        }
+        <Complete />
       </div>
       <ChatBoxProvider>
         <History />

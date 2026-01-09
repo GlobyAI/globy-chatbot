@@ -8,9 +8,11 @@ import useResizeTextarea from '~/hooks/useResizeTextarea'
 import type { ChatMessage } from '~/types/models'
 import { useChatBoxContext } from '~/providers/ChatboxProvider'
 import FileIcon from '/icons/file-upload.svg'
+import { useWebSocketStore } from '~/stores/websocketStore'
 
 export default function History() {
-    const { messages, isPending, sendMessage } = useWebSocket()
+    const { isWSPending, sendMessage } = useWebSocket()
+    const messages = useWebSocketStore(s => s.messages)
     const [editingMsg, setEditingMsg] = useState<{
         id: string,
         content: string
@@ -19,7 +21,7 @@ export default function History() {
     const { textareaRef, containerRef, } = useResizeTextarea({ value: editingMsg?.content, })
 
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        if (!isPending && editingMsg) {
+        if (!isWSPending && editingMsg) {
             setEditingMsg({
                 id: editingMsg.id,
                 content: e.target.value
@@ -31,7 +33,7 @@ export default function History() {
         setEditingMsg(null)
     }
     const handleEnableMsgEdit = (msg: ChatMessage) => {
-        if (!isPending) {
+        if (!isWSPending) {
             setEditingMsg({
                 id: msg.message_id,
                 content: msg.content
@@ -41,7 +43,7 @@ export default function History() {
     }
 
     const handleSendEditedMessage = () => {
-        if (!isPending && editingMsg?.content) {
+        if (!isWSPending && editingMsg?.content) {
             sendMessage({
                 text: editingMsg?.content,
                 message_id: editingMsg.id
@@ -61,12 +63,11 @@ export default function History() {
     }
 
     useEffect(() => {
-        if (isPending || isAnalyzing || messages.length > 0) {
+        if (isWSPending || isAnalyzing || messages.length > 0) {
             scrollToBottom();
 
         }
-    }, [messages, isAnalyzing, isPending]);
-    console.log(messages)
+    }, [messages, isAnalyzing, isWSPending]);
     return (
         <div className="chat" >
             <ul className="chat__history" ref={chatRef}>
@@ -93,7 +94,7 @@ export default function History() {
                                     </div>
                                 }
                                 <div className="message__content " >
-                                    {
+                                    {/* {
                                         msg.uploadedFiles && msg.uploadedFiles.length > 0 &&
                                         <div className="images-container">
                                             {
@@ -118,7 +119,7 @@ export default function History() {
                                                 })
                                             }
                                         </div>
-                                    }
+                                    } */}
                                     {
                                         <ReactMarkdown >{msg.content}</ReactMarkdown>
                                     }
@@ -137,7 +138,7 @@ export default function History() {
                         isAnalyzing && <div className='thinking'><p className='txt '>Analyzing...</p></div>
                     }
                     {
-                        !isAnalyzing && isPending && <TypingIndicator />
+                        !isAnalyzing && isWSPending && <TypingIndicator />
                     }
 
                 </li>

@@ -1,9 +1,10 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useAppContext } from '~/providers/AppContextProvider';
 import { useWebSocket } from '~/providers/WSProdivder';
+import { useWebSocketStore } from '~/stores/websocketStore';
 
 export default function useLoadMoreHistory() {
-    const { messages } = useWebSocket()
+    const messages = useWebSocketStore(s => s.messages)
     const { userId } = useAppContext();
     const { getConversation } = useWebSocket();
 

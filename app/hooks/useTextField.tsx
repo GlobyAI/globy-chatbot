@@ -4,16 +4,17 @@ import { useWebSocket } from '~/providers/WSProdivder'
 import type { IUploadFile } from '~/types/models'
 
 
-export default function useTextField({ uploadedFiles, handleCleanUploadFilesState }: { uploadedFiles: IUploadFile[],
+export default function useTextField({ uploadedFiles, handleCleanUploadFilesState }: {
+    uploadedFiles: IUploadFile[],
     handleCleanUploadFilesState: () => void
- }) {
-    const { isPending } = useWebSocket()
+}) {
+    const { isWSPending } = useWebSocket()
     const { sendMessage } = useWebSocket()
     const [content, setContent] = useState('')
     const { vectorId } = useChatBoxContext()
 
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        if (!isPending) {
+        if (!isWSPending) {
             setContent(e.target.value)
         }
     }

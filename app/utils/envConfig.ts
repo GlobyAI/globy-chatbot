@@ -12,4 +12,5 @@ export const envConfig = {
   STRIPE_PUBLISHABLE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
   SITE_STATUS: import.meta.env.VITE_SIDE_STATUS_API,
   AUTH_API_URL: import.meta.env.VITE_AUTH_API_URL,
+  BOOKING_API_URL: import.meta.env.VITE_BOOKING_API_URL,
 };

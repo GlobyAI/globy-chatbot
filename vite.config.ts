@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
       cssMinify: true,
     },
     server: {
+      host: true,
       allowedHosts: true,
     },
   };

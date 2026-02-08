@@ -1,18 +1,35 @@
-# Dockerfile
-FROM node:22-alpine
+# Build stage
+FROM node:22-alpine AS build
+
+ARG VITE_WEB_SOCKET_URL
+ARG VITE_AUTH0_DOMAIN
+ARG VITE_AUTH0_CLIENT_ID
+ARG VITE_AUTH0_AUDIENCE
+ARG VITE_APP_DOMAIN
+ARG VITE_API_URL
+ARG VITE_AUTH_API_URL
+ARG VITE_LANDING_PAGE
+ARG VITE_IMAGE_LIBRARY_API
+ARG VITE_BASE_PATH
+ARG VITE_CHECKOUT_URL
+ARG VITE_STRIPE_PUBLISHABLE_KEY
+ARG VITE_SIDE_STATUS_API
 
 WORKDIR /app
 
-# 1. Copy package files và cài deps
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# 2. Copy source code
 COPY . .
+RUN npm run build
 
+# Production stage
+FROM node:22-alpine
 
-# 5. Expose port trong container
-EXPOSE 3004
+RUN npm install -g serve
 
-# 6. Chạy server: react-router-serve ./build/server/index.js
-CMD ["npm", "run","dev"]
+COPY --from=build /app/build/client /app
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "/app", "-l", "3000"]

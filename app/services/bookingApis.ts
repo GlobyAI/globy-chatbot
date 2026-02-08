@@ -70,7 +70,7 @@ export interface ExternalInstructions {
 
 export async function startOnboarding(businessInfo: BusinessInfo) {
   const response = await bookingAxios.post<OnboardingStartResponse>(
-    "/api/v1/onboarding/start",
+    "/booking/api/v1/onboarding/start",
     businessInfo
   );
   return response;
@@ -78,7 +78,7 @@ export async function startOnboarding(businessInfo: BusinessInfo) {
 
 export async function acceptServices(businessId: string, services: Service[]) {
   const response = await bookingAxios.post(
-    `/api/v1/onboarding/services/accept?business_id=${encodeURIComponent(businessId)}`,
+    `/booking/api/v1/onboarding/services/accept?business_id=${encodeURIComponent(businessId)}`,
     services
   );
   return response;
@@ -86,7 +86,7 @@ export async function acceptServices(businessId: string, services: Service[]) {
 
 export async function setupExternalBooking(config: ExternalBookingConfig) {
   const response = await bookingAxios.post(
-    "/api/v1/external-booking/setup",
+    "/booking/api/v1/external-booking/setup",
     config
   );
   return response;
@@ -94,7 +94,7 @@ export async function setupExternalBooking(config: ExternalBookingConfig) {
 
 export async function getExternalInstructions(provider: string) {
   const response = await bookingAxios.get<ExternalInstructions>(
-    `/api/v1/external-booking/${provider}/instructions`
+    `/booking/api/v1/external-booking/${provider}/instructions`
   );
   return response;
 }
@@ -108,7 +108,7 @@ export interface BookingStatus {
 
 export async function getBookingStatus(userId: string) {
   const response = await bookingAxios.get<BookingStatus>(
-    `/api/v1/booking/status?user_id=${encodeURIComponent(userId)}`
+    `/booking/api/v1/booking/status?user_id=${encodeURIComponent(userId)}`
   );
   return response;
 }

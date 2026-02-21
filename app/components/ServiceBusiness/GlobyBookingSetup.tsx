@@ -252,7 +252,7 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
       .filter(s => s.name.trim() !== '')
       .map(s => ({
         ...s,
-        business_id: businessId,
+        user_id: businessId,
         currency: formState.currency,
       }));
 

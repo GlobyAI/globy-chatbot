@@ -78,7 +78,7 @@ export async function startOnboarding(businessInfo: BusinessInfo) {
 
 export async function acceptServices(businessId: string, services: Service[]) {
   const response = await bookingAxios.post(
-    `/booking/api/v1/onboarding/services/accept?business_id=${encodeURIComponent(businessId)}`,
+    `/booking/api/v1/onboarding/services/accept?user_id=${encodeURIComponent(businessId)}`,
     services
   );
   return response;

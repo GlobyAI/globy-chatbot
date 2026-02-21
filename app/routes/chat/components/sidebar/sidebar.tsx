@@ -66,12 +66,9 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                     localStorage.setItem(`${BOOKING_STATUS_KEY}_${userId}`, JSON.stringify(response.data))
                 }
             } catch (error) {
-                // API not available, rely on localStorage cache
-                // If no cache exists, set as not configured
-                const cached = localStorage.getItem(`${BOOKING_STATUS_KEY}_${userId}`)
-                if (!cached) {
-                    setBookingStatus({ configured: false })
-                }
+                // API not available - clear stale cache and default to not configured
+                localStorage.removeItem(`${BOOKING_STATUS_KEY}_${userId}`)
+                setBookingStatus({ configured: false })
             }
         }
         fetchBookingStatus()

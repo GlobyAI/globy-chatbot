@@ -56,16 +56,18 @@ export interface OnboardingStartResponse {
   suggestedServices: Service[];
 }
 
-export interface ExternalBookingConfig {
-  provider: 'fresha' | 'booksy' | 'treatwell';
-  embedCode?: string;
-  bookingUrl?: string;
+export interface CalComConnectResponse {
+  success: boolean;
+  authorization_url: string;
 }
 
-export interface ExternalInstructions {
-  provider: string;
-  steps: string[];
-  embedExample?: string;
+export interface CalComStatusResponse {
+  success: boolean;
+  connected: boolean;
+  cal_user_id?: string;
+  connected_at?: string;
+  last_sync_at?: string;
+  mapped_services_count?: number;
 }
 
 export async function startOnboarding(businessInfo: BusinessInfo) {
@@ -84,24 +86,23 @@ export async function acceptServices(businessId: string, services: Service[]) {
   return response;
 }
 
-export async function setupExternalBooking(config: ExternalBookingConfig) {
-  const response = await bookingAxios.post(
-    "/booking/api/v1/external-booking/setup",
-    config
+export async function getCalComConnectUrl() {
+  const response = await bookingAxios.get<CalComConnectResponse>(
+    "/booking/api/v1/integrations/calcom/connect"
   );
   return response;
 }
 
-export async function getExternalInstructions(provider: string) {
-  const response = await bookingAxios.get<ExternalInstructions>(
-    `/booking/api/v1/external-booking/${provider}/instructions`
+export async function getCalComStatus() {
+  const response = await bookingAxios.get<CalComStatusResponse>(
+    "/booking/api/v1/integrations/calcom/status"
   );
   return response;
 }
 
 export interface BookingStatus {
   configured: boolean;
-  provider?: 'globy' | 'fresha' | 'booksy' | 'treatwell';
+  provider?: 'globy' | 'calcom';
   businessName?: string;
   servicesCount?: number;
 }

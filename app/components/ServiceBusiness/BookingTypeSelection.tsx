@@ -67,17 +67,12 @@ export default function BookingTypeSelection({ selectedType, onSelectType, onCon
         >
           <div className="option__main">
             <div className="option__detail">
-              <strong>Connect Existing Provider</strong>
-              <p>Already using another booking platform? Connect it to your website</p>
+              <strong>Connect Cal.com</strong>
+              <p>Already using Cal.com? Connect it for two-way booking sync</p>
             </div>
           </div>
           <div className="option__providers">
-            <div className="provider-logos">
-              <span className="provider-logo provider-logo--fresha">Fresha</span>
-              <span className="provider-logo provider-logo--booksy">Booksy</span>
-              <span className="provider-logo provider-logo--treatwell">Treatwell</span>
-            </div>
-            <p className="provider-note">Requires an existing account with one of these providers</p>
+            <p className="provider-note">Requires a Cal.com account</p>
           </div>
         </div>
       </div>

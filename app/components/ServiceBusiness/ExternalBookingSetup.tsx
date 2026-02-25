@@ -1,187 +1,97 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import SpinnerLoading from '../ui/SpinnerLoading/SpinnerLoading';
-import { setupExternalBooking, getExternalInstructions, type ExternalBookingConfig, type ExternalInstructions } from '~/services/bookingApis';
-
-type Provider = 'fresha' | 'booksy' | 'treatwell' | null;
-type Step = 'select-provider' | 'setup';
+import { getCalComConnectUrl, getCalComStatus } from '~/services/bookingApis';
 
 interface Props {
   onBack: () => void;
-  onComplete: (provider: 'fresha' | 'booksy' | 'treatwell') => void;
+  onComplete: () => void;
 }
 
-const PROVIDERS = [
-  { id: 'fresha' as const, name: 'Fresha', description: 'Free booking software for salons and spas' },
-  { id: 'booksy' as const, name: 'Booksy', description: 'Appointment scheduling for health and beauty' },
-  { id: 'treatwell' as const, name: 'Treatwell', description: 'European booking platform for wellness' },
-];
-
 export default function ExternalBookingSetup({ onBack, onComplete }: Props) {
-  const [step, setStep] = useState<Step>('select-provider');
-  const [selectedProvider, setSelectedProvider] = useState<Provider>(null);
-  const [instructions, setInstructions] = useState<ExternalInstructions | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [embedCode, setEmbedCode] = useState('');
-  const [bookingUrl, setBookingUrl] = useState('');
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (step === 'setup' && selectedProvider) {
-      fetchInstructions();
-    }
-  }, [step, selectedProvider]);
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
+    };
+  }, []);
 
-  const fetchInstructions = async () => {
-    if (!selectedProvider) return;
-
-    setIsLoading(true);
+  const handleConnect = async () => {
+    setIsConnecting(true);
     try {
-      const response = await getExternalInstructions(selectedProvider);
-      if (response.status === 200) {
-        setInstructions(response.data);
-      }
-    } catch (error) {
-      console.error('getExternalInstructions error:', error);
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.message || 'Failed to load instructions');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleProviderSelect = (provider: Provider) => {
-    setSelectedProvider(provider);
-  };
-
-  const handleContinueToSetup = () => {
-    if (selectedProvider) {
-      setStep('setup');
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!selectedProvider) return;
-
-    if (!embedCode && !bookingUrl) {
-      toast.error('Please provide either an embed code or booking URL');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const config: ExternalBookingConfig = {
-        provider: selectedProvider,
-        embedCode: embedCode || undefined,
-        bookingUrl: bookingUrl || undefined,
-      };
-      const response = await setupExternalBooking(config);
-      if (response.status === 200) {
-        toast.success('External booking connected successfully!');
-        onComplete(selectedProvider);
-      }
-    } catch (error) {
-      console.error('setupExternalBooking error:', error);
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.message || error.message);
+      const response = await getCalComConnectUrl();
+      if (response.data.success && response.data.authorization_url) {
+        window.open(response.data.authorization_url, '_blank');
+        startPolling();
       } else {
-        toast.error('Failed to setup external booking. Please try again.');
+        toast.error('Failed to get authorization URL');
+      }
+    } catch (error) {
+      console.error('getCalComConnectUrl error:', error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || 'Failed to connect to Cal.com');
+      } else {
+        toast.error('Something went wrong. Please try again.');
       }
     } finally {
-      setIsLoading(false);
+      setIsConnecting(false);
     }
   };
 
-  if (step === 'select-provider') {
-    return (
-      <div className="service-business__step">
-        <div className="heading-container">
-          <p className="heading">Select your booking provider</p>
-          <p className="sub-heading">Choose the platform you're currently using</p>
-        </div>
-
-        <div className="provider-options">
-          {PROVIDERS.map((provider) => (
-            <div
-              key={provider.id}
-              className={`option ${selectedProvider === provider.id ? 'selected' : ''}`}
-              onClick={() => handleProviderSelect(provider.id)}
-            >
-              <div className="option__detail">
-                <strong>{provider.name}</strong>
-                <p>{provider.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="action-container">
-          <button className="secondary" onClick={onBack}>
-            Back
-          </button>
-          <button onClick={handleContinueToSetup} disabled={!selectedProvider}>
-            Continue
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const startPolling = () => {
+    setIsPolling(true);
+    pollingRef.current = setInterval(async () => {
+      try {
+        const response = await getCalComStatus();
+        if (response.data.success && response.data.connected) {
+          if (pollingRef.current) {
+            clearInterval(pollingRef.current);
+            pollingRef.current = null;
+          }
+          setIsPolling(false);
+          toast.success('Cal.com connected successfully!');
+          onComplete();
+        }
+      } catch {
+        // Keep polling on error
+      }
+    }, 3000);
+  };
 
   return (
     <div className="service-business__step">
       <div className="heading-container">
-        <p className="heading">Connect {selectedProvider}</p>
-        <p className="sub-heading">Follow the instructions below to integrate your booking system</p>
+        <p className="heading">Connect Cal.com</p>
+        <p className="sub-heading">
+          Link your Cal.com account for two-way booking sync. Bookings created on
+          Cal.com will appear in your Availability calendar, and bookings created
+          here will sync to Cal.com.
+        </p>
       </div>
 
-      {isLoading ? (
-        <div className="loading-container">
+      {isPolling ? (
+        <div className="calcom-polling">
           <SpinnerLoading />
+          <p>Waiting for Cal.com authorization...</p>
+          <p className="calcom-polling__hint">Complete the sign-in in the new tab that opened</p>
         </div>
       ) : (
-        <>
-          {instructions && (
-            <div className="instructions">
-              <h4>Setup Instructions:</h4>
-              <ol>
-                {instructions.steps.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          <div className="form-group">
-            <label htmlFor="embedCode">Embed Code</label>
-            <textarea
-              id="embedCode"
-              value={embedCode}
-              onChange={(e) => setEmbedCode(e.target.value)}
-              placeholder="Paste your embed code here..."
-              rows={4}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="bookingUrl">Or Booking URL</label>
-            <input
-              type="url"
-              id="bookingUrl"
-              value={bookingUrl}
-              onChange={(e) => setBookingUrl(e.target.value)}
-              placeholder="https://your-booking-page.com"
-            />
-          </div>
-        </>
+        <div className="calcom-connect">
+          <button onClick={handleConnect} disabled={isConnecting}>
+            {isConnecting ? <SpinnerLoading /> : 'Connect Cal.com'}
+          </button>
+        </div>
       )}
 
       <div className="action-container">
-        <button className="secondary" onClick={() => setStep('select-provider')}>
+        <button className="secondary" onClick={onBack} disabled={isPolling}>
           Back
-        </button>
-        <button onClick={handleSubmit} disabled={isLoading || (!embedCode && !bookingUrl)}>
-          {isLoading ? <SpinnerLoading /> : 'Complete Setup'}
         </button>
       </div>
     </div>

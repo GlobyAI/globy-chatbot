@@ -98,7 +98,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
         setShowBookingModal(false)
     }
 
-    const handleBookingSetupComplete = (provider: 'globy' | 'fresha' | 'booksy' | 'treatwell', servicesCount?: number) => {
+    const handleBookingSetupComplete = (provider: 'globy' | 'calcom', servicesCount?: number) => {
         const newStatus: BookingStatus = {
             configured: true,
             provider,
@@ -196,7 +196,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                             <p className="booking-info">
                                 {bookingStatus.provider === 'globy'
                                     ? `Globy Booking • ${bookingStatus.servicesCount || 0} services`
-                                    : `Connected to ${bookingStatus.provider}`
+                                    : 'Connected to Cal.com'
                                 }
                             </p>
                         )}

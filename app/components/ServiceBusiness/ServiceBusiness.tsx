@@ -7,7 +7,7 @@ import PlusIcon from '/icons/plus.svg';
 
 type Step = 'type-selection' | 'globy-setup' | 'external-setup' | 'success';
 
-type BookingProvider = 'globy' | 'fresha' | 'booksy' | 'treatwell';
+type BookingProvider = 'globy' | 'calcom';
 
 interface Props {
   open: boolean;
@@ -46,11 +46,11 @@ export default function ServiceBusiness({ open, onClose, onSetupComplete, isReco
     onSetupComplete?.('globy', servicesCount);
   };
 
-  const handleExternalComplete = (provider: 'fresha' | 'booksy' | 'treatwell') => {
-    setCompletedProvider(provider);
+  const handleExternalComplete = () => {
+    setCompletedProvider('calcom');
     setCompletedServicesCount(0);
     setStep('success');
-    onSetupComplete?.(provider, 0);
+    onSetupComplete?.('calcom', 0);
   };
 
   const handleClose = () => {
@@ -117,7 +117,7 @@ export default function ServiceBusiness({ open, onClose, onSetupComplete, isReco
               <p className="sub-heading">
                 {completedProvider === 'globy'
                   ? `Your Globy Booking system is ready with ${completedServicesCount} service${completedServicesCount !== 1 ? 's' : ''}. Customers can start booking appointments on your website.`
-                  : `Your ${completedProvider} booking widget is now connected. Customers can book appointments through your website.`
+                  : 'Your Cal.com account is now connected. Bookings will sync automatically.'
                 }
               </p>
             </div>

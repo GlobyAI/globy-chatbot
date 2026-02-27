@@ -6,32 +6,35 @@ import UploadFile from './upload-file'
 import FilePreviews from './file-previews'
 import useScrollChatBox from '~/hooks/useScrollChatBox'
 import { useRef } from 'react'
-import useChatBox from '~/hooks/useChatBox'
-import { useWebSocket } from '~/providers/WSProdivder'
-
-type Props = {}
-
-export default function ChatBox({ }: Props) {
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const containerRef = useRef<HTMLLabelElement | null>(null)
-    const textfieldContainerRef = useRef<HTMLDivElement | null>(null)
-    
-    const { content, pct, handleKeyDown, setPct, hasValue, setUploadedFiles, uploadedFiles, handleDeleteUploadedImage, handleChangeText, handleSubmit } = useChatBox()
-    useScrollChatBox({ textfieldContainerRef })
-    useResizeTextarea({ value: content, textareaRef, containerRef, hasImage: uploadedFiles.length > 0, uploadedFiles })
+import useUploadFiles from '~/hooks/useUploadFiles'
+import useTextField from '~/hooks/useTextField'
+import { useChatBoxContext } from '~/providers/ChatboxProvider'
 
 
+export default function ChatBox() {
+
+    const { isAnalyzing } = useChatBoxContext()
+    const { uploadedFiles, pct, setVectorId, handleDeleteUploadedImage, onUploadFile, handleCleanUploadFilesState } = useUploadFiles()
+    const { content, handleKeyDown, handleChangeText, handleSubmit } = useTextField({
+        uploadedFiles: uploadedFiles,
+        handleCleanUploadFilesState: handleCleanUploadFilesState
+    }
+    )
+    const { textfieldContainerRef } = useScrollChatBox()
+    const { textareaRef, containerRef, } = useResizeTextarea({ value: content, hasImage: uploadedFiles.length > 0, uploadedFiles })
+
+    const ableToSend = content.trim().length > 0 || uploadedFiles.length > 0
     return (
-        <label id="input" className={`chat-box ${uploadedFiles.length > 0 ? 'has-image' : ''} ${content ? "has-text" : ''}`} ref={containerRef}  >
+        <label id="input" className={`chat-box ${!isAnalyzing && uploadedFiles.length > 0 ? 'has-image' : ''} ${!isAnalyzing && content ? "has-text" : ''}`} ref={containerRef}  >
             <div className="textfield" ref={textfieldContainerRef} >
-                <FilePreviews uploadedFiles={uploadedFiles} handleDeleteUploadedImage={handleDeleteUploadedImage} pct={pct} />
+                <FilePreviews pct={pct} uploadedFiles={uploadedFiles} handleDeleteUploadedImage={handleDeleteUploadedImage} />
                 <textarea id="input" placeholder='Enter something here' onChange={handleChangeText} ref={textareaRef} value={content} onKeyDown={handleKeyDown} />
             </div>
             <div className="chat-box__actions">
-                <UploadFile setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} setPct={setPct} />
+                <UploadFile onUploadFile={onUploadFile} setVectorId={setVectorId} />
                 <span className="icons icons--send">
                     {
-                        hasValue ?
+                        !isAnalyzing && ableToSend ?
                             <img src={ArrowUpWhiteIcon} alt="ArrowUpWhiteIcon" onClick={handleSubmit} />
                             :
                             <img src={ArrowUpIcon} alt="ArrowUpIcon" />

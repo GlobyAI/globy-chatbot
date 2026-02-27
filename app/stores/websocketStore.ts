@@ -1,73 +1,56 @@
 // webSocketStore.ts
 import { create } from "zustand";
-import { getTokenFromSession } from "~/services/axiosInstance";
-import type { MessageRequest, MessageResponse } from "~/types/models";
-import { envConfig } from "~/utils/envConfig";
+import { MessageType, SENDER } from "~/types/enums";
+import type {
+  ChatMessage,
+  MessageRequest,
+  MessageResponse,
+} from "~/types/models";
 
 interface WebSocketState {
-  socket: WebSocket | null;
-  isConnected: boolean;
-  connect: (userId: string, initMsg?: MessageRequest) => void;
-  disconnect: () => void;
+  messages: ChatMessage[];
+  setMessages: (msgs: ChatMessage[]) => void;
+  addUserMessage: (newMessage: ChatMessage) => void;
+  addAssistantMessageFromLastMessage: (lmg: MessageResponse) => void;
   lastMessage: MessageResponse | null;
-  send: (data: MessageRequest) => void;
 }
 
-export const useWebSocketStore = create<WebSocketState>((set, get) => ({
-  socket: null,
-  isConnected: false,
+export const useWebSocketStore = create<WebSocketState>((set) => ({
+  messages: [],
   lastMessage: null,
-  connect: (userId: string, initMsg?: MessageRequest) => {
-    if (!userId) return;
-    const existing = get().socket;
-    if (existing && existing.readyState === WebSocket.OPEN) return;
+  addUserMessage: (newMessage: ChatMessage) =>
+    set((state) => ({
+      messages: [...state.messages, newMessage],
+    })),
+  setMessages: (msgs: ChatMessage[]) =>
+    set((state) => ({
+      messages: msgs,
+    })),
+  addAssistantMessageFromLastMessage: (lmg: MessageResponse) => {
+    set({
+      lastMessage: lmg,
+    });
+    if (lmg.type !== MessageType.ASSISTANT_DElTA) return;
+    set((state) => {
+      const idx = state.messages.findIndex(
+        (m) => m.message_id === lmg.message_id && m.role === SENDER.ASSISTANT
+      );
 
-    const socket = new WebSocket(envConfig.WS_URL + "?user_id=" + userId);
-
-    socket.onopen = () => {
-      set({ isConnected: true });
-
-      if (initMsg) {
-        socket.send(
-          JSON.stringify({ ...initMsg, token: getTokenFromSession() })
-        );
+      if (idx === -1) {
+        const msg: ChatMessage = {
+          message_id: lmg.message_id,
+          content: lmg.delta ?? "",
+          role: SENDER.ASSISTANT,
+          created_at: new Date(),
+        };
+        return { messages: [...state.messages, msg] };
       }
-      console.log("[WS] connected");
-    };
 
-    socket.onclose = () => {
-      set({ isConnected: false, socket: null });
-      console.log("[WS] isconnected");
-    };
-    socket.onmessage = (event: MessageEvent) => {
-      set({ lastMessage: JSON.parse(event.data) });
-    };
+      const next = state.messages.slice();
+      const cur = next[idx];
+      next[idx] = { ...cur, content: (cur.content ?? "") + (lmg.delta ?? "") };
 
-    socket.onerror = (err) => {
-      console.error("[WS] error", err);
-    };
-
-    // NOTE: we do NOT handle messages here; we’ll do it in Context.
-    // socket.onmessage will be attached in the provider.
-
-    set({ socket });
-  },
-
-  disconnect: () => {
-    const socket = get().socket;
-    if (socket) {
-      socket.close();
-      set({ socket: null, isConnected: false });
-    }
-  },
-
-  send: (payload: MessageRequest) => {
-    const socket = get().socket;
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      console.warn("[WS] cannot send, not connected");
-      return;
-    }
-
-    socket.send(JSON.stringify({ ...payload, token: getTokenFromSession() }));
+      return { messages: next };
+    });
   },
 }));

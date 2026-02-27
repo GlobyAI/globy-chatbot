@@ -4,20 +4,15 @@ import FileUploadIcon from '/icons/file-upload.svg'
 import PlusIcon from '/icons/plus.svg'
 import type { IUploadFile } from '~/types/models'
 import { useAppContext } from '~/providers/AppContextProvider'
-import toast from 'react-hot-toast'
-import { AxiosError } from 'axios'
-import axiosInstance from '~/services/axiosInstance'
 
 type Props = {
-    setUploadedFiles: React.Dispatch<React.SetStateAction<IUploadFile[]>>
-    uploadedFiles: IUploadFile[],
-    setPct: Dispatch<SetStateAction<number>>
+    onUploadFile: (filesToUpload: IUploadFile[]) => void,
+    setVectorId: Dispatch<SetStateAction<string>>
 }
 
-export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: Props) {
+export default function UploadFile({ onUploadFile }: Props) {
     const optionPopUpRef = useRef<HTMLDivElement>(null)
     const { userId } = useAppContext()
-
     const [showDropdown, setShowDropDown] = useState(false)
     useClickOutside(optionPopUpRef, handleClosePopup)
 
@@ -42,58 +37,11 @@ export default function UploadFile({ setUploadedFiles, uploadedFiles, setPct }: 
                     file: f,
                 })
             })
-            setPct(0)
-            setUploadedFiles(filesToUpload)
-            onUpload(filesToUpload)
+            onUploadFile(filesToUpload)
             handleClosePopup()
         }
 
     }
-
-    function uploadFiles(formData: FormData) {
-        return axiosInstance({
-            timeout: 5 * 60 * 1000,// 5 minutes,
-            url: '/chatbot/v1/upload',
-            method: "POST",
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-            data: formData,
-            onUploadProgress: (event) => {
-                console.log(event)
-                if (event.total) {
-                    const pct = Math.min(75, Math.round((event.loaded * 100) / event.total));
-                    setPct(pct)
-                }
-            },
-        });
-    }
-
-    async function onUpload(filesToUpload: IUploadFile[]) {
-        if (!userId) return
-        try {
-            const formData = new FormData()
-            formData.append('user_id', userId)
-            filesToUpload.forEach(f => {
-                formData.append('files', f.file)
-            })
-            const res = await uploadFiles(formData)
-            if (res.status === 200) {
-                setPct(100)
-            }
-
-        } catch (error) {
-            console.log(error)
-            if (error instanceof AxiosError) {
-                toast.error(error.message)
-            } else {
-                toast.error("Unable to upload file. Try again later")
-            }
-        }
-
-    }
-
-
 
     return (
         <div ref={optionPopUpRef} className={`icons icons--plus  ${showDropdown ? "open" : ""}`} onClick={handleOpenPopUp}>

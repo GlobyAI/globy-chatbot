@@ -1,4 +1,43 @@
 @use "../abstracts" as *;
 
+.thinking {
+  position: relative;
+  display: inline-block;
+  @include flex(left, center, row, 4px);
+  padding: 0 10px 15px;
+  .txt {
+    font-size: 14px;
+    font-weight: 500;
+    background:
+      linear-gradient($gray-300, $gray-300),
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 45%,
+        rgba(255, 255, 255, 1) 55%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    background-size: 200% 100%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: filter 3s linear;
+    animation: shift-ltr 1.5s linear infinite;
+    animation-delay: 0s;
+  }
+}
 
-
+@keyframes shift-ltr {
+  0% {
+    background-position:
+    0 50%,
+    200% 50%;
+    filter: brightness(1);
+  }
+  100% {
+    background-position:
+      0 50%,
+      0% 50%;
+    filter: brightness(1.3);
+  }
+}

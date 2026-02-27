@@ -6,19 +6,22 @@ import EditIcon from '/icons/edit.svg'
 import ReactMarkdown from "react-markdown";
 import useResizeTextarea from '~/hooks/useResizeTextarea'
 import type { ChatMessage } from '~/types/models'
+import { useChatBoxContext } from '~/providers/ChatboxProvider'
+import FileIcon from '/icons/file-upload.svg'
+import { useWebSocketStore } from '~/stores/websocketStore'
 
 export default function History() {
-    const { messages, isPending, sendMessage } = useWebSocket()
+    const { isWSPending, sendMessage } = useWebSocket()
+    const messages = useWebSocketStore(s => s.messages)
     const [editingMsg, setEditingMsg] = useState<{
         id: string,
         content: string
     } | null>(null)
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-    const containerRef = useRef<HTMLLabelElement | null>(null)
-    useResizeTextarea({ value: editingMsg?.content, textareaRef, containerRef })
+    const { isAnalyzing } = useChatBoxContext()
+    const { textareaRef, containerRef, } = useResizeTextarea({ value: editingMsg?.content, })
 
     const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        if (!isPending && editingMsg) {
+        if (!isWSPending && editingMsg) {
             setEditingMsg({
                 id: editingMsg.id,
                 content: e.target.value
@@ -30,7 +33,7 @@ export default function History() {
         setEditingMsg(null)
     }
     const handleEnableMsgEdit = (msg: ChatMessage) => {
-        if (!isPending) {
+        if (!isWSPending) {
             setEditingMsg({
                 id: msg.message_id,
                 content: msg.content
@@ -40,7 +43,7 @@ export default function History() {
     }
 
     const handleSendEditedMessage = () => {
-        if (!isPending && editingMsg?.content) {
+        if (!isWSPending && editingMsg?.content) {
             sendMessage({
                 text: editingMsg?.content,
                 message_id: editingMsg.id
@@ -60,9 +63,11 @@ export default function History() {
     }
 
     useEffect(() => {
-        if(!isPending) return
-        scrollToBottom();
-    }, [messages])
+        if (isWSPending || isAnalyzing || messages.length > 0) {
+            scrollToBottom();
+
+        }
+    }, [messages, isAnalyzing, isWSPending]);
     return (
         <div className="chat" >
             <ul className="chat__history" ref={chatRef}>
@@ -89,9 +94,36 @@ export default function History() {
                                     </div>
                                 }
                                 <div className="message__content " >
+                                    {/* {
+                                        msg.uploadedFiles && msg.uploadedFiles.length > 0 &&
+                                        <div className="images-container">
+                                            {
+                                                msg.uploadedFiles.map((f, idx) => {
+                                                    const isImage = f.file.type?.startsWith('image')
+                                                    return (
+                                                        <figure key={idx} className={`selected-img ${isImage ? '' : 'is-file'}`}>
+                                                            {
+                                                                isImage ?
+                                                                    <img src={f.url} key={idx} className='image' />
+                                                                    :
+                                                                    <>
+                                                                        <img src={FileIcon} key={idx} className='file' />
+                                                                        <figcaption>
+                                                                            <p>{f.file.name}</p>
+                                                                            <p>{f.file.type.split("/")[1]?.toUpperCase()}</p>
+                                                                        </figcaption>
+                                                                    </>
+                                                            }
+                                                        </figure>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    } */}
                                     {
-                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                        <ReactMarkdown >{msg.content}</ReactMarkdown>
                                     }
+
                                 </div>
                                 {
                                     isUser &&
@@ -101,11 +133,17 @@ export default function History() {
                         )
                     })
                 }
+                <li>
+                    {
+                        isAnalyzing && <div className='thinking'><p className='txt '>Analyzing...</p></div>
+                    }
+                    {
+                        !isAnalyzing && isWSPending && <TypingIndicator />
+                    }
+
+                </li>
                 <li className='target' ref={targetRef}></li>
             </ul>
-            {
-                isPending && <TypingIndicator />
-            }
         </div>
     )
 }

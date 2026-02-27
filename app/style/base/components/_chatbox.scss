@@ -85,6 +85,17 @@ $textarea-h: 2.4rem;
       }
     }
   }
+
+  &.analyzing{
+    .chat-box__actions {
+      .icons {
+        &--send {
+          background-color: transparent;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
   .textfield {
     order: 1;
     flex: 1;

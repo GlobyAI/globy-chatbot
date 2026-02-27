@@ -196,6 +196,149 @@
       }
   }
 
+  &__service-business {
+    width: 100%;
+    @include flex(flex-start, flex-start, column, 1.6rem);
+    input[type="checkbox"]:checked ~ .style-options {
+      visibility: visible;
+      opacity: 1;
+      display: flex;
+    }
+    input[type="checkbox"]:checked ~ .style-toggle > img {
+      transform: rotate(180deg);
+    }
+    .style-toggle {
+      cursor: pointer;
+      @include text($white-2, 500, $text-md);
+      @include flex(left, center, row, 0.4rem);
+    }
+
+    .style-options {
+      display: none;
+      visibility: hidden;
+      opacity: 0;
+      width: 100%;
+      @include flex(flex-start, flex-start, column, 0.8rem);
+
+      .setup-booking-btn {
+        width: 100%;
+        padding: 1.4rem 1.6rem;
+        border-radius: 1.2rem;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        @include flex(left, center, row, 1.2rem);
+        @include transition(all 0.3s ease);
+
+        // Default state - attractive gradient
+        background: linear-gradient(135deg, rgba($purple, 0.15) 0%, rgba(#6366f1, 0.15) 50%, rgba(#ec4899, 0.1) 100%);
+        border: 0.1rem solid rgba($purple, 0.3);
+
+        // Subtle animated shine effect
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba($white, 0.1),
+            transparent
+          );
+          @include transition(left 0.5s ease);
+        }
+
+        &:hover {
+          background: linear-gradient(135deg, rgba($purple, 0.25) 0%, rgba(#6366f1, 0.25) 50%, rgba(#ec4899, 0.2) 100%);
+          border-color: rgba($purple, 0.5);
+          transform: translateY(-0.1rem);
+          box-shadow: 0 0.4rem 1.5rem rgba($purple, 0.2);
+
+          &::before {
+            left: 100%;
+          }
+
+          .booking-btn__arrow {
+            transform: translateX(0.3rem);
+          }
+        }
+
+        // Configured state
+        &.configured {
+          background: linear-gradient(135deg, rgba(#22c55e, 0.1) 0%, rgba(#10b981, 0.15) 100%);
+          border-color: rgba(#22c55e, 0.3);
+
+          &:hover {
+            background: linear-gradient(135deg, rgba(#22c55e, 0.2) 0%, rgba(#10b981, 0.25) 100%);
+            border-color: rgba(#22c55e, 0.5);
+            box-shadow: 0 0.4rem 1.5rem rgba(#22c55e, 0.15);
+          }
+        }
+
+        .booking-btn__icon {
+          width: 3.6rem;
+          height: 3.6rem;
+          border-radius: 1rem;
+          flex-shrink: 0;
+          background: linear-gradient(135deg, $purple 0%, #6366f1 100%);
+          @include flex(center, center);
+          @include transition(all 0.3s ease);
+
+          > svg {
+            color: $white-2;
+          }
+
+          &.configured {
+            background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+          }
+        }
+
+        .booking-btn__text {
+          flex: 1;
+          text-align: left;
+          @include text($white-2, 500, $text-sm);
+          @include flex(flex-start, flex-start, column, 0.2rem);
+
+          .booking-btn__badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.4rem;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            @include text($white, 600, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.6rem;
+            animation: pulse-badge 2s ease-in-out infinite;
+          }
+        }
+
+        .booking-btn__arrow {
+          flex-shrink: 0;
+          color: $gray-300;
+          @include transition(transform 0.2s ease);
+        }
+      }
+
+      .booking-info {
+        padding-left: 5rem;
+        @include text($gray-500, 400, $text-xs);
+      }
+    }
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
   &__quality-score {
     width: 100%;
   }

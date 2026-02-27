@@ -8,6 +8,7 @@ import { envConfig } from "~/utils/envConfig";
 import useAppStore from "~/stores/appStore";
 import { useNavigate } from "react-router";
 import { APP_ROUTES } from "~/utils/vars";
+import { setTokenGetter } from "~/services/tokenManager";
 
 interface AppContextType {
   userId: string | null;
@@ -34,6 +35,9 @@ export default function AppContextProvider({
     logout,
   } = useAuth0();
 
+  useEffect(() => {
+    setTokenGetter(getAccessTokenSilently);
+  }, [getAccessTokenSilently]);
 
   function checkPayment() {
     if (user) {

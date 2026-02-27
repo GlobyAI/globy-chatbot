@@ -1,8 +1,6 @@
 import axios from "axios";
 import { envConfig } from "~/utils/envConfig";
-export function getTokenFromSession() {
-  return sessionStorage.getItem("appSession") || "";
-}
+import { getToken } from "./tokenManager";
 
 const axiosInstance = axios.create({
   baseURL: envConfig.API_URL,
@@ -13,15 +11,14 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  function (config) {
+  async function (config) {
     if (!config.headers["Authorization"]) {
-      const token = getTokenFromSession();
+      const token = await getToken();
       config.headers["Authorization"] = "Bearer " + token;
     }
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );

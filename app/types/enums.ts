@@ -18,3 +18,9 @@ export enum PaymentInterval {
   MONTH = "MONTH",
   YEAR = "YEAR"
 }
+
+export enum SiteTypeEnum {
+  ONEPAGER = "onepager",
+  MULTIPAGER = "multipager",
+  MINIMALIST = "minimalist",
+}

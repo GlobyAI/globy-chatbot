@@ -12,9 +12,12 @@ import useUploadLogo from '~/hooks/useUploadLogo'
 import Profile from './profile'
 import { useClickOutside } from '~/hooks/useClickOutsite'
 import { useUserColorPreferences} from '~/hooks/useUserColorPreferences'
+import { useSiteTypePreference } from '~/hooks/useSiteTypePreference'
 import { useEffect, useRef, useState } from 'react'
 import ServiceBusiness from '~/components/ServiceBusiness/ServiceBusiness'
+import SiteTypePicker from '~/components/SiteTypePicker/SiteTypePicker'
 import { getBookingStatus, type BookingStatus } from '~/services/bookingApis'
+import { SiteTypeEnum } from '~/types/enums'
 
 type Props = {
     handleCloseSidebar: () => void,
@@ -36,6 +39,8 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
     const sideBarRef = useRef<HTMLDivElement>(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < LARGE_SCREEN_WIDTH)
     const { userColorPreferences } = useUserColorPreferences()
+    const { siteType, updateSiteType } = useSiteTypePreference()
+    const [showSiteTypeModal, setShowSiteTypeModal] = useState(false)
     const [showBookingModal, setShowBookingModal] = useState(false)
     const [bookingStatus, setBookingStatus] = useState<BookingStatus | null>(null)
 
@@ -93,6 +98,15 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
 
         }
     })
+
+    const getSiteTypeLabel = (type: SiteTypeEnum | null) => {
+        switch (type) {
+            case SiteTypeEnum.ONEPAGER: return 'One Pager'
+            case SiteTypeEnum.MULTIPAGER: return 'Multi Pager'
+            case SiteTypeEnum.MINIMALIST: return 'Minimalist'
+            default: return 'Auto'
+        }
+    }
 
     const handleBookingModalClose = () => {
         setShowBookingModal(false)
@@ -179,6 +193,37 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                         <ImageLibrary pct={pct} uploadedImages={uploadedImages} isUploading={isUploading} onUploadFile={onUploadFile} onDeleteImage={onDeleteImage} />
                     </div>
                 </div>
+                <div className="sidebar__site-type">
+                    <input type="checkbox" id="site-type" defaultChecked={true} hidden />
+                    <label className='style-toggle' htmlFor="site-type">
+                        Site Type
+                        <img src={ArrowUpIcon} alt="arrow up" />
+                    </label>
+                    <div className="style-options">
+                        <button
+                            className="site-type-trigger-btn"
+                            onClick={() => setShowSiteTypeModal(true)}
+                        >
+                            <div className="site-type-trigger-btn__left">
+                                <span className="site-type-trigger-btn__icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                        <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/>
+                                        <path d="M8 8H16M8 12H16M8 16H13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                                    </svg>
+                                </span>
+                                <div className="site-type-trigger-btn__info">
+                                    <span className="site-type-trigger-btn__label">Layout</span>
+                                    <span className="site-type-trigger-btn__value">{getSiteTypeLabel(siteType)}</span>
+                                </div>
+                            </div>
+                            <span className="site-type-trigger-btn__arrow">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
                 <div className="sidebar__service-business">
                     <input type="checkbox" name="" id="service-business" defaultChecked={true} hidden />
                     <label className='style-toggle' htmlFor="service-business">
@@ -208,6 +253,12 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                     onClose={handleBookingModalClose}
                     onSetupComplete={handleBookingSetupComplete}
                     isReconfiguring={bookingStatus?.configured || false}
+                />
+                <SiteTypePicker
+                    open={showSiteTypeModal}
+                    currentType={siteType}
+                    onClose={() => setShowSiteTypeModal(false)}
+                    onSelect={updateSiteType}
                 />
             </div>
         </>

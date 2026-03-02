@@ -18,7 +18,7 @@ import toast from 'react-hot-toast';
 import useAppStore from '~/stores/appStore';
 import { function_ } from 'valibot';
 import { envConfig } from '~/utils/envConfig';
-import { getTokenFromSession } from '~/services/axiosInstance';
+import { getToken } from '~/services/tokenManager';
 
 
 
@@ -51,17 +51,17 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
         const ws = new WebSocket(envConfig.WS_URL + "?user_id=" + userId)
         wsRef.current = ws;
-        ws.onopen = () => {
+        ws.onopen = async () => {
             setIsConnected(true)
             console.warn("[WS] connected");
             if (initial) {
-                //             };
+                const token = await getToken();
                 const initMsg = {
                     type: MessageType.USER_MESSAGE,
                     message_id: generateMessageId(),
                     text: "___ HELLO ___",
                     research: false,
-                    token: getTokenFromSession()
+                    token,
                 }
                 ws.send(
                     JSON.stringify(initMsg)
@@ -107,10 +107,11 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     }, [userId])
 
 
-    const send = (payload: MessageRequest) => {
+    const send = async (payload: MessageRequest) => {
         try {
             if (wsRef.current?.readyState === WebSocket.OPEN) {
-                wsRef.current.send(JSON.stringify({ ...payload, token: getTokenFromSession() }));
+                const token = await getToken();
+                wsRef.current.send(JSON.stringify({ ...payload, token }));
             } else {
                 console.error("Socket not open when sending message");
             }

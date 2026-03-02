@@ -1,6 +1,6 @@
 import axios from "axios";
 import { envConfig } from "~/utils/envConfig";
-import { getTokenFromSession } from "./axiosInstance";
+import { getToken } from "./tokenManager";
 
 if (!envConfig.BOOKING_API_URL) {
   console.warn('BOOKING_API_URL is not configured. Booking API calls may fail.');
@@ -15,9 +15,9 @@ const bookingAxios = axios.create({
 });
 
 bookingAxios.interceptors.request.use(
-  function (config) {
+  async function (config) {
     if (!config.headers["Authorization"]) {
-      const token = getTokenFromSession();
+      const token = await getToken();
       config.headers["Authorization"] = "Bearer " + token;
     }
     return config;

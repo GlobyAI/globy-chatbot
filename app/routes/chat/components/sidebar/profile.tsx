@@ -2,11 +2,14 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { envConfig } from '~/utils/envConfig'
 import { formatName } from '~/utils/helper'
 import LogoutIcon from '/icons/logout.svg'
+import InstagramIcon from '/icons/instagram.svg'
 import { useRef, useState } from 'react'
 import { useClickOutside } from '~/hooks/useClickOutsite'
+import InstagramOnboarding from '~/components/InstagramOnboarding/InstagramOnboarding'
 
 export default function Profile() {
     const [show, setShow] = useState(false)
+    const [showInstagram, setShowInstagram] = useState(false)
     const { user, logout } = useAuth0()
     const menuRef = useRef<HTMLDivElement>(null)
     if (!user) return null
@@ -19,12 +22,21 @@ export default function Profile() {
     useClickOutside(menuRef, handleClose)
     return (
         <div className="sidebar__settings">
-            <div className='profile' onClick={handleOpen}>
-                <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />
-                <div className="user-info">
-                    <strong>{formatName(user)}</strong>
-                    <p>{user?.email}</p>
+            <div className='profile'>
+                <div className='profile__main' onClick={handleOpen}>
+                    <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />
+                    <div className="user-info">
+                        <strong>{formatName(user)}</strong>
+                        <p>{user?.email}</p>
+                    </div>
                 </div>
+                <button
+                    className="profile__instagram-btn"
+                    onClick={() => setShowInstagram(true)}
+                    title="Connect Instagram"
+                >
+                    <img src={InstagramIcon} alt="Instagram" />
+                </button>
             </div>
             <div className={`settings ${show ? 'open' : ""}`} ref={menuRef}>
                 <p onClick={() => logout({
@@ -35,6 +47,10 @@ export default function Profile() {
                     <img src={LogoutIcon} alt="Logout" />
                     Logout</p>
             </div>
+            <InstagramOnboarding
+                open={showInstagram}
+                onClose={() => setShowInstagram(false)}
+            />
         </div>
     )
 }

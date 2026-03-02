@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import Modal from '../ui/Modal/Modal';
 import PlusIcon from '/icons/plus.svg';
+import axiosInstance from '~/services/axiosInstance';
 
 interface Props {
   open: boolean;
@@ -7,9 +9,20 @@ interface Props {
 }
 
 export default function InstagramOnboarding({ open, onClose }: Props) {
-  const handleConnect = () => {
-    // TODO: Implement Instagram OAuth flow
-    console.log('Connect Instagram');
+  const [loading, setLoading] = useState(false);
+
+  const handleConnect = async () => {
+    setLoading(true);
+    try {
+      const resp = await axiosInstance.post('/chatbot/v1/instagram_connect');
+      const { authorization_url } = resp.data;
+      if (authorization_url) {
+        window.location.href = authorization_url;
+      }
+    } catch (err) {
+      console.error('Failed to start Instagram connect:', err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,13 +93,19 @@ export default function InstagramOnboarding({ open, onClose }: Props) {
 
             <div className="action-container">
               <button className="secondary" onClick={onClose}>Maybe later</button>
-              <button onClick={handleConnect}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-                Connect Instagram
+              <button onClick={handleConnect} disabled={loading}>
+                {loading ? (
+                  'Connecting...'
+                ) : (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    </svg>
+                    Connect Instagram
+                  </>
+                )}
               </button>
             </div>
           </div>

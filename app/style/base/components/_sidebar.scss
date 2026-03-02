@@ -196,6 +196,32 @@
       }
   }
 
+  &__site-type {
+    width: 100%;
+    @include flex(flex-start, flex-start, column, 1rem);
+    input[type="checkbox"]:checked ~ .style-options {
+      visibility: visible;
+      opacity: 1;
+      display: flex;
+    }
+    input[type="checkbox"]:checked ~ .style-toggle > img {
+      transform: rotate(180deg);
+    }
+    .style-toggle {
+      cursor: pointer;
+      @include text($white-2, 500, $text-md);
+      @include flex(left, center, row, 0.4rem);
+    }
+
+    .style-options {
+      display: none;
+      visibility: hidden;
+      opacity: 0;
+      width: 100%;
+      @include flex(flex-start, flex-start, column, 0.8rem);
+    }
+  }
+
   &__service-business {
     width: 100%;
     @include flex(flex-start, flex-start, column, 1.6rem);

@@ -1,0 +1,186 @@
+@use "../../abstracts" as *;
+
+.instagram-onboarding-modal {
+  .modal__body {
+    padding: 0;
+  }
+}
+
+.instagram-onboarding {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: $black-700;
+  @include flex($align-items: center, $direction: column);
+
+  .brand-logo {
+    width: 100%;
+    @include flex($justify-content: left, $align-items: left);
+
+    > img {
+      width: 8.6rem;
+      margin: 2rem;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    @include flex(center, center);
+    @include box(3rem, 3rem);
+
+    > img {
+      transform: rotate(45deg);
+      @include box(1.6rem, 1.6rem);
+    }
+
+    &:hover {
+      background-color: rgba($color: $white-2, $alpha: 0.1);
+    }
+  }
+
+  &__container {
+    flex: 1;
+    width: 100%;
+    max-width: 56rem;
+    padding: 0 1.6rem 2rem;
+    overflow-y: auto;
+    @include text($white, 400, 1.4rem);
+    @include flex(
+      $justify-content: flex-start,
+      $direction: column,
+      $align-items: center,
+      $gap: 1.6rem
+    );
+
+    @include breakpoint(md) {
+      font-size: 1.6rem;
+      padding: 0 2rem 2rem;
+    }
+  }
+
+  &__step {
+    width: 100%;
+    max-width: 48rem;
+    @include flex($direction: column, $align-items: stretch, $gap: 2.4rem);
+
+    .heading-container {
+      text-align: center;
+      @include flex($direction: column, $align-items: center, $gap: 0.8rem);
+
+      .heading {
+        color: $white-2;
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 2.8rem;
+
+        @include breakpoint(md) {
+          font-size: 2.4rem;
+          line-height: 3.2rem;
+        }
+      }
+
+      .sub-heading {
+        color: $gray-300;
+        font-weight: 400;
+        max-width: 36rem;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  &__icon {
+    @include flex(center, center);
+
+    > svg {
+      color: #e1306c;
+    }
+  }
+
+  &__benefits {
+    @include flex($direction: column, $gap: 1.6rem);
+
+    .benefit {
+      padding: 1.4rem 1.6rem;
+      border-radius: 1.2rem;
+      background-color: rgba($white-2, 0.03);
+      border: 0.1rem solid rgba($white-2, 0.08);
+      @include flex($align-items: flex-start, $gap: 1.2rem);
+      @include transition(all 0.2s ease);
+
+      &:hover {
+        background-color: rgba($white-2, 0.06);
+        border-color: rgba(#e1306c, 0.2);
+      }
+
+      > svg {
+        flex-shrink: 0;
+        color: #22c55e;
+        margin-top: 0.2rem;
+      }
+
+      > div {
+        flex: 1;
+
+        > strong {
+          display: block;
+          margin-bottom: 0.3rem;
+          @include text($white-2, 600, $text-sm);
+        }
+
+        > p {
+          @include text($gray-300, 400, $text-sm);
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  .action-container {
+    @include flex($justify-content: flex-end, $align-items: center, $gap: 1rem);
+    width: 100%;
+    margin-top: 0.8rem;
+
+    > button {
+      border: none;
+      border-radius: 1.2rem;
+      height: 4.8rem;
+      min-width: 12rem;
+      cursor: pointer;
+      @include flex(center, center, row, 0.8rem);
+      @include text($white-2, 600, $text-md);
+      @include transition(all 0.2s ease);
+
+      background: linear-gradient(135deg, #e1306c 0%, #c13584 50%, #833ab4 100%);
+
+      > svg {
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-0.1rem);
+        box-shadow: 0 0.4rem 1.5rem rgba(#e1306c, 0.3);
+      }
+
+      &.secondary {
+        background: transparent;
+        border: 0.1rem solid $gray-800;
+
+        &:hover {
+          border-color: $gray-500;
+          background-color: rgba($color: $white-2, $alpha: 0.05);
+          box-shadow: none;
+          transform: none;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

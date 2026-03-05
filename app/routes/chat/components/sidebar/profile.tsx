@@ -19,11 +19,13 @@ export default function Profile() {
     useClickOutside(menuRef, handleClose)
     return (
         <div className="sidebar__settings">
-            <div className='profile' onClick={handleOpen}>
-                <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />
-                <div className="user-info">
-                    <strong>{formatName(user)}</strong>
-                    <p>{user?.email}</p>
+            <div className='profile'>
+                <div className='profile__main' onClick={handleOpen}>
+                    <img src={user.picture || "/images/user.jpg"} alt="Avatar" className="user-avatar" />
+                    <div className="user-info">
+                        <strong>{formatName(user)}</strong>
+                        <p>{user?.email}</p>
+                    </div>
                 </div>
             </div>
             <div className={`settings ${show ? 'open' : ""}`} ref={menuRef}>

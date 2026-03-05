@@ -196,6 +196,32 @@
       }
   }
 
+  &__site-type {
+    width: 100%;
+    @include flex(flex-start, flex-start, column, 1rem);
+    input[type="checkbox"]:checked ~ .style-options {
+      visibility: visible;
+      opacity: 1;
+      display: flex;
+    }
+    input[type="checkbox"]:checked ~ .style-toggle > img {
+      transform: rotate(180deg);
+    }
+    .style-toggle {
+      cursor: pointer;
+      @include text($white-2, 500, $text-md);
+      @include flex(left, center, row, 0.4rem);
+    }
+
+    .style-options {
+      display: none;
+      visibility: hidden;
+      opacity: 0;
+      width: 100%;
+      @include flex(flex-start, flex-start, column, 0.8rem);
+    }
+  }
+
   &__service-business {
     width: 100%;
     @include flex(flex-start, flex-start, column, 1.6rem);
@@ -347,8 +373,42 @@
     margin-top: auto;
     position: relative;
     .profile {
-      cursor: pointer;
-      @include flex(left, center, row, 1.2rem);
+      width: 100%;
+      @include flex(left, center, row, 0.8rem);
+
+      &__main {
+        cursor: pointer;
+        flex: 1;
+        min-width: 0;
+        @include flex(left, center, row, 1.2rem);
+      }
+
+      &__instagram-btn {
+        flex-shrink: 0;
+        background: transparent;
+        border: 0.1rem solid transparent;
+        border-radius: 0.8rem;
+        cursor: pointer;
+        padding: 0.6rem;
+        @include flex(center, center);
+        @include transition(all 0.2s ease);
+
+        > img {
+          @include box(2rem, 2rem);
+          filter: brightness(0) invert(0.7);
+          @include transition(filter 0.2s ease);
+        }
+
+        &:hover {
+          border-color: rgba(#e1306c, 0.4);
+          background: rgba(#e1306c, 0.1);
+
+          > img {
+            filter: brightness(0) invert(1);
+          }
+        }
+      }
+
       .user-avatar {
         width: 3.2rem;
         height: 3.2rem;
@@ -360,11 +420,19 @@
         }
       }
       .user-info {
+        min-width: 0;
         > strong {
           @include text($white-2, 400, $text-md);
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         > p {
           @include text($gray-100, 400, $text-sm);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

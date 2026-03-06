@@ -190,7 +190,7 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
         business_type: formState.business_type,
         description: formState.description || undefined,
       });
-      if (response.status === 200 && response.data) {
+      if (response.status === 200 && response.data?.success !== false) {
         const { businessId: id, suggestedServices: services } = response.data;
         setBusinessId(id || newBusinessId);
 

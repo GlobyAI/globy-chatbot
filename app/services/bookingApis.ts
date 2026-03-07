@@ -113,3 +113,26 @@ export async function getBookingStatus(userId: string) {
   );
   return response;
 }
+
+export interface PaymentSetupResponse {
+  success: boolean;
+  onboarding_url?: string;
+  stripe_account_id?: string;
+  message: string;
+}
+
+export async function setupPayments(
+  userId: string,
+  returnUrl: string,
+  refreshUrl: string
+): Promise<{ data: PaymentSetupResponse }> {
+  const response = await bookingAxios.post<PaymentSetupResponse>(
+    "/booking/api/v1/payments/setup",
+    {
+      user_id: userId,
+      return_url: returnUrl,
+      refresh_url: refreshUrl,
+    }
+  );
+  return response;
+}

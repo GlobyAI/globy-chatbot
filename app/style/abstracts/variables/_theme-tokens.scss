@@ -9,10 +9,53 @@
   --color-bg-alt: #f2f2f2;
   --color-border: #e5e5e5;
 
+  /* Surface colors */
+  --color-surface-primary: #1a1d21;
+  --color-surface-secondary: #02080f;
+  --color-surface-elevated: #262626;
+  --color-surface-input: #333536;
+  --color-surface-overlay: rgba(0, 0, 0, 0.25);
+
+  /* Message bubble colors */
+  --color-bubble-user: #6b228b;
+  --color-bubble-user-text: #f2f2f2;
+  --color-bubble-bot-text: #f2f2f2;
+
+  /* Text colors */
+  --color-text-heading: #f2f2f2;
+  --color-text-inverse: #f2f2f2;
+  --color-text-muted: #b2b2b2;
+
+  /* Interactive element colors */
+  --color-interactive-bg: #3d3e3f;
+  --color-interactive-hover: #4d4d4d;
+
+  /* Shadow tokens */
+  --shadow-card: 0px 6px 20px 0px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.25);
+  --shadow-popup: 0px 3px 10px 1px rgba(0, 0, 0, 0.4);
+
+  /* Accent derived */
+  --color-accent-subtle: rgba(178, 57, 232, 0.15);
+  --color-accent-border: #b239e8;
+
+  /* Spacing tokens */
+  --spacing-section: 0;
+  --spacing-message: 3.8rem;
+
   /* Typography */
   --font-family: 'Albert Sans', sans-serif;
-  --fs-body: 1rem;
-  --fs-small: 0.875rem;
+  --font-weight-heading: 500;
+  --lh-body: 1.4;
+  --fs-xs: clamp(1rem, 0.93rem + 0.19vw, 1.2rem);
+  --fs-small: clamp(1.2rem, 1.12rem + 0.19vw, 1.4rem);
+  --fs-body: clamp(1.4rem, 1.3rem + 0.28vw, 1.6rem);
+  --fs-md: clamp(1.4rem, 1.3rem + 0.28vw, 1.6rem);
+  --fs-lg: clamp(1.6rem, 1.49rem + 0.28vw, 1.8rem);
+  --fs-xl: clamp(1.8rem, 1.68rem + 0.28vw, 2rem);
+
+  /* Transition */
+  --transition-default: 200ms ease;
 
   /* Shape */
   --radius: 8px;
@@ -29,10 +72,53 @@
   --color-bg-alt: #F5F5F5;
   --color-border: #e0e0e0;
 
+  /* Surface colors */
+  --color-surface-primary: #FFFFFF;
+  --color-surface-secondary: #F5F5F5;
+  --color-surface-elevated: #FFFFFF;
+  --color-surface-input: #F5F5F5;
+  --color-surface-overlay: rgba(0, 0, 0, 0.15);
+
+  /* Message bubble colors */
+  --color-bubble-user: #20565D;
+  --color-bubble-user-text: #FFFFFF;
+  --color-bubble-bot-text: #333333;
+
+  /* Text colors */
+  --color-text-heading: #333333;
+  --color-text-inverse: #FFFFFF;
+  --color-text-muted: #6b6b6b;
+
+  /* Interactive element colors */
+  --color-interactive-bg: #F5F5F5;
+  --color-interactive-hover: #e0e0e0;
+
+  /* Shadow tokens */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --shadow-popup: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  /* Accent derived */
+  --color-accent-subtle: rgba(32, 86, 93, 0.1);
+  --color-accent-border: #20565D;
+
+  /* Spacing tokens */
+  --spacing-section: 0;
+  --spacing-message: 4.2rem;
+
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --fs-body: 1rem;
-  --fs-small: 0.875rem;
+  --font-weight-heading: 700;
+  --lh-body: 1.65;
+  --fs-xs: clamp(1rem, 0.93rem + 0.19vw, 1.2rem);
+  --fs-small: clamp(1.2rem, 1.12rem + 0.19vw, 1.4rem);
+  --fs-body: clamp(1.4rem, 1.3rem + 0.28vw, 1.6rem);
+  --fs-md: clamp(1.4rem, 1.3rem + 0.28vw, 1.6rem);
+  --fs-lg: clamp(1.6rem, 1.49rem + 0.28vw, 1.8rem);
+  --fs-xl: clamp(1.8rem, 1.68rem + 0.28vw, 2rem);
+
+  /* Transition */
+  --transition-default: 200ms ease;
 
   /* Shape */
   --radius: 4px;

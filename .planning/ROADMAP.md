@@ -13,7 +13,7 @@ Three phases deliver the complete theme feature. Phase 1 wires the auth pipeline
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Auth Pipeline** - Backend stores and returns theme identifier through the Auth0 flow (completed 2026-03-19)
-- [ ] **Phase 2: Theme Infrastructure** - Frontend reads, propagates, and switches theme at runtime without flash
+- [x] **Phase 2: Theme Infrastructure** - Frontend reads, propagates, and switches theme at runtime without flash (completed 2026-03-19)
 - [ ] **Phase 3: Företagarna Visual Theme** - Full visual implementation plus regression safety
 
 ## Phase Details
@@ -41,7 +41,7 @@ Plans:
   2. Any component in the tree can read the active theme without receiving it as a prop
   3. Loading the app with a Företagarna-authenticated user applies the `foretagarna` CSS token set; loading with a default user applies the `globy` token set
   4. An unknown or absent theme value falls back to the Globy default without errors
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 02-01-PLAN.md — CSS theme tokens (dual Globy/Foretagarna definitions) and Inter font loading
@@ -66,5 +66,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Auth Pipeline | 2/2 | Complete   | 2026-03-19 |
-| 2. Theme Infrastructure | 1/2 | In Progress|  |
+| 2. Theme Infrastructure | 2/2 | Complete   | 2026-03-19 |
 | 3. Företagarna Visual Theme | 0/TBD | Not started | - |

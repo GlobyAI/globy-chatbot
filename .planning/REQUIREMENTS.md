@@ -13,28 +13,28 @@
 
 ### Theme Infrastructure
 
-- [ ] **INFRA-01**: Frontend reads theme from auth API response on login
-- [ ] **INFRA-02**: Theme is available globally via provider/store (no prop drilling)
+- [x] **INFRA-01**: Frontend reads theme from auth API response on login
+- [x] **INFRA-02**: Theme is available globally via provider/store (no prop drilling)
 - [x] **INFRA-03**: CSS custom properties switch at runtime based on active theme
 - [x] **INFRA-04**: Default Globy theme is applied when no theme or unknown theme is set
-- [ ] **INFRA-05**: No flash of wrong theme on initial load
+- [x] **INFRA-05**: No flash of wrong theme on initial load
 
 ### Företagarna Visual Theme
 
-- [ ] **THEME-01**: Företagarna color palette applied (`#20565D` accent, `#333333` text, `#F5F5F5` alt bg, `#e0e0e0` borders)
-- [ ] **THEME-02**: Inter font loaded and applied (weights 300–800, fluid sizing with `clamp()`)
-- [ ] **THEME-03**: Chat bubbles restyled (message containers, bot responses, user messages)
+- [x] **THEME-01**: Företagarna color palette applied (`#20565D` accent, `#333333` text, `#F5F5F5` alt bg, `#e0e0e0` borders)
+- [x] **THEME-02**: Inter font loaded and applied (weights 300–800, fluid sizing with `clamp()`)
+- [x] **THEME-03**: Chat bubbles restyled (message containers, bot responses, user messages)
 - [ ] **THEME-04**: Input area / message composer restyled
 - [ ] **THEME-05**: Sidebar restyled (navigation, conversation list)
-- [ ] **THEME-06**: Header restyled
+- [x] **THEME-06**: Header restyled
 - [ ] **THEME-07**: Buttons follow Företagarna spec (4px radius, `#20565D` primary, outlined secondary)
-- [ ] **THEME-08**: Shadows only on hover, cards with `8px` radius
-- [ ] **THEME-09**: Företagarna spacing and whitespace patterns applied
+- [x] **THEME-08**: Shadows only on hover, cards with `8px` radius
+- [x] **THEME-09**: Företagarna spacing and whitespace patterns applied
 
 ### Regression Safety
 
-- [ ] **SAFE-01**: Default Globy theme unchanged — zero visual regression
-- [ ] **SAFE-02**: Theme styles fully scoped — no leakage between themes
+- [x] **SAFE-01**: Default Globy theme unchanged — zero visual regression
+- [x] **SAFE-02**: Theme styles fully scoped — no leakage between themes
 
 ## v2 Requirements
 
@@ -61,22 +61,22 @@
 | AUTH-01 | Phase 1 | Complete |
 | AUTH-02 | Phase 1 | Complete (plan 01-01) |
 | AUTH-03 | Phase 1 | Complete (plan 01-01) |
-| INFRA-01 | Phase 2 | Pending |
-| INFRA-02 | Phase 2 | Pending |
+| INFRA-01 | Phase 2 | Complete |
+| INFRA-02 | Phase 2 | Complete |
 | INFRA-03 | Phase 2 | Complete |
 | INFRA-04 | Phase 2 | Complete |
-| INFRA-05 | Phase 2 | Pending |
-| THEME-01 | Phase 3 | Pending |
-| THEME-02 | Phase 3 | Pending |
-| THEME-03 | Phase 3 | Pending |
+| INFRA-05 | Phase 2 | Complete |
+| THEME-01 | Phase 3 | Complete |
+| THEME-02 | Phase 3 | Complete |
+| THEME-03 | Phase 3 | Complete |
 | THEME-04 | Phase 3 | Pending |
 | THEME-05 | Phase 3 | Pending |
-| THEME-06 | Phase 3 | Pending |
+| THEME-06 | Phase 3 | Complete |
 | THEME-07 | Phase 3 | Pending |
-| THEME-08 | Phase 3 | Pending |
-| THEME-09 | Phase 3 | Pending |
-| SAFE-01 | Phase 3 | Pending |
-| SAFE-02 | Phase 3 | Pending |
+| THEME-08 | Phase 3 | Complete |
+| THEME-09 | Phase 3 | Complete |
+| SAFE-01 | Phase 3 | Complete |
+| SAFE-02 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 19 total

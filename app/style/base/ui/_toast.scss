@@ -3,8 +3,8 @@
 .globy-toast {
   width: 100%;
   max-width: 3.6rem;
-  border: 1px solid $purple;
-  background: rgba(252, 244, 255, 1) !important;
+  border: 1px solid var(--color-accent-border);
+  background: var(--color-bg) !important;
   margin-bottom: 1.2rem;
   padding: 0.8rem 1.2rem !important;
   gap: 0.8rem;
@@ -19,7 +19,7 @@
     }
     margin: 0;
     text-align: center;
-    color: $purple;
+    color: var(--color-accent);
     font-size: 1.2rem;
     @include breakpoint(xl) {
       font-size: 1.6rem;

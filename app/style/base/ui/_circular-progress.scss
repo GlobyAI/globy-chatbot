@@ -18,18 +18,18 @@
     inset: 0;
     border-radius: 50%;
     background: conic-gradient(
-      $white-2 calc(var(--percent) * 3.6deg),
-      $gray-500 0deg
+      var(--color-text-heading) calc(var(--percent) * 3.6deg),
+      var(--color-text-light) 0deg
     );
     -webkit-mask: radial-gradient(
       farthest-side,
       transparent calc(100% - 0.4rem),
-      $black-700 calc(100% - 0.4rem + 1px)
+      var(--color-surface-primary) calc(100% - 0.4rem + 1px)
     );
     mask: radial-gradient(
       farthest-side,
       transparent calc(100% - 0.4rem),
-      $black-700 calc(100% - 0.4rem + 1px)
+      var(--color-surface-primary) calc(100% - 0.4rem + 1px)
     );
   }
 }

@@ -180,6 +180,7 @@ export default function AppContextProvider({
             if (verifyUserRes.status === 200 && globyUserId) {
               setUserId(globyUserId);
               setTheme(userTheme);
+              document.documentElement.setAttribute('data-theme', userTheme);
             } else {
               toast.error("missing user id on auth api");
             }

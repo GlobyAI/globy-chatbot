@@ -12,10 +12,12 @@ import { setTokenGetter } from "~/services/tokenManager";
 
 interface AppContextType {
   userId: string | null;
+  theme: string;
 }
 
 export const AppContext = createContext<AppContextType>({
   userId: null,
+  theme: "globy",
 });
 
 export default function AppContextProvider({
@@ -24,6 +26,7 @@ export default function AppContextProvider({
   children: React.ReactNode;
 }) {
   const [userId, setUserId] = useState<string | null>(null);
+  const [theme, setTheme] = useState<string>("globy");
   const setIsLoading = useAppStore(s => s.setLoading)
 
   const {
@@ -104,9 +107,11 @@ export default function AppContextProvider({
             Object.fromEntries(
               Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
             ) || {};
+          const storedTheme = sessionStorage.getItem('globy_theme');
           try {
-            const verifyUserRes = await verifyUser(token, payload || {});
+            const verifyUserRes = await verifyUser(token, payload || {}, storedTheme);
             const globyUserId = verifyUserRes?.data.user_id;
+            const userTheme = verifyUserRes?.data.theme || "globy";
             const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
             // const ref_id = user["https://globy.ai/ref_id"] || "";
 
@@ -174,7 +179,8 @@ export default function AppContextProvider({
 
             if (verifyUserRes.status === 200 && globyUserId) {
               setUserId(globyUserId);
-
+              setTheme(userTheme);
+              document.documentElement.setAttribute('data-theme', userTheme);
             } else {
               toast.error("missing user id on auth api");
             }
@@ -214,6 +220,7 @@ export default function AppContextProvider({
     <AppContext.Provider
       value={{
         userId,
+        theme,
       }}
     >
       {children}

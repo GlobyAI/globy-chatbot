@@ -5,14 +5,15 @@
   box-sizing: border-box;
 }
 html {
-  font-family: $font-family;
+  font-family: var(--font-family);
   font-size: 10px;
 }
 
 body {
-  background-color: $black-700;
+  background-color: var(--color-surface-primary);
   letter-spacing: 0.25px;
-  color: $white;
+  color: var(--color-text);
+  line-height: var(--lh-body);
 }
 
 ul,
@@ -38,7 +39,7 @@ textarea {
   border: none;
   &::placeholder {
     font-size: 12px;
-    font-family: $font-family;
+    font-family: var(--font-family);
     @include breakpoint(sm) {
       font-size: 14px;
     }

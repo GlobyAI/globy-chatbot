@@ -2,10 +2,10 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import SpinnerLoading from '../ui/SpinnerLoading/SpinnerLoading';
-import { startOnboarding, acceptServices, type Service, type ServiceCategory } from '~/services/bookingApis';
+import { startOnboarding, acceptServices, setupPayments, type Service, type ServiceCategory } from '~/services/bookingApis';
 import { useAppContext } from '~/providers/AppContextProvider';
 
-type Step = 'business-info' | 'review-services';
+type Step = 'business-info' | 'review-services' | 'payment-setup';
 
 interface Props {
   onBack: () => void;
@@ -245,6 +245,8 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
     ]);
   };
 
+  const [acceptedServicesCount, setAcceptedServicesCount] = useState(0);
+
   const handleAcceptServices = async () => {
     if (!businessId) return;
 
@@ -265,8 +267,9 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
     try {
       const response = await acceptServices(businessId, validServices);
       if (response.status === 200) {
-        toast.success('Booking system set up successfully!');
-        onComplete(validServices.length);
+        toast.success('Services saved!');
+        setAcceptedServicesCount(validServices.length);
+        setStep('payment-setup');
       }
     } catch (error) {
       console.error('acceptServices error:', error);
@@ -278,6 +281,40 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSetupPayments = async () => {
+    if (!userId) return;
+
+    setIsLoading(true);
+    try {
+      const currentUrl = window.location.href;
+      const response = await setupPayments(
+        userId,
+        currentUrl + '?stripe=success',
+        currentUrl + '?stripe=refresh',
+      );
+      if (response.data.success && response.data.onboarding_url) {
+        window.open(response.data.onboarding_url, '_blank');
+        toast.success('Complete your Stripe setup in the new tab');
+        onComplete(acceptedServicesCount);
+      } else {
+        toast.error(response.data.message || 'Failed to set up payments');
+      }
+    } catch (error) {
+      console.error('setupPayments error:', error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || error.message);
+      } else {
+        toast.error('Failed to set up payments. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSkipPayments = () => {
+    onComplete(acceptedServicesCount);
   };
 
   if (step === 'business-info') {
@@ -351,6 +388,56 @@ export default function GlobyBookingSetup({ onBack, onComplete }: Props) {
           </button>
           <button onClick={handleStartOnboarding} disabled={isLoading}>
             {isLoading ? <SpinnerLoading /> : 'Continue'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'payment-setup') {
+    return (
+      <div className="service-business__step">
+        <div className="heading-container">
+          <p className="heading">Accept online payments</p>
+          <p className="sub-heading">
+            Set up Stripe to accept deposits and payments directly on your website.
+            This opens Stripe's secure onboarding in a new tab.
+          </p>
+        </div>
+
+        <div className="payment-benefits">
+          <div className="benefit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>Collect deposits to reduce no-shows</span>
+          </div>
+          <div className="benefit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>Accept all major cards and Apple Pay</span>
+          </div>
+          <div className="benefit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>Automatic payouts to your bank account</span>
+          </div>
+          <div className="benefit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>Powered by Stripe — trusted by millions</span>
+          </div>
+        </div>
+
+        <div className="action-container">
+          <button className="secondary" onClick={handleSkipPayments}>
+            Skip for now
+          </button>
+          <button onClick={handleSetupPayments} disabled={isLoading}>
+            {isLoading ? <SpinnerLoading /> : 'Set up Stripe'}
           </button>
         </div>
       </div>

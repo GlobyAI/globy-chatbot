@@ -8,7 +8,7 @@
   width: 100%;
   height: 100%;
   z-index: 100;
-  background-color: rgba($color: $black-950, $alpha: 0.25);
+  background-color: var(--color-surface-overlay);
   @include breakpoint(xl) {
     display: none;
   }
@@ -21,7 +21,7 @@
   height: 100%;
   max-width: 28rem;
   padding: 2.4rem 1.6rem;
-  background-color: $black-900;
+  background-color: var(--color-surface-secondary);
   z-index: 9999;
   opacity: 1;
   visibility: visible;
@@ -48,7 +48,7 @@
   &__toggle-icon {
     z-index: 100;
     cursor: pointer;
-    background-color: $black-900;
+    background-color: var(--color-surface-secondary);
     position: absolute;
     top: 4rem;
     right: -1.2rem;
@@ -56,7 +56,7 @@
     display: none;
     justify-content: center;
     align-items: center;
-    border: 1px solid $gray-800;
+    border: 1px solid var(--color-border);
     @include box(2.8rem, 2.8rem);
     @include breakpoint(xl) {
       display: flex;
@@ -69,7 +69,7 @@
   &__close {
     z-index: 100;
     cursor: pointer;
-    background-color: $black-900;
+    background-color: var(--color-surface-secondary);
     position: absolute;
     top: 3rem;
     right: 1.6rem;
@@ -118,7 +118,7 @@
     }
     .style-toggle {
       cursor: pointer;
-      @include text($white-2, 500, $text-md);
+      @include text(var(--color-text-heading), 500, $text-md);
       @include flex(left, center, row, 0.4rem);
     }
 
@@ -138,20 +138,20 @@
         width: 100%;
         @include flex(flex-start, flex-start, column, 0.6rem);
         > b {
-          @include text($gray-100, 400, $text-sm);
+          @include text(var(--color-text), 400, $text-sm);
         }
         > p {
-          @include text($gray-300, 400, $text-sm);
+          @include text(var(--color-text-muted), 400, $text-sm);
         }
       }
       .image-library {
         width: 100%;
         @include flex(flex-start, flex-start, column, 0.6rem);
         > b {
-          @include text($gray-100, 400, $text-sm);
+          @include text(var(--color-text), 400, $text-sm);
         }
         > p {
-          @include text($gray-300, 400, $text-sm);
+          @include text(var(--color-text-muted), 400, $text-sm);
         }
         .images {
           width: 100%;
@@ -167,10 +167,10 @@
           top: 0.3rem;
           right: 0.3rem;
           cursor: pointer;
-          border: 1px solid $gray-500;
+          border: 1px solid var(--color-border);
           border-radius: 50%;
-          background-color: $black-900;
-          color: $white-2;
+          background-color: var(--color-surface-secondary);
+          color: var(--color-text);
           font-size: 1rem;
           padding: 0.2rem;
           width: 1.4rem;
@@ -189,10 +189,10 @@
   &__color-picker {
     @include flex(flex-start, flex-start, column, 0.8rem);
     > b{
-        @include text($gray-100, 400,$text-sm);
+        @include text(var(--color-text), 400,$text-sm);
       }
       > p{
-        @include text($gray-300, 400,$text-sm);
+        @include text(var(--color-text-muted), 400,$text-sm);
       }
   }
 
@@ -209,7 +209,7 @@
     }
     .style-toggle {
       cursor: pointer;
-      @include text($white-2, 500, $text-md);
+      @include text(var(--color-text-heading), 500, $text-md);
       @include flex(left, center, row, 0.4rem);
     }
 
@@ -235,7 +235,7 @@
     }
     .style-toggle {
       cursor: pointer;
-      @include text($white-2, 500, $text-md);
+      @include text(var(--color-text-heading), 500, $text-md);
       @include flex(left, center, row, 0.4rem);
     }
 
@@ -258,8 +258,8 @@
         @include transition(all 0.3s ease);
 
         // Default state - attractive gradient
-        background: linear-gradient(135deg, rgba($purple, 0.15) 0%, rgba(#6366f1, 0.15) 50%, rgba(#ec4899, 0.1) 100%);
-        border: 0.1rem solid rgba($purple, 0.3);
+        background: var(--color-accent-subtle);
+        border: 0.1rem solid var(--color-accent-border);
 
         // Subtle animated shine effect
         &::before {
@@ -279,10 +279,10 @@
         }
 
         &:hover {
-          background: linear-gradient(135deg, rgba($purple, 0.25) 0%, rgba(#6366f1, 0.25) 50%, rgba(#ec4899, 0.2) 100%);
-          border-color: rgba($purple, 0.5);
+          background: var(--color-accent-subtle);
+          border-color: var(--color-accent);
           transform: translateY(-0.1rem);
-          box-shadow: 0 0.4rem 1.5rem rgba($purple, 0.2);
+          box-shadow: 0 0.4rem 1.5rem var(--color-accent-subtle);
 
           &::before {
             left: 100%;
@@ -310,12 +310,12 @@
           height: 3.6rem;
           border-radius: 1rem;
           flex-shrink: 0;
-          background: linear-gradient(135deg, $purple 0%, #6366f1 100%);
+          background: var(--color-accent);
           @include flex(center, center);
           @include transition(all 0.3s ease);
 
           > svg {
-            color: $white-2;
+            color: var(--color-text-inverse);
           }
 
           &.configured {
@@ -326,7 +326,7 @@
         .booking-btn__text {
           flex: 1;
           text-align: left;
-          @include text($white-2, 500, $text-sm);
+          @include text(var(--color-text-heading), 500, $text-sm);
           @include flex(flex-start, flex-start, column, 0.2rem);
 
           .booking-btn__badge {
@@ -344,14 +344,14 @@
 
         .booking-btn__arrow {
           flex-shrink: 0;
-          color: $gray-300;
+          color: var(--color-text-muted);
           @include transition(transform 0.2s ease);
         }
       }
 
       .booking-info {
         padding-left: 5rem;
-        @include text($gray-500, 400, $text-xs);
+        @include text(var(--color-text-light), 400, $text-xs);
       }
     }
   }
@@ -422,14 +422,14 @@
       .user-info {
         min-width: 0;
         > strong {
-          @include text($white-2, 400, $text-md);
+          @include text(var(--color-text-heading), 400, $text-md);
           display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
         > p {
-          @include text($gray-100, 400, $text-sm);
+          @include text(var(--color-text-muted), 400, $text-sm);
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -442,8 +442,8 @@
       position: absolute;
       bottom: 100%;
       left: 0;
-      box-shadow: 0px 3px 10px 1px rgba($color: $black-900, $alpha: 0.4);
-      background-color: $black-500;
+      box-shadow: var(--shadow-popup);
+      background-color: var(--color-surface-elevated);
       width: 100%;
       padding: 0.8rem;
       border-radius: 1.2rem;
@@ -456,7 +456,7 @@
         cursor: pointer;
         padding: 0.2rem 0.8rem;
         @include flex(left, center, row, 0.4rem);
-        @include text($white-2, 400, $text-sm);
+        @include text(var(--color-text), 400, $text-sm);
         > img {
           @include box(1.8rem, 1.8rem);
         }

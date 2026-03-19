@@ -1,7 +1,7 @@
 @use "../../abstracts/" as *;
 
 .markdown-body {
-  color: $white-2;
+  color: var(--color-bubble-bot-text);
   font-size: $text-md;
   line-height: 1.6;
 
@@ -44,11 +44,11 @@
 
   // Code inline
   code {
-    font-family: $font-family;
+    font-family: var(--font-family);
     font-size: 1rem;
     padding: 0.4rem;
     border-radius: 0.4rem;
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--color-accent-subtle);
   }
 
   // Code block
@@ -56,7 +56,7 @@
     margin: 1rem 0;
     padding: 1rem 1.2rem;
     border-radius: 0.6rem;
-    background: #111218;
+    background: var(--color-surface-secondary);
     overflow-x: auto;
 
     code {
@@ -75,12 +75,12 @@
 
   th,
   td {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-border);
     padding: 0.4rem 0.6rem;
   }
 
   th {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--color-bg-alt);
     font-weight: 500;
   }
 
@@ -88,13 +88,13 @@
   blockquote {
     margin: 1rem 0;
     padding: 0.6rem 1rem;
-    border-left: 3px solid #cccccc;
-    background: rgba(255, 255, 255, 0.03);
-    color: $white-2;
+    border-left: 3px solid var(--color-border);
+    background: var(--color-bg-alt);
+    color: var(--color-text);
   }
 
   a {
-    color: $purple;
+    color: var(--color-accent);
     font-weight: 500;
     &:hover {
       text-decoration: underline;

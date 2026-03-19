@@ -30,6 +30,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
         <script src="https://cdn-eu.pagesense.io/js/globyab/a85054401a7541b5944af1d55bb0efb1.js"></script>
         <Meta />
         <Links />

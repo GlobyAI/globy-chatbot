@@ -9,7 +9,7 @@
     font-size: 14px;
     font-weight: 500;
     background:
-      linear-gradient($gray-300, $gray-300),
+      linear-gradient(var(--color-text-muted), var(--color-text-muted)),
       linear-gradient(
         90deg,
         rgba(255, 255, 255, 0) 0%,

@@ -65,7 +65,7 @@
     .heading {
       width: 100%;
       height: 8.4rem;
-      background-color: $black-700;
+      background-color: var(--color-surface-primary);
       z-index: 1;
       @include position(sticky, 0, null, null, null);
       @include flex(space-between, center);
@@ -93,7 +93,7 @@
           right: 0;
           display: none;
           border-radius: 50%;
-          background: $purple;
+          background: var(--color-accent);
           @include box(1rem, 1rem);
         }
         &.news {
@@ -111,10 +111,10 @@
           margin-right: 0;
         }
         > strong {
-          @include text($white-2, 500, $text-lg);
+          @include text(var(--color-text-heading), 500, $text-lg);
         }
         > small {
-          @include text($gray-300, 400, $text-sm);
+          @include text(var(--color-text-muted), 400, $text-sm);
         }
       }
       .move-on {
@@ -133,16 +133,16 @@
           margin: auto;
           background-color: #332359;
           border-radius: 50%;
-          background-color: $black-700;
+          background-color: var(--color-surface-primary);
           border-radius: 2rem;
           width: auto;
-          border: 1px solid $purple;
+          border: 1px solid var(--color-accent);
           padding: 0.4rem 0.6rem;
           height: 3rem;
           &:hover {
-            background-color: $purple;
+            background-color: var(--color-accent);
           }
-          @include text($white-2, 400, $text-sm);
+          @include text(var(--color-text-inverse), 400, $text-sm);
           @include flex(center, center, row, 0.4rem);
           @include breakpoint(md) {
             font-size: $text-md;
@@ -185,11 +185,11 @@
         @include flex(flex-start, flex-start, column);
         .message {
           min-height: 5rem;
-          margin-bottom: 3.8rem;
+          margin-bottom: var(--spacing-message);
           background-color: transparent;
           // @include text($white-2, 400, $text-md, 2.6rem);
           &__logo {
-            @include text($gray-300, 400, $text-xs);
+            @include text(var(--color-text-muted), 400, $text-xs);
 
             > img {
               width: 1.4rem;
@@ -207,7 +207,7 @@
             }
             &.editing {
               border-radius: 1.2rem;
-              background-color: $dark-gray;
+              background-color: var(--color-surface-input);
               width: 100%;
               padding: 0.8rem;
               overflow-y: hidden;
@@ -223,8 +223,8 @@
               border-radius: 1.2rem;
               padding: 1.2rem;
               font-size: $text-lg;
-              color: $white-2;
-              background-color: $dark-purple;
+              color: var(--color-bubble-user-text);
+              background-color: var(--color-bubble-user);
             }
             .edit-icon {
               cursor: pointer;
@@ -243,13 +243,13 @@
               box-sizing: border-box;
               white-space: pre-wrap;
               resize: none;
-              @include text($white-2, 400, $text-md);
+              @include text(var(--color-text), 400, $text-md);
 
               &::-webkit-scrollbar {
                 display: none;
               }
               &::placeholder {
-                @include text($gray-300, 400, $text-md);
+                @include text(var(--color-text-muted), 400, $text-md);
               }
             }
 
@@ -262,19 +262,19 @@
               button {
                 background-color: transparent;
                 border-radius: 50%;
-                background-color: $black-700;
+                background-color: var(--color-surface-primary);
                 border-radius: 2rem;
                 width: fit-content;
                 height: 2.8rem;
-                border: 1px solid $purple;
+                border: 1px solid var(--color-accent);
                 padding: 0.8rem 1.2rem;
-                @include text($white-2, 400, $text-md);
+                @include text(var(--color-text-inverse), 400, $text-md);
                 @include flex(center, center, row, 0.4rem);
                 p {
                   display: block;
                 }
                 &:nth-child(2) {
-                  background-color: $purple;
+                  background-color: var(--color-accent);
                 }
                 @include breakpoint(xl) {
                   height: 3.2rem;
@@ -296,7 +296,7 @@
     padding-bottom: 4rem;
     min-height: 0;
     height: fit-content;
-    background-color: $black-700;
+    background-color: var(--color-surface-primary);
     @include flex(flex-end, center, column, 1.2rem);
 
     // .continue {
@@ -313,6 +313,6 @@
   @include flex(center, center, column, 1.2rem);
 
   > p {
-    @include text($white-2, 500, $text-lg);
+    @include text(var(--color-text-heading), 500, $text-lg);
   }
 }

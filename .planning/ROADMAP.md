@@ -56,7 +56,12 @@ Plans:
   2. Chat bubbles, the message input area, sidebar, and header all match the Företagarna spec (4px button radius, 8px card radius, shadows on hover only, generous whitespace)
   3. A default Globy-authenticated user sees zero visual changes — all existing styles remain pixel-identical to before this feature shipped
   4. No Företagarna styles leak into Globy theme views and no Globy styles bleed into Företagarna theme views
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Expand theme tokens to cover all surfaces + convert base styles and chat page
+- [ ] 03-02-PLAN.md — Convert chatbox input, sidebar, and quality score to themed tokens
+- [ ] 03-03-PLAN.md — Convert buttons, markdown, toast, spinner, modal + visual verification
 
 ## Progress
 
@@ -67,4 +72,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Auth Pipeline | 2/2 | Complete   | 2026-03-19 |
 | 2. Theme Infrastructure | 2/2 | Complete   | 2026-03-19 |
-| 3. Företagarna Visual Theme | 0/TBD | Not started | - |
+| 3. Företagarna Visual Theme | 0/3 | Planning complete | - |

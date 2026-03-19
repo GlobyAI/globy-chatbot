@@ -5,9 +5,9 @@
   max-width: 32rem;
   padding: 1.6rem 1.2rem;
   border-radius: 1.4rem;
-  background: linear-gradient(135deg, $dark-purple, $black-900);
-  color: $white-2;
-  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, var(--color-accent-hover), var(--color-surface-secondary));
+  color: var(--color-text-heading);
+  box-shadow: var(--shadow-hover);
   height: 17rem;
   @include flex(space-between, flex-start, column);
   @include breakpoint(xl) {
@@ -23,7 +23,7 @@
   &__title {
     width: 100%;
     @include flex(left, center, row, 0.6rem);
-    @include text($gray-100, 400, $text-sm);
+    @include text(var(--color-text-muted), 400, $text-sm);
 
     @include breakpoint(xs) {
       font-size: 1.3rem;
@@ -33,7 +33,7 @@
   &__icon {
     background: none;
     border: none;
-    color: $gray-300;
+    color: var(--color-text-muted);
     font-size: 1.8rem;
     cursor: pointer;
     transition: opacity 0.2s ease;
@@ -60,8 +60,8 @@
       border-radius: 0.8rem;
       min-width: 24rem;
       text-align: left;
-      background-color: $black-700;
-      @include text($white-2, 400, 1rem,1.4rem);
+      background-color: var(--color-surface-primary);
+      @include text(var(--color-text), 400, 1rem,1.4rem);
     }
 
     &:hover {
@@ -78,7 +78,7 @@
     display: flex;
     position: relative;
     align-items: center;
-    @include text($white-2, 400, 4.8rem);
+    @include text(var(--color-text-heading), 400, 4.8rem);
     @include breakpoint(xl) {
       font-size: 6.4rem;
     }
@@ -93,7 +93,7 @@
   &__footer {
     &-title {
       margin-bottom: 0.2rem;
-      @include text($white-2, 500, $text-lg);
+      @include text(var(--color-text-heading), 500, $text-lg);
 
       @include breakpoint(xs) {
         font-size: 1.4rem;
@@ -102,7 +102,7 @@
 
     &-text {
       opacity: 0.7;
-      @include text($white-2, 400, $text-xs);
+      @include text(var(--color-text-muted), 400, $text-xs);
 
       @include breakpoint(xs) {
         font-size: 1.2rem;

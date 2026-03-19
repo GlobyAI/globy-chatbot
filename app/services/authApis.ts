@@ -5,10 +5,12 @@ import { envConfig } from "~/utils/envConfig";
 
 export async function verifyUser(
   token: string,
-  user: User | null
+  user: User | null,
+  theme?: string | null
 ): Promise<
   AxiosResponse<{
     user_id: string;
+    theme: string;
   }>
 > {
   return await axiosInstance( {
@@ -19,6 +21,7 @@ export async function verifyUser(
     },
     data: {
       user,
+      ...(theme ? { theme } : {}),
     },
   });
 }

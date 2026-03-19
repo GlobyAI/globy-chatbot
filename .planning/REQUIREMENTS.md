@@ -24,10 +24,10 @@
 - [x] **THEME-01**: Företagarna color palette applied (`#20565D` accent, `#333333` text, `#F5F5F5` alt bg, `#e0e0e0` borders)
 - [x] **THEME-02**: Inter font loaded and applied (weights 300–800, fluid sizing with `clamp()`)
 - [x] **THEME-03**: Chat bubbles restyled (message containers, bot responses, user messages)
-- [ ] **THEME-04**: Input area / message composer restyled
-- [ ] **THEME-05**: Sidebar restyled (navigation, conversation list)
+- [x] **THEME-04**: Input area / message composer restyled
+- [x] **THEME-05**: Sidebar restyled (navigation, conversation list)
 - [x] **THEME-06**: Header restyled
-- [ ] **THEME-07**: Buttons follow Företagarna spec (4px radius, `#20565D` primary, outlined secondary)
+- [x] **THEME-07**: Buttons follow Företagarna spec (4px radius, `#20565D` primary, outlined secondary)
 - [x] **THEME-08**: Shadows only on hover, cards with `8px` radius
 - [x] **THEME-09**: Företagarna spacing and whitespace patterns applied
 
@@ -69,10 +69,10 @@
 | THEME-01 | Phase 3 | Complete |
 | THEME-02 | Phase 3 | Complete |
 | THEME-03 | Phase 3 | Complete |
-| THEME-04 | Phase 3 | Pending |
-| THEME-05 | Phase 3 | Pending |
+| THEME-04 | Phase 3 | Complete |
+| THEME-05 | Phase 3 | Complete |
 | THEME-06 | Phase 3 | Complete |
-| THEME-07 | Phase 3 | Pending |
+| THEME-07 | Phase 3 | Complete |
 | THEME-08 | Phase 3 | Complete |
 | THEME-09 | Phase 3 | Complete |
 | SAFE-01 | Phase 3 | Complete |

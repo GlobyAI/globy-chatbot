@@ -10,25 +10,25 @@ type Props = {
 function ThemeCapture({ children }: { children: React.ReactNode }) {
     const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
+    // Save theme to sessionStorage synchronously during render so child
+    // effects (AppContextProvider, withAuthenticationRequired) can read it
+    // before their own effects fire.
+    const params = new URLSearchParams(window.location.search);
+    const theme = params.get('theme');
+    if (theme) {
+        sessionStorage.setItem('globy_theme', theme);
+    }
+
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const theme = params.get('theme');
-
-        if (theme) {
-            // Write to sessionStorage as backup before Auth0 redirect
-            sessionStorage.setItem('globy_theme', theme);
-
-            // If not authenticated and not loading, auto-trigger login with theme in appState
-            if (!isAuthenticated && !isLoading) {
-                loginWithRedirect({
-                    appState: {
-                        returnTo: window.location.pathname,
-                        theme: theme,
-                    },
-                });
-            }
+        if (theme && !isAuthenticated && !isLoading) {
+            loginWithRedirect({
+                appState: {
+                    returnTo: window.location.pathname,
+                    theme: theme,
+                },
+            });
         }
-    }, [isAuthenticated, isLoading, loginWithRedirect]);
+    }, [theme, isAuthenticated, isLoading, loginWithRedirect]);
 
     return <>{children}</>;
 }

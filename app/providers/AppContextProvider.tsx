@@ -107,7 +107,8 @@ export default function AppContextProvider({
             Object.fromEntries(
               Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
             ) || {};
-          const storedTheme = sessionStorage.getItem('globy_theme');
+          const storedTheme = sessionStorage.getItem('globy_theme')
+            || new URLSearchParams(window.location.search).get('theme');
           try {
             const verifyUserRes = await verifyUser(token, payload || {}, storedTheme);
             const globyUserId = verifyUserRes?.data.user_id;
@@ -166,6 +167,7 @@ export default function AppContextProvider({
                   await loginWithRedirect({
                     appState: {
                       returnTo: APP_ROUTES.INDEX,
+                      theme: storedTheme,
                     },
                     authorizationParams: {
                       prompt: 'none'

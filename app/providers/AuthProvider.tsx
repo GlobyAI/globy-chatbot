@@ -13,8 +13,9 @@ function ThemeCapture({ children }: { children: React.ReactNode }) {
     // Save theme to sessionStorage synchronously during render so child
     // effects (AppContextProvider, withAuthenticationRequired) can read it
     // before their own effects fire.
-    const params = new URLSearchParams(window.location.search);
-    const theme = params.get('theme');
+    const theme = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('theme')
+        : null;
     if (theme) {
         sessionStorage.setItem('globy_theme', theme);
     }

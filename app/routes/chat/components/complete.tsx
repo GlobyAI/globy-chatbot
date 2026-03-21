@@ -11,7 +11,7 @@ import { useWebSocket } from "~/providers/WSProdivder";
 import { useWebSocketStore } from "~/stores/websocketStore";
 
 export default function Complete() {
-    const { userId } = useAppContext();
+    const { userId, theme } = useAppContext();
     const messages = useWebSocketStore(s => s.messages)
     const { isWSPending } = useWebSocket()
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -41,7 +41,10 @@ export default function Complete() {
                 if (res.data.status.includes("completed")) {
                     setIsRedirecting(true);
                     setTimeout(() => {
-                        window.location.href = `${envConfig.LANDING_PAGE}/auth/login?prompt=none&returnTo=${envConfig.LANDING_PAGE}/account`;
+                        const accountUrl = theme && theme !== 'globy'
+                            ? `${envConfig.LANDING_PAGE}/account?theme=${theme}`
+                            : `${envConfig.LANDING_PAGE}/account`;
+                        window.location.href = `${envConfig.LANDING_PAGE}/auth/login?prompt=none&returnTo=${encodeURIComponent(accountUrl)}`;
                     }, 2000);
                 } else {
                     toast.success("Status: ", res.data.status);

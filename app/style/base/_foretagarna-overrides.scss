@@ -1,0 +1,737 @@
+@use "../abstracts" as *;
+
+// Foretagarna theme overrides for components that use hardcoded dark-theme colors.
+// These overrides ensure proper contrast on light backgrounds.
+
+[data-theme="foretagarna"] {
+  // ─── Global SVG icon fix ─────────────────────────────────────────────
+  // SVG icons loaded via <img> have hardcoded light strokes (#F2F2F2).
+  // Invert them to dark for the light theme.
+  .menu-icon > img,
+  .sidebar__close > img,
+  .sidebar__toggle-icon > img {
+    filter: brightness(0);
+  }
+
+  // ─── Getting Started / Identity Insight ───────────────────────────────
+  .getting-started {
+    background-color: var(--color-surface-primary);
+
+    &__container {
+      color: var(--color-text);
+
+      .heading-container {
+        .heading {
+          color: var(--color-text-heading);
+        }
+        .sub-heading {
+          color: var(--color-text-muted);
+        }
+      }
+
+      .select-language .select-wrapper .dropdown #dropdown-btn > p {
+        color: var(--color-text);
+      }
+
+      .identity-type {
+        .option {
+          border-color: var(--color-border);
+
+          &:hover {
+            background-color: var(--color-interactive-bg);
+          }
+          &.selected {
+            background-color: var(--color-accent-subtle);
+            border-color: var(--color-accent);
+          }
+
+          &__avatar {
+            background-color: var(--color-interactive-bg);
+
+            &.selected {
+              background-color: var(--color-accent);
+            }
+          }
+
+          &__detail {
+            > strong {
+              color: var(--color-text-heading);
+            }
+            > p {
+              color: var(--color-text-muted);
+            }
+          }
+        }
+      }
+
+      .action-container > button {
+        background-color: var(--color-accent);
+        color: var(--color-text-inverse);
+
+        &:hover {
+          background-color: var(--color-accent-hover);
+        }
+      }
+    }
+  }
+
+  // ─── Site Type Picker ─────────────────────────────────────────────────
+  .site-type-picker {
+    background-color: var(--color-surface-elevated);
+    box-shadow: var(--shadow-popup);
+    border: 1px solid var(--color-border);
+
+    .close-btn:hover {
+      background-color: var(--color-interactive-bg);
+    }
+
+    &__header {
+      .heading {
+        color: var(--color-text-heading);
+      }
+      .sub-heading {
+        color: var(--color-text-muted);
+      }
+    }
+
+    &__actions {
+      border-top-color: var(--color-border);
+
+      .btn-secondary {
+        border-color: var(--color-border);
+        color: var(--color-text-muted);
+
+        &:hover:not(:disabled) {
+          border-color: var(--color-text-muted);
+          color: var(--color-text);
+        }
+      }
+
+      .btn-primary {
+        background-color: var(--color-accent);
+        color: var(--color-text-inverse);
+
+        &:hover:not(:disabled) {
+          background-color: var(--color-accent-hover);
+        }
+      }
+    }
+
+    .option {
+      border-color: var(--color-border);
+
+      &:hover {
+        background-color: var(--color-interactive-bg);
+      }
+
+      &.selected {
+        background-color: var(--color-accent-subtle);
+        border-color: var(--color-accent);
+      }
+
+      &--auto {
+        border-color: var(--color-border);
+
+        &:hover {
+          background-color: var(--color-interactive-hover);
+        }
+
+        &.selected {
+          background-color: var(--color-accent-subtle);
+          border-color: var(--color-accent);
+        }
+      }
+
+      &__badge {
+        background: var(--color-accent);
+        color: var(--color-text-inverse);
+      }
+
+      &__avatar {
+        background-color: var(--color-interactive-bg);
+        color: var(--color-text-muted);
+
+        .selected & {
+          background-color: var(--color-accent-subtle);
+          color: var(--color-accent);
+        }
+      }
+
+      &__detail {
+        > strong {
+          color: var(--color-text-heading);
+        }
+        > p {
+          color: var(--color-text-muted);
+        }
+      }
+    }
+  }
+
+  // ─── Site Type Trigger Button (sidebar) ───────────────────────────────
+  .site-type-trigger-btn {
+    border-color: var(--color-border);
+
+    &:hover {
+      background-color: var(--color-interactive-bg);
+      border-color: var(--color-border);
+    }
+
+    &__icon {
+      background-color: var(--color-interactive-bg);
+      color: var(--color-text-muted);
+    }
+
+    &__label {
+      color: var(--color-text-muted);
+    }
+
+    &__value {
+      color: var(--color-text-heading);
+    }
+
+    &__arrow {
+      color: var(--color-text-muted);
+    }
+
+    &:hover .site-type-trigger-btn__arrow {
+      color: var(--color-text);
+    }
+  }
+
+  // ─── Suggestions ──────────────────────────────────────────────────────
+  .suggestions {
+    &__label {
+      color: var(--color-text-muted);
+    }
+
+    &__container-slider .suggestions-items {
+      background-color: var(--color-interactive-bg);
+      color: var(--color-text);
+    }
+
+    .slide-arrows button:disabled svg {
+      color: var(--color-text-muted);
+    }
+  }
+
+  // ─── Service Business (onboarding wizard) ─────────────────────────────
+  .service-business {
+    background-color: var(--color-surface-primary);
+
+    .close-btn:hover {
+      background-color: var(--color-interactive-bg);
+    }
+
+    // Close button icon (rotated plus = X)
+    .close-btn > img {
+      filter: brightness(0);
+    }
+
+    &__container {
+      color: var(--color-text);
+    }
+
+    &__step .heading-container {
+      .heading {
+        color: var(--color-text-heading);
+      }
+      .sub-heading {
+        color: var(--color-text-muted);
+      }
+    }
+
+    .booking-type-options .option,
+    .provider-options .option {
+      border-color: var(--color-border);
+
+      &:hover {
+        background-color: var(--color-interactive-bg);
+      }
+
+      &.selected {
+        background-color: var(--color-accent-subtle);
+        border-color: var(--color-accent);
+      }
+
+      &--featured {
+        border-color: rgba(32, 86, 93, 0.3);
+        background-color: rgba(32, 86, 93, 0.03);
+
+        &:hover {
+          background-color: rgba(32, 86, 93, 0.06);
+        }
+
+        &.selected {
+          background-color: var(--color-accent-subtle);
+          border-color: var(--color-accent);
+        }
+      }
+
+      &__badge {
+        background: var(--color-accent);
+        color: var(--color-text-inverse);
+      }
+
+      &__avatar {
+        background-color: var(--color-interactive-bg);
+
+        > img {
+          filter: brightness(0) !important;
+        }
+
+        &.selected {
+          background-color: var(--color-accent);
+
+          > img {
+            filter: brightness(0) invert(1) !important;
+          }
+        }
+      }
+
+      &__detail {
+        > strong {
+          color: var(--color-text-heading);
+        }
+        > p {
+          color: var(--color-text-muted);
+        }
+      }
+
+      &__benefits .benefit > span {
+        color: var(--color-text);
+      }
+
+      &__providers {
+        border-top-color: var(--color-border);
+      }
+    }
+
+    .form-group {
+      > label {
+        color: var(--color-text);
+      }
+
+      > input,
+      > select,
+      > textarea {
+        border-color: var(--color-border);
+        background-color: var(--color-surface-input);
+        color: var(--color-text);
+
+        &::placeholder {
+          color: var(--color-text-muted);
+        }
+
+        &:focus {
+          border-color: var(--color-accent);
+        }
+      }
+    }
+
+    .services-header {
+      &__left {
+        .service-count {
+          color: var(--color-text-muted);
+        }
+        .clear-btn {
+          border-color: var(--color-border);
+          color: var(--color-text-muted);
+        }
+      }
+
+      .template-btn {
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+
+        &:hover {
+          background-color: var(--color-accent-subtle);
+        }
+      }
+    }
+
+    .template-confirm {
+      &__actions > button {
+        color: var(--color-text);
+
+        &.secondary {
+          border-color: var(--color-border);
+
+          &:hover {
+            background-color: var(--color-interactive-bg);
+          }
+        }
+      }
+    }
+
+    .services-list {
+      scrollbar-color: var(--color-border) transparent;
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-border);
+      }
+
+      .services-empty {
+        background-color: var(--color-surface-input);
+        border-color: var(--color-border);
+
+        > p {
+          color: var(--color-text-muted);
+
+          &:first-child {
+            color: var(--color-text);
+          }
+        }
+      }
+
+      .service-item {
+        background-color: var(--color-surface-input);
+        border-color: var(--color-border);
+
+        &__header .service-name {
+          border-color: var(--color-border);
+          background-color: var(--color-surface-primary);
+          color: var(--color-text);
+
+          &:focus {
+            border-color: var(--color-accent);
+          }
+        }
+
+        &__details .field {
+          > label {
+            color: var(--color-text-muted);
+          }
+          > input {
+            border-color: var(--color-border);
+            background-color: var(--color-surface-primary);
+            color: var(--color-text);
+
+            &:focus {
+              border-color: var(--color-accent);
+            }
+          }
+        }
+      }
+
+      .add-service-btn {
+        border-color: var(--color-border);
+        color: var(--color-text-muted);
+
+        &:hover {
+          border-color: var(--color-accent);
+          color: var(--color-accent);
+        }
+      }
+    }
+
+    .instructions {
+      background-color: var(--color-surface-input);
+      border-color: var(--color-border);
+
+      > h4 {
+        color: var(--color-text-heading);
+      }
+
+      > ol > li {
+        color: var(--color-text-muted);
+      }
+    }
+
+    .action-container > button {
+      background-color: var(--color-accent);
+      color: var(--color-text-inverse);
+
+      &:hover:not(:disabled) {
+        background-color: var(--color-accent-hover);
+      }
+
+      &.secondary {
+        background-color: transparent;
+        border-color: var(--color-border);
+        color: var(--color-text);
+
+        &:hover:not(:disabled) {
+          border-color: var(--color-text-muted);
+          background-color: var(--color-interactive-bg);
+        }
+      }
+    }
+  }
+
+  // ─── Instagram Onboarding ─────────────────────────────────────────────
+  .instagram-onboarding {
+    background-color: var(--color-surface-primary);
+
+    .close-btn > img {
+      filter: brightness(0);
+    }
+
+    .close-btn:hover {
+      background-color: var(--color-interactive-bg);
+    }
+
+    &__container {
+      color: var(--color-text);
+
+      .heading-container {
+        .heading {
+          color: var(--color-text-heading);
+        }
+        .sub-heading {
+          color: var(--color-text-muted);
+        }
+      }
+    }
+
+    .action-container > button {
+      background-color: var(--color-accent);
+      color: var(--color-text-inverse);
+
+      &:hover:not(:disabled) {
+        background-color: var(--color-accent-hover);
+      }
+    }
+  }
+
+  // ─── Color Picker ─────────────────────────────────────────────────────
+  .globy-color-picker {
+    border-color: var(--color-border);
+
+    &:hover {
+      border-color: var(--color-text-muted);
+    }
+
+    &.active {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 0.2rem rgba(32, 86, 93, 0.3);
+    }
+  }
+
+  .color-picker-selector-area,
+  .color-palette-item,
+  .color-palette-remove-item {
+    background: var(--color-surface-input);
+    color: var(--color-text);
+  }
+
+  .color-picker-wrapper {
+    background-color: var(--color-surface-elevated);
+    border-color: var(--color-border);
+
+    .color-input__field {
+      label {
+        color: var(--color-text-muted);
+      }
+      input {
+        border-color: var(--color-border);
+        background-color: var(--color-surface-input);
+        color: var(--color-text);
+
+        &:focus {
+          border-color: var(--color-accent);
+          background-color: var(--color-surface-primary);
+        }
+
+        &::placeholder {
+          color: var(--color-text-muted);
+        }
+      }
+
+      .input-field__icon {
+        color: var(--color-text-muted);
+      }
+    }
+  }
+
+  .add-color-btn {
+    color: var(--color-accent);
+  }
+
+  // ─── Image Uploader ───────────────────────────────────────────────────
+  .image-uploader {
+    background-color: var(--color-interactive-bg);
+  }
+
+  // ─── Switch ───────────────────────────────────────────────────────────
+  .switch-track {
+    background-color: var(--color-border);
+
+    .switch-input:checked + .switch-label & {
+      background-color: var(--color-accent);
+    }
+
+    .switch-input:hover:not(:disabled) + .switch-label & {
+      background-color: var(--color-text-muted);
+    }
+
+    .switch-input:checked:hover:not(:disabled) + .switch-label & {
+      background-color: var(--color-accent-hover);
+    }
+  }
+
+  .switch-text {
+    color: var(--color-text);
+  }
+
+  // ─── Price Page ───────────────────────────────────────────────────────
+  .price {
+    background-color: var(--color-surface-primary);
+
+    &__container {
+      > h2 {
+        color: var(--color-text-heading);
+      }
+      > p,
+      .error {
+        color: var(--color-text);
+      }
+      .error > a {
+        color: var(--color-accent);
+      }
+
+      .subscription {
+        &::before {
+          background: radial-gradient(circle at 50% 20%, rgba(32, 86, 93, 0.2), transparent 80%);
+        }
+
+        .billing-label {
+          color: var(--color-text);
+        }
+
+        > .sub-title {
+          background-color: var(--color-accent);
+          color: var(--color-text-inverse);
+        }
+
+        .pricing-tiers__options {
+          border-color: var(--color-border);
+
+          &.pricing-tiers__popular_option {
+            border-color: var(--color-accent);
+
+            &::before {
+              background: var(--color-accent);
+              color: var(--color-text-inverse);
+              box-shadow: 0 0.4rem 0.8rem rgba(32, 86, 93, 0.3);
+            }
+          }
+
+          .option-detail {
+            &__name,
+            &__price,
+            &__description {
+              color: var(--color-text);
+            }
+
+            &__price span {
+              color: var(--color-text-muted);
+            }
+          }
+
+          .btn {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+            color: var(--color-text-inverse);
+
+            &.shadow {
+              box-shadow:
+                0 0 0.7rem 0.3rem rgba(32, 86, 93, 0.4),
+                0 0 0.55rem 0.1rem rgba(32, 86, 93, 0.2) inset;
+            }
+
+            &:hover {
+              background-color: var(--color-accent-hover);
+              border-color: var(--color-accent-hover);
+            }
+          }
+
+          .support-details {
+            color: var(--color-text);
+
+            &__items .content .info {
+              border-color: var(--color-border);
+              background-color: var(--color-surface-elevated);
+              color: var(--color-text);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // ─── Payment Status ───────────────────────────────────────────────────
+  .payment-status {
+    > div {
+      color: var(--color-text);
+
+      button {
+        background-color: var(--color-surface-primary);
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  // ─── Modal ────────────────────────────────────────────────────────────
+  .modal__body {
+    background-color: var(--color-surface-elevated);
+    border-color: var(--color-border);
+  }
+
+  // ─── Sidebar specific icon fixes ──────────────────────────────────────
+  .sidebar {
+    // Icons loaded as <img> with hardcoded light colors
+    img[src*=".svg"] {
+      filter: brightness(0);
+    }
+
+    // Except icons inside accent-colored backgrounds (keep them white)
+    .booking-btn__icon img,
+    [style*="background"] img {
+      filter: none;
+    }
+
+    .booking-btn__icon > svg {
+      color: var(--color-text-inverse);
+    }
+  }
+
+  // ─── Slider ───────────────────────────────────────────────────────────
+  .slider__track {
+    background-color: var(--color-border);
+  }
+
+  .slider__fill {
+    background-color: var(--color-accent);
+  }
+
+  // ─── Chat window icons ────────────────────────────────────────────────
+  .chat-window .heading .menu-icon > img {
+    filter: brightness(0);
+  }
+
+  // History edit/file icons
+  .history img[src*=".svg"] {
+    filter: brightness(0);
+  }
+
+  // ─── Quality Score / Brand Insight card ───────────────────────────────
+  .quality-score {
+    img[src*=".svg"] {
+      filter: brightness(0.3);
+    }
+  }
+
+  // ─── Generic: darken all light-stroked SVG icons in sidebar ───────────
+  // Covers arrows, plus icons, logout, etc.
+  .sidebar__logo img,
+  .sidebar img[src$=".svg"]:not(.booking-btn__icon img) {
+    filter: brightness(0.3);
+  }
+
+  // Restore white for icons on accent-colored backgrounds
+  .booking-btn__icon img[src$=".svg"] {
+    filter: brightness(0) invert(1);
+  }
+}

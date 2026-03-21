@@ -17,6 +17,7 @@ function ThemeCapture({ children }: { children: React.ReactNode }) {
         ? new URLSearchParams(window.location.search).get('theme')
         : null;
     if (theme) {
+        console.log('[Theme] ThemeCapture: saving to sessionStorage:', theme);
         sessionStorage.setItem('globy_theme', theme);
     }
 

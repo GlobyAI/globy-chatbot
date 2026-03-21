@@ -1,5 +1,5 @@
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
-import React, { useEffect } from 'react'
+import { Auth0Provider } from '@auth0/auth0-react'
+import React from 'react'
 import { useNavigate } from 'react-router';
 import { envConfig } from '~/utils/envConfig';
 
@@ -8,29 +8,17 @@ type Props = {
 }
 
 function ThemeCapture({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
-
     // Save theme to sessionStorage synchronously during render so child
-    // effects (AppContextProvider, withAuthenticationRequired) can read it
-    // before their own effects fire.
-    const theme = typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('theme')
-        : null;
-    if (theme) {
-        console.log('[Theme] ThemeCapture: saving to sessionStorage:', theme);
-        sessionStorage.setItem('globy_theme', theme);
-    }
-
-    useEffect(() => {
-        if (theme && !isAuthenticated && !isLoading) {
-            loginWithRedirect({
-                appState: {
-                    returnTo: window.location.pathname,
-                    theme: theme,
-                },
-            });
+    // effects (AppContextProvider) can read it before their own effects fire.
+    // withAuthenticationRequired in chat.tsx handles the login redirect —
+    // we must NOT call loginWithRedirect here or it aborts the route module
+    // download and causes an infinite reload loop.
+    if (typeof window !== 'undefined') {
+        const theme = new URLSearchParams(window.location.search).get('theme');
+        if (theme) {
+            sessionStorage.setItem('globy_theme', theme);
         }
-    }, [theme, isAuthenticated, isLoading, loginWithRedirect]);
+    }
 
     return <>{children}</>;
 }

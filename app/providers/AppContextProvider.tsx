@@ -109,10 +109,8 @@ export default function AppContextProvider({
             ) || {};
           const storedTheme = sessionStorage.getItem('globy_theme')
             || new URLSearchParams(window.location.search).get('theme');
-          console.log('[Theme] AppContextProvider: sessionStorage=', sessionStorage.getItem('globy_theme'), 'url=', new URLSearchParams(window.location.search).get('theme'), 'resolved=', storedTheme);
           try {
             const verifyUserRes = await verifyUser(token, payload || {}, storedTheme);
-            console.log('[Theme] verifyUser response:', verifyUserRes?.data);
             const globyUserId = verifyUserRes?.data.user_id;
             const userTheme = verifyUserRes?.data.theme || "globy";
             const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";

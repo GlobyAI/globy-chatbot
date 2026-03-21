@@ -131,8 +131,6 @@
 
         button {
           margin: auto;
-          background-color: #332359;
-          border-radius: 50%;
           background-color: var(--color-surface-primary);
           border-radius: 2rem;
           width: auto;
@@ -141,8 +139,9 @@
           height: 3rem;
           &:hover {
             background-color: var(--color-accent);
+            color: var(--color-text-inverse);
           }
-          @include text(var(--color-text-inverse), 400, $text-sm);
+          @include text(var(--color-accent), 400, $text-sm);
           @include flex(center, center, row, 0.4rem);
           @include breakpoint(md) {
             font-size: $text-md;
@@ -260,21 +259,20 @@
                 gap: 1.2rem;
               }
               button {
-                background-color: transparent;
-                border-radius: 50%;
                 background-color: var(--color-surface-primary);
                 border-radius: 2rem;
                 width: fit-content;
                 height: 2.8rem;
                 border: 1px solid var(--color-accent);
                 padding: 0.8rem 1.2rem;
-                @include text(var(--color-text-inverse), 400, $text-md);
+                @include text(var(--color-accent), 400, $text-md);
                 @include flex(center, center, row, 0.4rem);
                 p {
                   display: block;
                 }
                 &:nth-child(2) {
                   background-color: var(--color-accent);
+                  color: var(--color-text-inverse);
                 }
                 @include breakpoint(xl) {
                   height: 3.2rem;

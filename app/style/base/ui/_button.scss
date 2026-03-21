@@ -15,6 +15,7 @@
   &--secondary {
     border: 1px solid var(--color-accent-border);
     background-color: var(--color-surface-secondary);
+    color: var(--color-accent);
   }
   &:disabled {
     background-color: var(--color-text-light) !important;

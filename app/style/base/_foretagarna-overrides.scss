@@ -717,9 +717,33 @@
   }
 
   // ─── Quality Score / Brand Insight card ───────────────────────────────
+  // Gradient goes from dark teal to light gray — use white text for readability
   .quality-score {
+    background: linear-gradient(135deg, #20565D, #2a7a83) !important;
+    color: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(32, 86, 93, 0.2);
+
+    .quality-score__title {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .quality-score__icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .quality-score__percentage {
+      color: #FFFFFF;
+    }
+    .quality-score__footer-title {
+      color: #FFFFFF;
+    }
+    .quality-score__footer-text {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .brand-insight-tip {
+      background-color: #FFFFFF;
+      color: #333333;
+    }
     img[src*=".svg"] {
-      filter: brightness(0.3);
+      filter: brightness(10);
     }
   }
 

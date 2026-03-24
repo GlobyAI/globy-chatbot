@@ -706,6 +706,17 @@
     background-color: var(--color-accent);
   }
 
+  // ─── Chat message bubbles ─────────────────────────────────────────────
+  .chat-container .message {
+    // Bot message: explicit light gray background instead of transparent
+    &:not(.message--user) .message__content {
+      background-color: var(--color-bg-alt);      // #F5F5F5
+      color: var(--color-bubble-bot-text);         // #333333
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+    }
+  }
+
   // ─── Chat window icons ────────────────────────────────────────────────
   .chat-window .heading .menu-icon > img {
     filter: brightness(0);

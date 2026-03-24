@@ -42,6 +42,35 @@ export default function AppContextProvider({
     setTokenGetter(getAccessTokenSilently);
   }, [getAccessTokenSilently]);
 
+  // Theme sync: JWT is authoritative, localStorage is cache (self-healing stale cache)
+  useEffect(() => {
+    if (isAuthLoading || !isAuthenticated || !user) return;
+
+    const jwtTheme = user["https://globy.ai/theme"] as string | undefined;
+    const VALID_THEMES = ['foretagarna'];
+    const resolvedTheme = (jwtTheme && VALID_THEMES.includes(jwtTheme)) ? jwtTheme : 'globy';
+
+    // JWT always wins — overwrite localStorage cache
+    // CRITICAL: When resolvedTheme is 'globy', REMOVE the key so the blocking
+    // inline script in root.tsx finds no cached theme on next hard-refresh.
+    // Without this, a user switched from Foretagarna to Globy would see a
+    // stale teal flash on every subsequent page load.
+    try {
+      if (resolvedTheme !== 'globy') {
+        localStorage.setItem('globy_theme', resolvedTheme);
+      } else {
+        localStorage.removeItem('globy_theme');
+      }
+    } catch (e) { /* private browsing — non-critical */ }
+
+    setTheme(resolvedTheme);
+    if (resolvedTheme !== 'globy') {
+      document.documentElement.setAttribute('data-theme', resolvedTheme);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [user, isAuthenticated, isAuthLoading]);
+
   function checkPayment() {
     if (user) {
       const currentPlan = user["https://globy.ai/plan"];
@@ -107,12 +136,10 @@ export default function AppContextProvider({
             Object.fromEntries(
               Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
             ) || {};
-          const storedTheme = sessionStorage.getItem('globy_theme')
-            || new URLSearchParams(window.location.search).get('theme');
+          const storedTheme = theme; // Already resolved by JWT theme sync effect above
           try {
             const verifyUserRes = await verifyUser(token, payload || {}, storedTheme);
             const globyUserId = verifyUserRes?.data.user_id;
-            const userTheme = verifyUserRes?.data.theme || storedTheme || "globy";
             const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
             // const ref_id = user["https://globy.ai/ref_id"] || "";
 
@@ -181,8 +208,6 @@ export default function AppContextProvider({
 
             if (verifyUserRes.status === 200 && globyUserId) {
               setUserId(globyUserId);
-              setTheme(userTheme);
-              document.documentElement.setAttribute('data-theme', userTheme);
             } else {
               toast.error("missing user id on auth api");
             }

@@ -16,7 +16,7 @@ function ThemeCapture({ children }: { children: React.ReactNode }) {
     if (typeof window !== 'undefined') {
         const theme = new URLSearchParams(window.location.search).get('theme');
         if (theme) {
-            sessionStorage.setItem('globy_theme', theme);
+            try { localStorage.setItem('globy_theme', theme); } catch(e) {}
         }
     }
 
@@ -30,7 +30,7 @@ export default function AuthProvider({ children }: Props) {
         // Recover theme from Auth0 appState and persist to sessionStorage
         const theme = appState?.theme;
         if (theme) {
-            sessionStorage.setItem('globy_theme', theme);
+            try { localStorage.setItem('globy_theme', theme); } catch(e) {}
         }
         navigate(appState?.returnTo || "/");
     };

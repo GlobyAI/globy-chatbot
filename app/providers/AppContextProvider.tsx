@@ -42,32 +42,33 @@ export default function AppContextProvider({
     setTokenGetter(getAccessTokenSilently);
   }, [getAccessTokenSilently]);
 
-  // Theme sync: JWT is authoritative, localStorage is cache (self-healing stale cache)
+  // Theme sync: JWT is authoritative when present, otherwise respect localStorage/URL param
   useEffect(() => {
     if (isAuthLoading || !isAuthenticated || !user) return;
 
     const jwtTheme = user["https://globy.ai/theme"] as string | undefined;
     const VALID_THEMES = ['foretagarna'];
-    const resolvedTheme = (jwtTheme && VALID_THEMES.includes(jwtTheme)) ? jwtTheme : 'globy';
 
-    // JWT always wins — overwrite localStorage cache
-    // CRITICAL: When resolvedTheme is 'globy', REMOVE the key so the blocking
-    // inline script in root.tsx finds no cached theme on next hard-refresh.
-    // Without this, a user switched from Foretagarna to Globy would see a
-    // stale teal flash on every subsequent page load.
-    try {
-      if (resolvedTheme !== 'globy') {
-        localStorage.setItem('globy_theme', resolvedTheme);
-      } else {
-        localStorage.removeItem('globy_theme');
-      }
-    } catch (e) { /* private browsing — non-critical */ }
-
-    setTheme(resolvedTheme);
-    if (resolvedTheme !== 'globy') {
-      document.documentElement.setAttribute('data-theme', resolvedTheme);
-    } else {
+    if (jwtTheme && VALID_THEMES.includes(jwtTheme)) {
+      // JWT explicitly says themed — sync to localStorage + DOM
+      try { localStorage.setItem('globy_theme', jwtTheme); } catch (e) {}
+      setTheme(jwtTheme);
+      document.documentElement.setAttribute('data-theme', jwtTheme);
+    } else if (jwtTheme === 'globy') {
+      // JWT explicitly says globy — clear stale cache to prevent teal flash
+      // for users switched back from foretagarna to default
+      try { localStorage.removeItem('globy_theme'); } catch (e) {}
+      setTheme('globy');
       document.documentElement.removeAttribute('data-theme');
+    } else {
+      // No JWT theme claim — respect what blocking script already set
+      // (from localStorage or URL param)
+      let cached: string | null = null;
+      try { cached = localStorage.getItem('globy_theme'); } catch (e) {}
+      if (cached && VALID_THEMES.includes(cached)) {
+        setTheme(cached);
+        document.documentElement.setAttribute('data-theme', cached);
+      }
     }
   }, [user, isAuthenticated, isAuthLoading]);
 

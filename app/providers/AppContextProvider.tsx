@@ -42,6 +42,36 @@ export default function AppContextProvider({
     setTokenGetter(getAccessTokenSilently);
   }, [getAccessTokenSilently]);
 
+  // Theme sync: JWT is authoritative when present, otherwise respect localStorage/URL param
+  useEffect(() => {
+    if (isAuthLoading || !isAuthenticated || !user) return;
+
+    const jwtTheme = user["https://globy.ai/theme"] as string | undefined;
+    const VALID_THEMES = ['foretagarna'];
+
+    if (jwtTheme && VALID_THEMES.includes(jwtTheme)) {
+      // JWT explicitly says themed — sync to localStorage + DOM
+      try { localStorage.setItem('globy_theme', jwtTheme); } catch (e) {}
+      setTheme(jwtTheme);
+      document.documentElement.setAttribute('data-theme', jwtTheme);
+    } else if (jwtTheme === 'globy') {
+      // JWT explicitly says globy — clear stale cache to prevent teal flash
+      // for users switched back from foretagarna to default
+      try { localStorage.removeItem('globy_theme'); } catch (e) {}
+      setTheme('globy');
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      // No JWT theme claim — respect what blocking script already set
+      // (from localStorage or URL param)
+      let cached: string | null = null;
+      try { cached = localStorage.getItem('globy_theme'); } catch (e) {}
+      if (cached && VALID_THEMES.includes(cached)) {
+        setTheme(cached);
+        document.documentElement.setAttribute('data-theme', cached);
+      }
+    }
+  }, [user, isAuthenticated, isAuthLoading]);
+
   function checkPayment() {
     if (user) {
       const currentPlan = user["https://globy.ai/plan"];
@@ -107,12 +137,10 @@ export default function AppContextProvider({
             Object.fromEntries(
               Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
             ) || {};
-          const storedTheme = sessionStorage.getItem('globy_theme')
-            || new URLSearchParams(window.location.search).get('theme');
+          const storedTheme = theme; // Already resolved by JWT theme sync effect above
           try {
             const verifyUserRes = await verifyUser(token, payload || {}, storedTheme);
             const globyUserId = verifyUserRes?.data.user_id;
-            const userTheme = verifyUserRes?.data.theme || storedTheme || "globy";
             const globy_id_in_metadata = user["https://globy.ai/globy_id"] || "";
             // const ref_id = user["https://globy.ai/ref_id"] || "";
 
@@ -181,8 +209,6 @@ export default function AppContextProvider({
 
             if (verifyUserRes.status === 200 && globyUserId) {
               setUserId(globyUserId);
-              setTheme(userTheme);
-              document.documentElement.setAttribute('data-theme', userTheme);
             } else {
               toast.error("missing user id on auth api");
             }

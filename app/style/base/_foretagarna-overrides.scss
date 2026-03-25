@@ -722,6 +722,11 @@
     filter: brightness(0);
   }
 
+  // Chatbox plus icon (attach files)
+  .chat-box .icons--plus > img {
+    filter: brightness(0);
+  }
+
   // History edit/file icons
   .history img[src*=".svg"] {
     filter: brightness(0);

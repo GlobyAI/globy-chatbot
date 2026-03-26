@@ -4,6 +4,39 @@
 // These overrides ensure proper contrast on light backgrounds.
 
 [data-theme="foretagarna"] {
+  // ─── Base typography ────────────────────────────────────────────────
+  font-weight: var(--font-weight-body);
+  line-height: var(--lh-body);
+
+  h1, h2, h3, h4, h5, h6,
+  .heading {
+    font-weight: var(--font-weight-heading);
+    line-height: var(--lh-heading);
+  }
+
+  // ─── Global input styling ──────────────────────────────────────────
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-weight: var(--font-weight-body);
+
+    &:focus {
+      border-color: #20565D;
+      outline: 2px solid #20565D;
+      outline-offset: 2px;
+    }
+  }
+
+  // ─── Global button styling ─────────────────────────────────────────
+  button,
+  .btn {
+    border-radius: var(--radius);
+    font-weight: var(--font-weight-button);
+  }
+
   // ─── Global SVG icon fix ─────────────────────────────────────────────
   // SVG icons loaded via <img> have hardcoded light strokes (#F2F2F2).
   // Invert them to dark for the light theme.
@@ -16,13 +49,19 @@
   // ─── Getting Started / Identity Insight ───────────────────────────────
   .getting-started {
     background-color: var(--color-surface-primary);
+    padding: var(--spacing-section) 0;
 
     &__container {
       color: var(--color-text);
+      max-width: var(--max-content-width);
+      margin: 0 auto;
 
       .heading-container {
         .heading {
           color: var(--color-text-heading);
+          font-size: var(--fs-h2);
+          font-weight: var(--font-weight-heading);
+          line-height: var(--lh-heading);
         }
         .sub-heading {
           color: var(--color-text-muted);
@@ -34,11 +73,19 @@
       }
 
       .identity-type {
+        gap: var(--spacing-grid-gap);
+
         .option {
           border-color: var(--color-border);
+          border-radius: var(--radius-lg);
+          padding: var(--spacing-card-padding);
+          box-shadow: none;
+          transition: box-shadow var(--transition-default), transform var(--transition-default);
 
           &:hover {
             background-color: var(--color-interactive-bg);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
           }
           &.selected {
             background-color: var(--color-accent-subtle);
@@ -47,6 +94,7 @@
 
           &__avatar {
             background-color: var(--color-interactive-bg);
+            border-radius: var(--radius-lg);
 
             &.selected {
               background-color: var(--color-accent);
@@ -56,6 +104,7 @@
           &__detail {
             > strong {
               color: var(--color-text-heading);
+              font-weight: var(--font-weight-card-title);
             }
             > p {
               color: var(--color-text-muted);
@@ -80,6 +129,7 @@
     background-color: var(--color-surface-elevated);
     box-shadow: var(--shadow-popup);
     border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
 
     .close-btn:hover {
       background-color: var(--color-interactive-bg);
@@ -88,6 +138,8 @@
     &__header {
       .heading {
         color: var(--color-text-heading);
+        font-weight: var(--font-weight-heading);
+        line-height: var(--lh-heading);
       }
       .sub-heading {
         color: var(--color-text-muted);
@@ -119,9 +171,15 @@
 
     .option {
       border-color: var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-card-padding);
+      box-shadow: none;
+      transition: box-shadow var(--transition-default), transform var(--transition-default);
 
       &:hover {
         background-color: var(--color-interactive-bg);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-4px);
       }
 
       &.selected {
@@ -131,9 +189,12 @@
 
       &--auto {
         border-color: var(--color-border);
+        border-radius: var(--radius-lg);
 
         &:hover {
           background-color: var(--color-interactive-hover);
+          box-shadow: var(--shadow-hover);
+          transform: translateY(-4px);
         }
 
         &.selected {
@@ -145,11 +206,13 @@
       &__badge {
         background: var(--color-accent);
         color: var(--color-text-inverse);
+        border-radius: var(--radius-pill);
       }
 
       &__avatar {
         background-color: var(--color-interactive-bg);
         color: var(--color-text-muted);
+        border-radius: var(--radius-lg);
 
         .selected & {
           background-color: var(--color-accent-subtle);
@@ -160,6 +223,7 @@
       &__detail {
         > strong {
           color: var(--color-text-heading);
+          font-weight: var(--font-weight-card-title);
         }
         > p {
           color: var(--color-text-muted);
@@ -171,6 +235,7 @@
   // ─── Site Type Trigger Button (sidebar) ───────────────────────────────
   .site-type-trigger-btn {
     border-color: var(--color-border);
+    border-radius: var(--radius-lg);
 
     &:hover {
       background-color: var(--color-interactive-bg);
@@ -180,6 +245,7 @@
     &__icon {
       background-color: var(--color-interactive-bg);
       color: var(--color-text-muted);
+      border-radius: var(--radius);
     }
 
     &__label {
@@ -188,6 +254,7 @@
 
     &__value {
       color: var(--color-text-heading);
+      font-weight: var(--font-weight-card-title);
     }
 
     &__arrow {
@@ -203,11 +270,14 @@
   .suggestions {
     &__label {
       color: var(--color-text-muted);
+      font-weight: var(--font-weight-body);
     }
 
     &__container-slider .suggestions-items {
       background-color: var(--color-interactive-bg);
       color: var(--color-text);
+      border-radius: var(--radius);
+      font-weight: var(--font-weight-body);
     }
 
     .slide-arrows button:disabled svg {
@@ -218,6 +288,7 @@
   // ─── Service Business (onboarding wizard) ─────────────────────────────
   .service-business {
     background-color: var(--color-surface-primary);
+    border-radius: var(--radius-lg);
 
     .close-btn:hover {
       background-color: var(--color-interactive-bg);
@@ -230,11 +301,14 @@
 
     &__container {
       color: var(--color-text);
+      max-width: var(--max-content-width);
     }
 
     &__step .heading-container {
       .heading {
         color: var(--color-text-heading);
+        font-weight: var(--font-weight-heading);
+        line-height: var(--lh-heading);
       }
       .sub-heading {
         color: var(--color-text-muted);
@@ -244,9 +318,15 @@
     .booking-type-options .option,
     .provider-options .option {
       border-color: var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-card-padding);
+      box-shadow: none;
+      transition: box-shadow var(--transition-default), transform var(--transition-default);
 
       &:hover {
         background-color: var(--color-interactive-bg);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-4px);
       }
 
       &.selected {
@@ -257,9 +337,12 @@
       &--featured {
         border-color: rgba(32, 86, 93, 0.3);
         background-color: rgba(32, 86, 93, 0.03);
+        border-radius: var(--radius-lg);
 
         &:hover {
           background-color: rgba(32, 86, 93, 0.06);
+          box-shadow: var(--shadow-hover);
+          transform: translateY(-4px);
         }
 
         &.selected {
@@ -271,10 +354,12 @@
       &__badge {
         background: var(--color-accent);
         color: var(--color-text-inverse);
+        border-radius: var(--radius-pill);
       }
 
       &__avatar {
         background-color: var(--color-interactive-bg);
+        border-radius: var(--radius-lg);
 
         > img {
           filter: brightness(0) !important;
@@ -292,6 +377,7 @@
       &__detail {
         > strong {
           color: var(--color-text-heading);
+          font-weight: var(--font-weight-card-title);
         }
         > p {
           color: var(--color-text-muted);
@@ -310,6 +396,7 @@
     .form-group {
       > label {
         color: var(--color-text);
+        font-weight: var(--font-weight-body);
       }
 
       > input,
@@ -318,6 +405,8 @@
         border-color: var(--color-border);
         background-color: var(--color-surface-input);
         color: var(--color-text);
+        border-radius: var(--radius);
+        padding: 12px 16px;
 
         &::placeholder {
           color: var(--color-text-muted);
@@ -325,6 +414,8 @@
 
         &:focus {
           border-color: var(--color-accent);
+          outline: 2px solid #20565D;
+          outline-offset: 2px;
         }
       }
     }
@@ -366,6 +457,7 @@
 
     .services-list {
       scrollbar-color: var(--color-border) transparent;
+      gap: var(--spacing-grid-gap);
 
       &::-webkit-scrollbar-thumb {
         background: var(--color-border);
@@ -374,6 +466,7 @@
       .services-empty {
         background-color: var(--color-surface-input);
         border-color: var(--color-border);
+        border-radius: var(--radius-lg);
 
         > p {
           color: var(--color-text-muted);
@@ -387,14 +480,19 @@
       .service-item {
         background-color: var(--color-surface-input);
         border-color: var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-card-padding);
 
         &__header .service-name {
           border-color: var(--color-border);
           background-color: var(--color-surface-primary);
           color: var(--color-text);
+          border-radius: var(--radius);
 
           &:focus {
             border-color: var(--color-accent);
+            outline: 2px solid #20565D;
+            outline-offset: 2px;
           }
         }
 
@@ -406,9 +504,13 @@
             border-color: var(--color-border);
             background-color: var(--color-surface-primary);
             color: var(--color-text);
+            border-radius: var(--radius);
+            padding: 12px 16px;
 
             &:focus {
               border-color: var(--color-accent);
+              outline: 2px solid #20565D;
+              outline-offset: 2px;
             }
           }
         }
@@ -417,6 +519,7 @@
       .add-service-btn {
         border-color: var(--color-border);
         color: var(--color-text-muted);
+        border-radius: var(--radius);
 
         &:hover {
           border-color: var(--color-accent);
@@ -428,9 +531,11 @@
     .instructions {
       background-color: var(--color-surface-input);
       border-color: var(--color-border);
+      border-radius: var(--radius-lg);
 
       > h4 {
         color: var(--color-text-heading);
+        font-weight: var(--font-weight-card-title);
       }
 
       > ol > li {
@@ -462,6 +567,7 @@
   // ─── Instagram Onboarding ─────────────────────────────────────────────
   .instagram-onboarding {
     background-color: var(--color-surface-primary);
+    border-radius: var(--radius-lg);
 
     .close-btn > img {
       filter: brightness(0);
@@ -477,6 +583,8 @@
       .heading-container {
         .heading {
           color: var(--color-text-heading);
+          font-weight: var(--font-weight-heading);
+          line-height: var(--lh-heading);
         }
         .sub-heading {
           color: var(--color-text-muted);
@@ -518,6 +626,7 @@
   .color-picker-wrapper {
     background-color: var(--color-surface-elevated);
     border-color: var(--color-border);
+    border-radius: var(--radius-lg);
 
     .color-input__field {
       label {
@@ -527,10 +636,14 @@
         border-color: var(--color-border);
         background-color: var(--color-surface-input);
         color: var(--color-text);
+        border-radius: var(--radius);
+        padding: 12px 16px;
 
         &:focus {
           border-color: var(--color-accent);
           background-color: var(--color-surface-primary);
+          outline: 2px solid #20565D;
+          outline-offset: 2px;
         }
 
         &::placeholder {
@@ -577,10 +690,17 @@
   // ─── Price Page ───────────────────────────────────────────────────────
   .price {
     background-color: var(--color-surface-primary);
+    padding: var(--spacing-section) 0;
 
     &__container {
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+
       > h2 {
         color: var(--color-text-heading);
+        font-weight: var(--font-weight-heading);
+        font-size: var(--fs-h2);
+        line-height: var(--lh-heading);
       }
       > p,
       .error {
@@ -606,6 +726,9 @@
 
         .pricing-tiers__options {
           border-color: var(--color-border);
+          border-radius: var(--radius-lg);
+          padding: var(--spacing-card-padding);
+          box-shadow: none;
 
           &.pricing-tiers__popular_option {
             border-color: var(--color-accent);
@@ -677,6 +800,7 @@
   .modal__body {
     background-color: var(--color-surface-elevated);
     border-color: var(--color-border);
+    border-radius: var(--radius-lg);
   }
 
   // ─── Sidebar specific icon fixes ──────────────────────────────────────
@@ -710,10 +834,15 @@
   .chat-container .message {
     // Bot message: explicit light gray background instead of transparent
     &:not(.message--user) .message__content {
-      background-color: var(--color-bg-alt);      // #F5F5F5
-      color: var(--color-bubble-bot-text);         // #333333
-      border-radius: 1.2rem;
-      padding: 1.2rem;
+      background-color: var(--color-bg-alt);
+      color: var(--color-bubble-bot-text);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-card-padding);
+    }
+
+    // User message: enforce consistent radius
+    &.message--user .message__content {
+      border-radius: var(--radius-lg);
     }
   }
 
@@ -733,23 +862,33 @@
   }
 
   // ─── Quality Score / Brand Insight card ───────────────────────────────
-  // Gradient goes from dark teal to light gray — use white text for readability
   .quality-score {
     background: linear-gradient(135deg, #20565D, #2a7a83) !important;
     color: #FFFFFF;
-    box-shadow: 0 4px 16px rgba(32, 86, 93, 0.2);
+    box-shadow: none;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-card-padding);
+    transition: box-shadow var(--transition-default), transform var(--transition-default);
+
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
 
     .quality-score__title {
       color: rgba(255, 255, 255, 0.8);
+      font-weight: var(--font-weight-card-title);
     }
     .quality-score__icon {
       color: rgba(255, 255, 255, 0.7);
     }
     .quality-score__percentage {
       color: #FFFFFF;
+      font-weight: var(--font-weight-heading);
     }
     .quality-score__footer-title {
       color: #FFFFFF;
+      font-weight: var(--font-weight-card-title);
     }
     .quality-score__footer-text {
       color: rgba(255, 255, 255, 0.7);
@@ -757,6 +896,7 @@
     .brand-insight-tip {
       background-color: #FFFFFF;
       color: #333333;
+      border-radius: var(--radius);
     }
     img[src*=".svg"] {
       filter: brightness(10);
@@ -775,6 +915,80 @@
     filter: brightness(0) invert(1);
   }
 
+  // ─── Sidebar radius ──────────────────────────────────────────────────
+  .sidebar {
+    border-top-right-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+  }
+
+  // ─── Settings popup ────────────────────────────────────────────────
+  .settings {
+    border-radius: var(--radius-lg);
+  }
+
+  // ─── Options popup ─────────────────────────────────────────────────
+  .options-popup {
+    border-radius: var(--radius-lg);
+  }
+
+  // ─── Chatbox ───────────────────────────────────────────────────────
+  .chat-box {
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+
+    &.has-image,
+    &.has-value {
+      border-radius: var(--radius-lg);
+    }
+
+    textarea {
+      font-weight: var(--font-weight-body);
+    }
+  }
+
+  // ─── Editing actions buttons ───────────────────────────────────────
+  .editing__actions button {
+    border-radius: var(--radius) !important;
+  }
+
+  // ─── Move-on / skip button ────────────────────────────────────────
+  .move-on button {
+    border-radius: var(--radius);
+  }
+
+  // ─── Pricing cards ────────────────────────────────────────────────
+  .pricing-tiers__options {
+    border-radius: var(--radius-lg);
+    transition: box-shadow var(--transition-default), transform var(--transition-default);
+
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+  }
+
+  // ─── Markdown body headings ───────────────────────────────────────
+  .markdown-body {
+    font-weight: var(--font-weight-body);
+
+    h1, h2, h3, h4 {
+      font-weight: var(--font-weight-heading);
+      line-height: var(--lh-heading);
+    }
+
+    h1 { font-size: var(--fs-h1); }
+    h2 { font-size: var(--fs-h2); }
+    h3 { font-size: var(--fs-h3); }
+
+    code {
+      border-radius: var(--radius);
+    }
+
+    pre {
+      border-radius: var(--radius-lg);
+    }
+  }
+
   // ─── Accessibility: Focus visible ────────────────────────────────────
   a:focus-visible,
   button:focus-visible,
@@ -783,7 +997,7 @@
   select:focus-visible,
   [tabindex]:focus-visible {
     outline: 2px solid #20565D;
-    outline-offset: 3px;
+    outline-offset: 2px;
   }
 
   // ─── Selection highlight ─────────────────────────────────────────────

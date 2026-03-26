@@ -34,7 +34,7 @@ const postSelectedColor = async(userId: string, color: string[], prompt: string)
 
 const LARGE_SCREEN_WIDTH = 1199;
 export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
-    const { userId } = useAppContext();
+    const { userId, theme } = useAppContext();
     const { onUploadFile, pct, uploadedImages, onDeleteImage, isUploading, logo } = useUploadLogo()
     const sideBarRef = useRef<HTMLDivElement>(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < LARGE_SCREEN_WIDTH)
@@ -170,7 +170,7 @@ export default function Sidebar({ handleCloseSidebar, handleToggle }: Props) {
                     <img src={PlusIcon} alt=" Close icon" />
                 </span>
                 <div className="sidebar__logo">
-                    <img src="/images/globy_symbol.png" alt="Globy logo" className="logo" />
+                    <img src={theme === 'foretagarna' ? '/images/foretagarna.svg' : '/images/globy_symbol.png'} alt={theme === 'foretagarna' ? 'Företagarna logo' : 'Globy logo'} className="logo" />
                 </div>
                 <QualityScoreCard />
                 <div className="sidebar__styles">

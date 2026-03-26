@@ -93,8 +93,8 @@
   --color-interactive-bg: #F5F5F5;
   --color-interactive-hover: #e0e0e0;
 
-  /* Shadow tokens */
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  /* Shadow tokens – no shadow at rest; shadow only on hover */
+  --shadow-card: none;
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.06);
   --shadow-popup: 0 4px 16px rgba(0, 0, 0, 0.1);
 
@@ -103,12 +103,19 @@
   --color-accent-border: #20565D;
 
   /* Spacing tokens */
-  --spacing-section: 0;
+  --spacing-section: clamp(64px, 10vw, 120px);
   --spacing-message: 4.2rem;
+  --spacing-card-padding: 28px;
+  --spacing-grid-gap: 32px;
+  --max-content-width: 1400px;
 
-  /* Typography */
+  /* Typography – Inter */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-weight-heading: 700;
+  --font-weight-heading: 800;
+  --font-weight-card-title: 700;
+  --font-weight-button: 600;
+  --font-weight-body: 500;
+  --lh-heading: 1.15;
   --lh-body: 1.65;
   --fs-xs: clamp(1rem, 0.93rem + 0.19vw, 1.2rem);
   --fs-small: clamp(1.2rem, 1.12rem + 0.19vw, 1.4rem);
@@ -116,11 +123,15 @@
   --fs-md: clamp(1.4rem, 1.3rem + 0.28vw, 1.6rem);
   --fs-lg: clamp(1.6rem, 1.49rem + 0.28vw, 1.8rem);
   --fs-xl: clamp(1.8rem, 1.68rem + 0.28vw, 2rem);
+  --fs-h1: clamp(2.4rem, 2rem + 1.2vw, 3.6rem);
+  --fs-h2: clamp(2rem, 1.7rem + 0.9vw, 2.8rem);
+  --fs-h3: clamp(1.8rem, 1.6rem + 0.6vw, 2.2rem);
 
   /* Transition */
   --transition-default: 200ms ease;
 
-  /* Shape */
+  /* Shape – 4px inputs/buttons, 8px cards/containers, 100px pill badges */
   --radius: 4px;
   --radius-lg: 8px;
+  --radius-pill: 100px;
 }

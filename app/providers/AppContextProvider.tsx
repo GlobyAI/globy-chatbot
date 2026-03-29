@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth0, User } from "@auth0/auth0-react";
 import toast from "react-hot-toast";
 
@@ -27,6 +27,7 @@ export default function AppContextProvider({
 }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [theme, setTheme] = useState<string>("globy");
+  const hasVerifiedRef = useRef(false);
   const setIsLoading = useAppStore(s => s.setLoading)
 
   const {
@@ -242,6 +243,24 @@ export default function AppContextProvider({
       //   return
       // }
       fetchUserInfo();
+    } else if (userId && !isAuthLoading && isAuthenticated && user && !hasVerifiedRef.current) {
+      // Non-blocking: ensure user exists in auth backend on login even when userId is already set.
+      // Theme is intentionally omitted to avoid overwriting it.
+      // Runs once per page load (login) via hasVerifiedRef.
+      hasVerifiedRef.current = true;
+      getAccessTokenSilently().then((token) => {
+        const excludeKeys = [
+          "https://globy.ai/has_paid",
+          "https://globy.ai/stripe_customer_id",
+          "https://globy.ai/plan",
+          "sub",
+          "https://globy.ai/ref_id",
+        ];
+        const payload = Object.fromEntries(
+          Object.entries(user).filter(([key]) => !excludeKeys.includes(key))
+        );
+        verifyUser(token, payload).catch(() => {});
+      }).catch(() => {});
     }
   }, [userId, isAuthLoading, isAuthenticated]);
   return (

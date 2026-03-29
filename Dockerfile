@@ -28,7 +28,9 @@ FROM node:22-alpine
 
 RUN npm install -g serve
 
-COPY --from=build /app/build/client /app
+ARG VITE_BASE_PATH
+
+COPY --from=build /app/build/client /app${VITE_BASE_PATH}
 
 EXPOSE 3000
 

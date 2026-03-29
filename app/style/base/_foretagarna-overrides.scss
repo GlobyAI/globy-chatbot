@@ -953,6 +953,10 @@
       border-radius: var(--radius-lg);
     }
 
+    .chat-box__actions {
+      background-color: transparent;
+    }
+
     textarea {
       font-weight: var(--font-weight-body);
     }

@@ -15,23 +15,68 @@ A modern, production-ready template for building full-stack React applications u
 
 ## Getting Started
 
-### Installation
+### Prerequisites
 
-Install the dependencies:
+- [Node.js](https://nodejs.org/) 22+
+- [Docker](https://www.docker.com/) (for containerized setup)
+
+### Environment Variables
+
+Copy the example env file and fill in your values:
+
+```bash
+cp .env.exampel .env.local
+```
+
+Edit `.env.local` and configure the required variables:
+
+| Variable | Description |
+|---|---|
+| `VITE_WEB_SOCKET_URL` | WebSocket server URL |
+| `VITE_AUTH0_DOMAIN` | Auth0 tenant domain |
+| `VITE_AUTH0_CLIENT_ID` | Auth0 application client ID |
+| `VITE_AUTH0_AUDIENCE` | Auth0 API audience |
+| `VITE_APP_DOMAIN` | Application domain |
+| `VITE_API_URL` | Backend API URL |
+| `VITE_AUTH_API_URL` | Auth API URL |
+| `VITE_LANDING_PAGE` | Landing page URL |
+| `VITE_IMAGE_LIBRARY_API` | Image library API URL |
+| `VITE_BASE_PATH` | Base path for the app (e.g. `/chat`) |
+| `VITE_CHECKOUT_URL` | Stripe checkout endpoint |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
+| `VITE_SIDE_STATUS_API` | Side status API URL |
+| `VITE_BOOKING_API_URL` | Booking API URL |
+
+### Running Locally (without Docker)
+
+Install dependencies and start the dev server:
 
 ```bash
 npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+The app will be available at `http://localhost:5173`.
+
+### Running Locally with Docker
+
+1. Make sure your `.env` file is configured (see above).
+
+2. Build and start the container:
+
+```bash
+docker compose up --build
+```
+
+The app will be available at `http://localhost:3000`.
+
+To run in the background:
+
+```bash
+docker compose up --build -d
+```
+
+> **Note:** Vite embeds `VITE_*` variables at build time. The `docker-compose.yml` forwards them from your `.env` file as build args automatically.
 
 ## Building for Production
 
@@ -42,17 +87,6 @@ npm run build
 ```
 
 ## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
 
 The containerized application can be deployed to any platform that supports Docker, including:
 

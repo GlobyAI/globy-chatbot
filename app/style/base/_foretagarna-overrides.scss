@@ -899,7 +899,7 @@
       border-radius: var(--radius);
     }
     img[src*=".svg"] {
-      filter: brightness(10);
+      filter: brightness(10) !important;
     }
   }
 
@@ -913,6 +913,17 @@
   // Restore white for icons on accent-colored backgrounds
   .booking-btn__icon img[src$=".svg"] {
     filter: brightness(0) invert(1);
+  }
+
+  // ─── Sidebar logo: show full Företagarna wordmark ────────────────────
+  .sidebar__logo img {
+    object-fit: contain;
+    width: auto;
+    max-width: 100%;
+    height: 2.1rem;
+    @media (min-width: 1280px) {
+      height: 2.8rem;
+    }
   }
 
   // ─── Sidebar radius ──────────────────────────────────────────────────
@@ -935,6 +946,7 @@
   .chat-box {
     border-radius: var(--radius-lg);
     box-shadow: none;
+    background-color: transparent;
 
     &.has-image,
     &.has-value {

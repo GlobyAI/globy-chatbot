@@ -199,7 +199,7 @@ $textarea-h: 2.4rem;
       box-sizing: border-box;
       white-space: pre-wrap;
       resize: none;
-      @include text(var(--color-text), 400, $text-md);
+      @include text(var(--color-text-on-input), 400, $text-md);
       @include breakpoint(xl) {
         padding: 0 6rem;
         bottom: calc(($min-h-lg - $textarea-h) / 2);

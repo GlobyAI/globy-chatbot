@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.9.0",
-    "@react-router/node": "^7.9.2",
+    "@react-router/node": "^7.10.1",
     "@react-router/serve": "^7.9.2",
     "@stripe/react-stripe-js": "^3.8.0",
     "@stripe/stripe-js": "^7.9.0",

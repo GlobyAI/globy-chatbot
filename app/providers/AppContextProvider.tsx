@@ -185,32 +185,28 @@ export default function AppContextProvider({
             //     return;
             //   }
             // }
-            // add globy id i auth0 metadata
-            if (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId) {
-              try {
-                const res = await updateAuth0AppMetadata(user.sub || "", {
-                  user_metadata: { globy_id: globyUserId },
-                }, token);
-                if (res?.status === 200) {
-                  await loginWithRedirect({
-                    appState: {
-                      returnTo: APP_ROUTES.INDEX,
-                      theme: storedTheme,
-                    },
-                    authorizationParams: {
-                      prompt: 'none'
-                    }
-                  })
-                }
-              } catch (error) {
-                console.log("Update Auth0 app metadata error:", error);
-              }
-            }
-
+            // Set the user id immediately so the app is usable.
             if (verifyUserRes.status === 200 && globyUserId) {
               setUserId(globyUserId);
             } else {
               toast.error("missing user id on auth api");
+            }
+
+            // Best-effort: sync globy_id into Auth0 metadata for future tokens.
+            // NOTE: do NOT loginWithRedirect here. The backend resolves globy_id
+            // from the token `sub`, so the access token does not need the
+            // https://globy.ai/globy_id claim. The previous silent re-login caused
+            // an infinite reload loop: the Auth0 post-login action never injects
+            // that claim, so `globy_id_in_metadata` never converged and the page
+            // re-logged in on every load.
+            if (globyUserId && (!globy_id_in_metadata || globy_id_in_metadata !== globyUserId)) {
+              try {
+                await updateAuth0AppMetadata(user.sub || "", {
+                  user_metadata: { globy_id: globyUserId },
+                }, token);
+              } catch (error) {
+                console.log("Update Auth0 app metadata error:", error);
+              }
             }
           } catch (error) {
             console.log("Auth error:", error)
